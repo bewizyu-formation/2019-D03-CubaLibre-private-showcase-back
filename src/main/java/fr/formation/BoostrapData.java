@@ -40,7 +40,7 @@ public class BoostrapData {
 				"admin",
 				passwordEncoder.encode("admin"),
 				"admin@mail.com",
-				"adminCiry",
+				"adminCity",
 				SecurityConstants.ROLE_ADMIN
 		);
 		userService.addNewUser(
