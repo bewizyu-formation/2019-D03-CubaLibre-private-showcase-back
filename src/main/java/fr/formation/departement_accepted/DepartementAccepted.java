@@ -12,8 +12,8 @@ import javax.persistence.*;
 public class DepartementAccepted {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "code")
     private int code;
@@ -26,7 +26,7 @@ public class DepartementAccepted {
      *
      * @return value of id
      */
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
@@ -35,7 +35,7 @@ public class DepartementAccepted {
      *
      * @param id the id
      */
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

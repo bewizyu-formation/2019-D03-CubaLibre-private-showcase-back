@@ -5,6 +5,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
+import java.util.Base64;
 
 /**
  * The type User controller.
@@ -31,6 +36,5 @@ public class UserController {
 		userService.addNewUser(username, password, email, city, roles);
 
 	}
-
 
 }
