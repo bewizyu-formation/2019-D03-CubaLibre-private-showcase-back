@@ -37,17 +37,6 @@ public class UserController {
 
 	}
 
-	public boolean login(@RequestBody User user) {
-		return
-				user.getUsername().equals("user") && user.getPassword().equals("password");
-	}
-
-	public Principal user(HttpServletRequest request) {
-		String authToken = request.getHeader("Authorization")
-				.substring("Basic".length()).trim();
-		return () ->  new String(Base64.getDecoder()
-				.decode(authToken)).split(":")[0];
-	}
 
 
 }
