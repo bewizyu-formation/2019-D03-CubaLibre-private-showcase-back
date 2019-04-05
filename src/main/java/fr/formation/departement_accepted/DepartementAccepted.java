@@ -1,5 +1,7 @@
 package fr.formation.departement_accepted;
 
+import fr.formation.artist.Artist;
+
 import javax.persistence.*;
 
 /**
@@ -14,11 +16,10 @@ public class DepartementAccepted {
     private String id;
 
     @Column(name = "code")
-    private String code;
+    private int code;
 
-
-
-
+    @OneToOne
+    private Artist artist;
 
     /**
      * Gets id
@@ -43,7 +44,7 @@ public class DepartementAccepted {
      *
      * @return value of code
      */
-    public String getCode() {
+    public int getCode() {
         return code;
     }
 
@@ -52,7 +53,25 @@ public class DepartementAccepted {
      *
      * @param code the code
      */
-    public void setCode(String code) {
+    public void setCode(int code) {
         this.code = code;
+    }
+
+    /**
+     * Gets artist
+     *
+     * @return value of artist
+     */
+    public Artist getArtist() {
+        return artist;
+    }
+
+    /**
+     * Sets artist
+     *
+     * @param artist the artist
+     */
+    public void setArtist(Artist artist) {
+        this.artist = artist;
     }
 }

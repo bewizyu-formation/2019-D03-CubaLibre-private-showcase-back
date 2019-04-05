@@ -1,8 +1,10 @@
 package fr.formation.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import fr.formation.artist.Artist;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * The type User.
@@ -15,10 +17,11 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	@NotNull
 	@Column(name = "username")
 	private String username;
 
-
+	@NotNull
 	@Column(name = "password")
 	@JsonIgnore
 	private String password;
@@ -30,6 +33,9 @@ public class User {
 
 	@Column(name = "city")
 	private String city;
+
+	@OneToOne
+	private Artist artist;
 
 
 	/**
@@ -125,5 +131,23 @@ public class User {
 	 */
 	public void setCity(String city) {
 		this.city = city;
+	}
+
+	/**
+	 * Gets artist
+	 *
+	 * @return value of artist
+	 */
+	public Artist getArtist() {
+		return artist;
+	}
+
+	/**
+	 * Sets artist
+	 *
+	 * @param artist the artist
+	 */
+	public void setArtist(Artist artist) {
+		this.artist = artist;
 	}
 }

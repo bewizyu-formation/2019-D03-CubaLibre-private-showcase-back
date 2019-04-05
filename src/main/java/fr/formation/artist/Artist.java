@@ -1,6 +1,8 @@
 package fr.formation.artist;
 
 
+import fr.formation.user.User;
+
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -42,6 +44,9 @@ public class Artist {
     @Max(5)
     @Column
     private int rating;
+
+    @OneToOne(mappedBy="artist")
+    private User user;
 
     /**
      * Gets id
@@ -185,5 +190,23 @@ public class Artist {
      */
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    /**
+     * Gets user
+     *
+     * @return value of user
+     */
+    public User getUser() {
+        return user;
+    }
+
+    /**
+     * Sets user
+     *
+     * @param user the user
+     */
+    public void setUser(User user) {
+        this.user = user;
     }
 }
