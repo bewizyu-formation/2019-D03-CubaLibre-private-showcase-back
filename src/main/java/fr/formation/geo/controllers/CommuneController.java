@@ -20,7 +20,6 @@ import java.util.List;
  * The type Commune controller.
  */
 @RestController
-@Secured(SecurityConstants.ROLE_USER)
 @RequestMapping("/communes")
 public class CommuneController {
 
