@@ -21,13 +21,14 @@ public class UserController {
 	 *
 	 * @param username the username
 	 * @param password the password
+	 * @param email the email
+	 * @param city the city
 	 * @param roles    the roles
 	 */
 	@PutMapping("/")
-	public void signup(@RequestParam String username, @RequestParam String password,
-										 @RequestParam String... roles) {
+	public void signup(@RequestParam String username, @RequestParam String password, @RequestParam String email, @RequestParam String city, @RequestParam String... roles) {
 
-		userService.addNewUser(username, password, roles);
+		userService.addNewUser(username, password, email, city, roles);
 
 	}
 
