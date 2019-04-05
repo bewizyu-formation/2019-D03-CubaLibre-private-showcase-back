@@ -24,7 +24,7 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
 
 	/**
 	 * Instantiates a new Jwt login filter.
-	 *
+	 * 	 *
 	 * @param url         the url
 	 * @param authManager the auth manager
 	 */
