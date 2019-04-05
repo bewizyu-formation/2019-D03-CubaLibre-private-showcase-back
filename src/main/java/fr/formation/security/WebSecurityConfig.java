@@ -30,6 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
+		System.out.println("configure WebSecurity");
 		// Allow swagger to be accessed without authentication
 		web.ignoring().antMatchers("/v2/api-docs")//
 				.antMatchers("/swagger-resources/**")//
@@ -69,8 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	 */
 // Algorithme de hashage du mot de passe
 	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
+	public PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder();
 	}
 
 
@@ -81,6 +81,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	 */
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
+
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration().applyPermitDefaultValues();
 		config.addExposedHeader("Authorization");

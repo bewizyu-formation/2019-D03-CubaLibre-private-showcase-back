@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -37,17 +38,12 @@ public class UserController {
 
 	}
 
-	public boolean login(@RequestBody User user) {
-		return
-				user.getUsername().equals("user") && user.getPassword().equals("password");
+	@PostMapping("/login")
+	public void login() {
+		System.out.println("login");
+
 	}
 
-	public Principal user(HttpServletRequest request) {
-		String authToken = request.getHeader("Authorization")
-				.substring("Basic".length()).trim();
-		return () ->  new String(Base64.getDecoder()
-				.decode(authToken)).split(":")[0];
-	}
 
 
 }
