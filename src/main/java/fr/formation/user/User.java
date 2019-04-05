@@ -24,6 +24,14 @@ public class User {
 	private String password;
 
 
+	@Column(name = "email")
+	private String email;
+
+
+	@Column(name = "city")
+	private String city;
+
+
 	/**
 	 * Gets id.
 	 *
@@ -83,4 +91,39 @@ public class User {
 		this.password = password;
 	}
 
+	/**
+	 * Gets email.
+	 *
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
+
+	/**
+	 * Sets email.
+	 *
+	 * @param email the email
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	/**
+	 * Gets city.
+	 *
+	 * @return the city
+	 */
+	public String getCity() {
+		return city;
+	}
+
+	/**
+	 * Sets city.
+	 *
+	 * @param city the city
+	 */
+	public void setCity(String city) {
+		this.city = city;
+	}
 }
