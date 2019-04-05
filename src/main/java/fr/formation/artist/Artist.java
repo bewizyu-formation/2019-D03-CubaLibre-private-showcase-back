@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 public class Artist {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -43,10 +43,14 @@ public class Artist {
     @Min(0)
     @Max(5)
     @Column
-    private int rating;
+    private double rating;
 
     @OneToOne(mappedBy="artist")
     private User user;
+
+    @Lob
+    @Column(columnDefinition = "BLOB")
+    private byte[] picture;
 
     /**
      * Gets id
@@ -179,7 +183,7 @@ public class Artist {
      *
      * @return value of rating
      */
-    public int getRating() {
+    public double getRating() {
         return rating;
     }
 
@@ -188,7 +192,7 @@ public class Artist {
      *
      * @param rating the rating
      */
-    public void setRating(int rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 
@@ -208,5 +212,23 @@ public class Artist {
      */
     public void setUser(User user) {
         this.user = user;
+    }
+
+    /**
+     * Gets picture
+     *
+     * @return value of picture
+     */
+    public byte[] getPicture() {
+        return picture;
+    }
+
+    /**
+     * Sets picture
+     *
+     * @param picture the picture
+     */
+    public void setPicture(byte[] picture) {
+        this.picture = picture;
     }
 }
