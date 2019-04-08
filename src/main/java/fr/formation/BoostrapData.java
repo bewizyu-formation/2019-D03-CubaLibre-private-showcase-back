@@ -50,7 +50,7 @@ public class BoostrapData {
 		User admin = new User();
 
 		admin.setUsername("admin");
-		admin.setPassword("Admin888");
+		admin.setPassword("adminPass1");
 		admin.setEmail("admin@mail.com");
 		admin.setCity("Nantes");
 
@@ -63,7 +63,7 @@ public class BoostrapData {
 		User user = new User();
 
 		user.setUsername("user");
-		user.setPassword("User8888");
+		user.setPassword("userPass1");
 		user.setEmail("user@mail.com");
 		user.setCity("Lyon");
 
