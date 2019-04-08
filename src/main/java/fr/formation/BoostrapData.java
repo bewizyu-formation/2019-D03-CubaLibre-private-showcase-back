@@ -1,9 +1,12 @@
 package fr.formation;
 
+import fr.formation.artist.Artist;
+import fr.formation.departement_accepted.DepartementAcceptedService;
 import fr.formation.security.SecurityConstants;
 import fr.formation.user.User;
 import fr.formation.user.UserService;
 import fr.formation.user.exceptions.InvalidPasswordException;
+import fr.formation.artist.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -18,7 +21,11 @@ public class BoostrapData {
 
 	private UserService userService;
 
+	private ArtistService artistService;
+
 	private PasswordEncoder passwordEncoder;
+
+	private DepartementAcceptedService departementAcceptedService;
 
 	/**
 	 * Instantiates a new Boostrap data.
@@ -27,9 +34,11 @@ public class BoostrapData {
 	 * @param passwordEncoder the password encoder
 	 */
 	@Autowired
-	public BoostrapData(UserService userService, PasswordEncoder passwordEncoder) {
+	public BoostrapData(UserService userService, PasswordEncoder passwordEncoder, ArtistService artistService, DepartementAcceptedService departementAcceptedService) {
 		this.userService = userService;
 		this.passwordEncoder = passwordEncoder;
+		this.artistService = artistService;
+		this.departementAcceptedService = departementAcceptedService;
 	}
 
 	/**
@@ -41,7 +50,7 @@ public class BoostrapData {
 		User admin = new User();
 
 		admin.setUsername("admin");
-		admin.setPassword("adminAd1");
+		admin.setPassword("adminPass1");
 		admin.setEmail("admin@mail.com");
 		admin.setCity("adminCity");
 
@@ -53,13 +62,38 @@ public class BoostrapData {
 		User user = new User();
 
 		user.setUsername("user");
-		user.setPassword("userUs1");
+		user.setPassword("userPass1");
 		user.setEmail("user@mail.com");
 		user.setCity("userCity");
 		userService.addNewUser(
 				user,
 				SecurityConstants.ROLE_USER
 		);
+		Artist artist69 = new Artist(
+				"69 rue du test",
+				"Artist",
+				"description de l'artiste",
+				"0102030405",
+				"Artist.com",
+				365,
+				9,
+				new byte[50]);
+		artistService.addNewArtist(artist69);
+		departementAcceptedService.addNewDepartementAcceptedService(69, artist69);
+
+		Artist artist44 = new Artist(
+				"44 rue du test",
+				"Artist",
+				"description de l'artiste",
+				"0102030405",
+				"Artist.com",
+				245324,
+				8,
+				new byte[50]);
+		artistService.addNewArtist(artist44);
+		departementAcceptedService.addNewDepartementAcceptedService(44, artist44);
+
+
 	}
 
 }
