@@ -2,9 +2,17 @@ package fr.formation.user;
 
 import fr.formation.user.exceptions.InvalidPasswordException;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.*;
 
 import static fr.formation.security.SecurityConstants.ROLE_USER;
+
+
+
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
+import java.util.Base64;
+
 
 /**
  * The type User controller.

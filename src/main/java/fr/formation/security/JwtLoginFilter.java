@@ -24,7 +24,7 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
 
 	/**
 	 * Instantiates a new Jwt login filter.
-	 *
+	 * 	 *
 	 * @param url         the url
 	 * @param authManager the auth manager
 	 */
@@ -39,6 +39,7 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res)
 			throws AuthenticationException, IOException, ServletException {
+
 
 		Credentials creds = null;
 
@@ -59,7 +60,7 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
 	 */
 	@Override
 	protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain,
-																					Authentication auth) throws IOException, ServletException {
+																			Authentication auth) throws IOException, ServletException {
 		AuthenticationService.addAuthentication(res, auth.getName(), auth.getAuthorities());
 	}
 

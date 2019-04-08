@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 public class Artist {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -41,12 +41,26 @@ public class Artist {
     private int voteNumber = 0;
 
     @Min(0)
-    @Max(5)
+    @Max(10)
     @Column
     private int rating;
 
-    @OneToOne(mappedBy="artist")
-    private User user;
+    @Lob
+    @Column(columnDefinition = "BLOB")
+    private byte[] picture;
+
+    public Artist(){}
+
+    public Artist(@NotNull String artistName, @NotNull String description, String website, String phone, String address, @NotNull int voteNumber, @Min(0) @Max(10) int rating, byte[] picture) {
+        this.artistName = artistName;
+        this.description = description;
+        this.website = website;
+        this.phone = phone;
+        this.address = address;
+        this.voteNumber = voteNumber;
+        this.rating = rating;
+        this.picture = picture;
+    }
 
     /**
      * Gets id
@@ -193,20 +207,20 @@ public class Artist {
     }
 
     /**
-     * Gets user
+     * Gets picture
      *
-     * @return value of user
+     * @return value of picture
      */
-    public User getUser() {
-        return user;
+    public byte[] getPicture() {
+        return picture;
     }
 
     /**
-     * Sets user
+     * Sets picture
      *
-     * @param user the user
+     * @param picture the picture
      */
-    public void setUser(User user) {
-        this.user = user;
+    public void setPicture(byte[] picture) {
+        this.picture = picture;
     }
 }

@@ -77,6 +77,10 @@ public class UserService implements UserDetailsService {
 
 	}
 
+	public User getUserByUsername(String username){
+		return userRepository.findByUsername(username);
+	}
+
 	/**
 	 * Add a new user with the user repository
 	 *
