@@ -87,33 +87,31 @@ public class UserService implements UserDetailsService {
 
 		User userToAdd = new User();
 
-		userToAdd.setUsername(user.getUsername());
-		try{
+
 			if(validPassword((user.getPassword()))){
-				userToAdd.setPassword(passwordEncoder.encode(user.getPassword()));
+                userToAdd.setUsername(user.getUsername());
+                userToAdd.setPassword(passwordEncoder.encode(user.getPassword()));
+                userToAdd.setEmail(user.getEmail());
+                userToAdd.setCity(user.getCity());
+
+                userToAdd = userRepository.save(userToAdd);
+
+                for (String role : roles) {
+
+                    UserRole userRole = new UserRole();
+                    userRole.setRole(role);
+                    userRole.setUserId(userToAdd.getId());
+
+                    userRoleRepository.save(userRole);
+                }
 			}
 			else {
 				throw new InvalidPasswordException("Le mot de passe doit contenir au moins 8 " +
 						"caractères dont une minuscule, une majuscule et un chiffre");
 			}
-		} catch(InvalidPasswordException e) {
-			log.error(e.getMessage());
-			return;
-		}
-		userToAdd.setPassword(passwordEncoder.encode(user.getPassword()));
-		userToAdd.setEmail(user.getEmail());
-		userToAdd.setCity(user.getCity());
 
-		userToAdd = userRepository.save(userToAdd);
 
-		for (String role : roles) {
 
-			UserRole userRole = new UserRole();
-			userRole.setRole(role);
-			userRole.setUserId(userToAdd.getId());
-
-			userRoleRepository.save(userRole);
-		}
 
 	}
 

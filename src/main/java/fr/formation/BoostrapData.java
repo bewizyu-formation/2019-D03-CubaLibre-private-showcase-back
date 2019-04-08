@@ -41,7 +41,7 @@ public class BoostrapData {
 		User admin = new User();
 
 		admin.setUsername("admin");
-		admin.setPassword("adminAd1");
+		admin.setPassword("adminPass1");
 		admin.setEmail("admin@mail.com");
 		admin.setCity("adminCity");
 
@@ -53,7 +53,7 @@ public class BoostrapData {
 		User user = new User();
 
 		user.setUsername("user");
-		user.setPassword("userUs1");
+		user.setPassword("userPass1");
 		user.setEmail("user@mail.com");
 		user.setCity("userCity");
 		userService.addNewUser(
