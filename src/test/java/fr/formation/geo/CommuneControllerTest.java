@@ -57,7 +57,7 @@ public class CommuneControllerTest {
 //				"        \"_score\": 0.6809910623997033\n" +
 //				"    }\n" +
 //				"]"))
-		.andExpect(authenticated().withUsername("user"));
+		.andExpect(authenticated().withUsername("userPass1"));
 	}
 
 }
