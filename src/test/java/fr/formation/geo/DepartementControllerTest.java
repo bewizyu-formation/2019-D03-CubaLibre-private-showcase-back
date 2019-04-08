@@ -48,7 +48,7 @@ public class DepartementControllerTest {
 	@Test
 	public void getDepartementByCode() throws Exception {
 
-		MvcResult mvcResult = mvc.perform(formLogin("/login").user("user").password("user")).andReturn();
+		MvcResult mvcResult = mvc.perform(formLogin("/login").user("user").password("userPass1")).andReturn();
 		String authorizationHeader = mvcResult.getResponse().getHeader("Authorization");
 
 		mvc.perform(
