@@ -3,7 +3,9 @@ package fr.formation;
 import fr.formation.artist.Artist;
 import fr.formation.departement_accepted.DepartementAcceptedService;
 import fr.formation.security.SecurityConstants;
+import fr.formation.user.User;
 import fr.formation.user.UserService;
+import fr.formation.user.exceptions.InvalidPasswordException;
 import fr.formation.artist.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -43,20 +45,28 @@ public class BoostrapData {
 	 * On start.
 	 */
 	@EventListener(ContextRefreshedEvent.class)
-	public void onStart() {
+	public void onStart() throws InvalidPasswordException {
+
+		User admin = new User();
+
+		admin.setUsername("admin");
+		admin.setPassword("adminPass1");
+		admin.setEmail("admin@mail.com");
+		admin.setCity("adminCity");
 
 		userService.addNewUser(
-				"admin",
-				passwordEncoder.encode("admin"),
-				"admin@mail.com",
-				"adminCity",
+				admin,
 				SecurityConstants.ROLE_ADMIN
 		);
+
+		User user = new User();
+
+		user.setUsername("user");
+		user.setPassword("userPass1");
+		user.setEmail("user@mail.com");
+		user.setCity("userCity");
 		userService.addNewUser(
-				"user",
-				passwordEncoder.encode("user"),
-				"user@mail.com",
-				"userCity",
+				user,
 				SecurityConstants.ROLE_USER
 		);
 		Artist artist69 = new Artist(

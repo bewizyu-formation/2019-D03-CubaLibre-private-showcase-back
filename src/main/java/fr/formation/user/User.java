@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import fr.formation.artist.Artist;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  * The type User.
@@ -21,12 +24,13 @@ public class User {
 	@Column(name = "username", unique=true)
 	private String username;
 
+	//@Size(min=8)
+	//@Pattern(regexp="(?=.*[a-z]+)(?=.*[A-Z]+)(?=.*[0-9]+)")
 	@NotNull
 	@Column(name = "password")
-	@JsonIgnore
 	private String password;
 
-
+	@Email
 	@Column(name = "email")
 	private String email;
 
