@@ -41,16 +41,26 @@ public class Artist {
     private int voteNumber = 0;
 
     @Min(0)
-    @Max(5)
+    @Max(10)
     @Column
-    private double rating;
-
-    @OneToOne(mappedBy="artist")
-    private User user;
+    private int rating;
 
     @Lob
     @Column(columnDefinition = "BLOB")
     private byte[] picture;
+
+    public Artist(){}
+
+    public Artist(@NotNull String artistName, @NotNull String description, String website, String phone, String address, @NotNull int voteNumber, @Min(0) @Max(10) int rating, byte[] picture) {
+        this.artistName = artistName;
+        this.description = description;
+        this.website = website;
+        this.phone = phone;
+        this.address = address;
+        this.voteNumber = voteNumber;
+        this.rating = rating;
+        this.picture = picture;
+    }
 
     /**
      * Gets id
@@ -183,7 +193,7 @@ public class Artist {
      *
      * @return value of rating
      */
-    public double getRating() {
+    public int getRating() {
         return rating;
     }
 
@@ -192,26 +202,8 @@ public class Artist {
      *
      * @param rating the rating
      */
-    public void setRating(double rating) {
+    public void setRating(int rating) {
         this.rating = rating;
-    }
-
-    /**
-     * Gets user
-     *
-     * @return value of user
-     */
-    public User getUser() {
-        return user;
-    }
-
-    /**
-     * Sets user
-     *
-     * @param user the user
-     */
-    public void setUser(User user) {
-        this.user = user;
     }
 
     /**

@@ -3,6 +3,7 @@ package fr.formation.departement_accepted;
 import fr.formation.artist.Artist;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * The type DepartementAccepted.
@@ -15,6 +16,7 @@ public class DepartementAccepted {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     @Column(name = "code")
     private int code;
 
