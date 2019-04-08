@@ -1,5 +1,6 @@
 package fr.formation.user;
 
+
 import fr.formation.artist.ArtistService;
 import fr.formation.departement_accepted.DepartementAcceptedService;
 import fr.formation.geo.services.impl.CommuneServiceImpl;
@@ -56,6 +57,7 @@ public class UserService implements UserDetailsService {
 		this.communeServiceImpl = communeServiceImpl;
 		this.departementAcceptedService = departementAcceptedService;
 		this.artistService = artistService;
+
 	}
 
 	/**
@@ -100,7 +102,8 @@ public class UserService implements UserDetailsService {
 	 * @param user the user
 	 * @param roles    the roles
 	 */
-	public User addNewUser(User user, String... roles) throws InvalidPasswordException{
+
+	public void addNewUser(User user, String... roles) throws InvalidPasswordException{
 
 		User userToAdd = new User();
 
@@ -134,6 +137,7 @@ public class UserService implements UserDetailsService {
 			departementAcceptedService.addNewDepartementAcceptedService(Integer.parseInt(userToAdd.getCodeDepartment()), user.getArtist());
 		}
 
+
 		userToAdd = userRepository.save(userToAdd);
 
 		for (String role : roles) {
@@ -145,7 +149,7 @@ public class UserService implements UserDetailsService {
 			userRoleRepository.save(userRole);
 		}
 
-		return userToAdd;
+
 	}
 
 }

@@ -5,8 +5,8 @@ import fr.formation.departement_accepted.DepartementAcceptedService;
 import fr.formation.security.SecurityConstants;
 import fr.formation.user.User;
 import fr.formation.user.UserService;
-import fr.formation.artist.ArtistService;
 import fr.formation.user.exceptions.InvalidPasswordException;
+import fr.formation.artist.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -54,6 +54,7 @@ public class BoostrapData {
 		admin.setEmail("admin@mail.com");
 		admin.setCity("Nantes");
 
+
 		userService.addNewUser(
 				admin,
 				SecurityConstants.ROLE_ADMIN
@@ -65,6 +66,7 @@ public class BoostrapData {
 		user.setPassword("User8888");
 		user.setEmail("user@mail.com");
 		user.setCity("Lyon");
+
 		userService.addNewUser(
 				user,
 				SecurityConstants.ROLE_USER

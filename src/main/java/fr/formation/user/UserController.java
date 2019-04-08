@@ -1,9 +1,7 @@
 package fr.formation.user;
 
-import fr.formation.artist.ArtistService;
+
 import fr.formation.controllers.AbstractController;
-import fr.formation.departement_accepted.DepartementAcceptedService;
-import fr.formation.geo.services.impl.CommuneServiceImpl;
 import fr.formation.user.exceptions.InvalidPasswordException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PutMapping;

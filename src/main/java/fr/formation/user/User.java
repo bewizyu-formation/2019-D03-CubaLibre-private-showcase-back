@@ -1,13 +1,10 @@
 package fr.formation.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import fr.formation.artist.Artist;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 /**
  * The type User.
