@@ -1,5 +1,6 @@
 package fr.formation.artist;
 
+import fr.formation.controllers.AbstractController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/artists")
-public class ArtistController {
+public class ArtistController extends AbstractController {
 
     @Autowired
     ArtistService artistService;
@@ -16,7 +17,6 @@ public class ArtistController {
 
     @PutMapping("/")
     public void signup(@RequestBody Artist artist) {
-
         artistService.addNewArtist(artist);
 
 
