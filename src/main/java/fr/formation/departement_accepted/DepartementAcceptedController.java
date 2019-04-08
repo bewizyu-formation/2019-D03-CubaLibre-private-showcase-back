@@ -26,7 +26,7 @@ public class DepartementAcceptedController extends AbstractController {
     /**
      * getArtistsByDepartment.
      */
-    @PutMapping("/")
+    @GetMapping("/")
     public List<Artist> getArtistsByDepartment() {
         User user = getAuthenticatedUser();
         return departementAcceptedService.getArtistByDepartement(Integer.parseInt(user.getCodeDepartment()));
