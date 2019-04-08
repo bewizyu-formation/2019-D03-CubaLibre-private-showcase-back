@@ -1,16 +1,22 @@
 package fr.formation.user;
 
+import fr.formation.user.exceptions.InvalidPasswordException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * The type User service.
@@ -22,6 +28,10 @@ public class UserService implements UserDetailsService {
 
 	private UserRoleRepository userRoleRepository;
 
+	private PasswordEncoder passwordEncoder;
+
+	private static final Logger log = LoggerFactory.getLogger(UserService.class);
+
 	/**
 	 * Instantiates a new User service.
 	 *
@@ -29,9 +39,10 @@ public class UserService implements UserDetailsService {
 	 * @param userRoleRepository the user role repository
 	 */
 	@Autowired
-	public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository) {
+	public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;
 		this.userRoleRepository = userRoleRepository;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	/**
@@ -45,6 +56,12 @@ public class UserService implements UserDetailsService {
 		String roles = StringUtils.collectionToCommaDelimitedString(userRoles);
 		return AuthorityUtils.commaSeparatedStringToAuthorityList(roles);
 	}
+
+    public static Boolean validPassword(String password) {
+        Pattern pattern = Pattern.compile("(?=.{8,}$)(?=.*[a-z]+)(?=.*[A-Z]+)(?=.*[0-9]+)");
+        Matcher matcher = pattern.matcher(password);
+        return matcher.find();
+    }
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -63,26 +80,37 @@ public class UserService implements UserDetailsService {
 	/**
 	 * Add a new user with the user repository
 	 *
-	 * @param username the username
-	 * @param password the password
-	 * @param email the email
-	 * @param city the city
+	 * @param user the user
 	 * @param roles    the roles
 	 */
-	public void addNewUser(String username, String password, String email, String city, String... roles) {
+	public void addNewUser(User user, String... roles) throws InvalidPasswordException{
 
-		User user = new User();
-		user.setUsername(username);
-		user.setPassword(password);
-		user.setEmail(email);
-		user.setCity(city);
-		user = userRepository.save(user);
+		User userToAdd = new User();
+
+		userToAdd.setUsername(user.getUsername());
+		try{
+			if(validPassword((user.getPassword()))){
+				userToAdd.setPassword(passwordEncoder.encode(user.getPassword()));
+			}
+			else {
+				throw new InvalidPasswordException("Le mot de passe doit contenir au moins 8 " +
+						"caractères dont une minuscule, une majuscule et un chiffre");
+			}
+		} catch(InvalidPasswordException e) {
+			log.error(e.getMessage());
+			return;
+		}
+		userToAdd.setPassword(passwordEncoder.encode(user.getPassword()));
+		userToAdd.setEmail(user.getEmail());
+		userToAdd.setCity(user.getCity());
+
+		userToAdd = userRepository.save(userToAdd);
 
 		for (String role : roles) {
 
 			UserRole userRole = new UserRole();
 			userRole.setRole(role);
-			userRole.setUserId(user.getId());
+			userRole.setUserId(userToAdd.getId());
 
 			userRoleRepository.save(userRole);
 		}

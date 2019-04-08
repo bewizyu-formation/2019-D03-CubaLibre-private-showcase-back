@@ -1,10 +1,10 @@
 package fr.formation.user;
 
+import fr.formation.user.exceptions.InvalidPasswordException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import static fr.formation.security.SecurityConstants.ROLE_USER;
 
 /**
  * The type User controller.
@@ -19,17 +19,15 @@ public class UserController {
 	/**
 	 * Signup.
 	 *
-	 * @param username the username
-	 * @param password the password
-	 * @param email the email
-	 * @param city the city
-	 * @param roles    the roles
+	 * @param user the user
 	 */
 	@PutMapping("/")
-	public void signup(@RequestParam String username, @RequestParam String password, @RequestParam String email, @RequestParam String city, @RequestParam String... roles) {
+	public void signup(@RequestBody User user) throws InvalidPasswordException {
+	    try {
+            userService.addNewUser(user, ROLE_USER);
+        } catch(InvalidPasswordException e){
 
-		userService.addNewUser(username, password, email, city, roles);
-
+        }
 	}
 
 }
