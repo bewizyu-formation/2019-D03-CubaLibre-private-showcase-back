@@ -2,6 +2,7 @@ package fr.formation.geo.services;
 
 import fr.formation.geo.model.Commune;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -18,6 +19,6 @@ public interface CommuneService {
 	 *
 	 * @return the communes
 	 */
-	List<Commune> getCommunes(final String nom);
+	List<LinkedHashMap> getCommunes(final String nom);
 
 }

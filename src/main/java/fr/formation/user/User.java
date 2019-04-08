@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import fr.formation.artist.Artist;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  * The type User.
@@ -18,25 +21,26 @@ public class User {
 	private Long id;
 
 	@NotNull
-	@Column(name = "username", unique=true)
 	private String username;
 
 	@NotNull
-	@Column(name = "password")
-	@JsonIgnore
 	private String password;
 
-
-	@Column(name = "email")
+	@Email
 	private String email;
 
-
-	@Column(name = "city")
 	private String city;
+
+	private String codeCity;
+
+	private String codeDepartment;
 
 	@OneToOne
 	private Artist artist;
 
+	public User(){
+
+	}
 
 	/**
 	 * Gets id.
@@ -149,5 +153,41 @@ public class User {
 	 */
 	public void setArtist(Artist artist) {
 		this.artist = artist;
+	}
+
+	/**
+	 * Gets codeCity
+	 *
+	 * @return value of codeCity
+	 */
+	public String getCodeCity() {
+		return codeCity;
+	}
+
+	/**
+	 * Sets codeCity
+	 *
+	 * @param codeCity the codeCity
+	 */
+	public void setCodeCity(String codeCity) {
+		this.codeCity = codeCity;
+	}
+
+	/**
+	 * Gets codeDepartment
+	 *
+	 * @return value of codeDepartment
+	 */
+	public String getCodeDepartment() {
+		return codeDepartment;
+	}
+
+	/**
+	 * Sets codeDepartment
+	 *
+	 * @param codeDepartment the codeDepartment
+	 */
+	public void setCodeDepartment(String codeDepartment) {
+		this.codeDepartment = codeDepartment;
 	}
 }
