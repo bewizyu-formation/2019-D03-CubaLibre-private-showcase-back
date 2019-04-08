@@ -52,7 +52,8 @@ public class BoostrapData {
 		admin.setUsername("admin");
 		admin.setPassword("adminPass1");
 		admin.setEmail("admin@mail.com");
-		admin.setCity("adminCity");
+		admin.setCity("Nantes");
+
 
 		userService.addNewUser(
 				admin,
@@ -64,7 +65,8 @@ public class BoostrapData {
 		user.setUsername("user");
 		user.setPassword("userPass1");
 		user.setEmail("user@mail.com");
-		user.setCity("userCity");
+		user.setCity("Lyon");
+
 		userService.addNewUser(
 				user,
 				SecurityConstants.ROLE_USER
@@ -80,6 +82,19 @@ public class BoostrapData {
 				new byte[50]);
 		artistService.addNewArtist(artist69);
 		departementAcceptedService.addNewDepartementAcceptedService(69, artist69);
+
+		Artist artist6944 = new Artist(
+				"6944 rue du test",
+				"Artist",
+				"description de l'artiste",
+				"0102030405",
+				"Artist.com",
+				365,
+				9,
+				new byte[50]);
+		artistService.addNewArtist(artist6944);
+		departementAcceptedService.addNewDepartementAcceptedService(69, artist6944);
+		departementAcceptedService.addNewDepartementAcceptedService(44, artist6944);
 
 		Artist artist44 = new Artist(
 				"44 rue du test",

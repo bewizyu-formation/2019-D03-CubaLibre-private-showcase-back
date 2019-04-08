@@ -1,5 +1,9 @@
 package fr.formation.user;
 
+
+import fr.formation.artist.ArtistService;
+import fr.formation.departement_accepted.DepartementAcceptedService;
+import fr.formation.geo.services.impl.CommuneServiceImpl;
 import fr.formation.user.exceptions.InvalidPasswordException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,6 +35,12 @@ public class UserService implements UserDetailsService {
 
 	private PasswordEncoder passwordEncoder;
 
+	private CommuneServiceImpl communeServiceImpl;
+
+	private ArtistService artistService;
+
+	private DepartementAcceptedService departementAcceptedService;
+
 	private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
 	/**
@@ -39,10 +50,14 @@ public class UserService implements UserDetailsService {
 	 * @param userRoleRepository the user role repository
 	 */
 	@Autowired
-	public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder) {
+	public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder, CommuneServiceImpl communeServiceImpl, ArtistService artistService, DepartementAcceptedService departementAcceptedService) {
 		this.userRepository = userRepository;
 		this.userRoleRepository = userRoleRepository;
 		this.passwordEncoder = passwordEncoder;
+		this.communeServiceImpl = communeServiceImpl;
+		this.departementAcceptedService = departementAcceptedService;
+		this.artistService = artistService;
+
 	}
 
 	/**
@@ -87,6 +102,7 @@ public class UserService implements UserDetailsService {
 	 * @param user the user
 	 * @param roles    the roles
 	 */
+
 	public void addNewUser(User user, String... roles) throws InvalidPasswordException{
 
 		User userToAdd = new User();
@@ -102,11 +118,25 @@ public class UserService implements UserDetailsService {
 			}
 		} catch(InvalidPasswordException e) {
 			log.error(e.getMessage());
-			return;
 		}
+
 		userToAdd.setPassword(passwordEncoder.encode(user.getPassword()));
 		userToAdd.setEmail(user.getEmail());
 		userToAdd.setCity(user.getCity());
+
+
+		List<LinkedHashMap> cities = communeServiceImpl.getCommunes(user.getCity());
+		LinkedHashMap<String, String> city = cities.get(0);
+		String codeDepartment = city.get("codeDepartement");
+		String codeCity = city.get("code");
+		userToAdd.setCodeDepartment(codeDepartment);
+		userToAdd.setCodeCity(codeCity);
+
+		if(user.getArtist()!=null){
+			artistService.addNewArtist(user.getArtist());
+			departementAcceptedService.addNewDepartementAcceptedService(Integer.parseInt(userToAdd.getCodeDepartment()), user.getArtist());
+		}
+
 
 		userToAdd = userRepository.save(userToAdd);
 
@@ -118,6 +148,7 @@ public class UserService implements UserDetailsService {
 
 			userRoleRepository.save(userRole);
 		}
+
 
 	}
 

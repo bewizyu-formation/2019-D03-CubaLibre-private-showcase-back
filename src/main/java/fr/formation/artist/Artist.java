@@ -36,7 +36,6 @@ public class Artist {
     @Column
     private String address;
 
-    @NotNull
     @Column
     private int voteNumber = 0;
 
@@ -49,7 +48,8 @@ public class Artist {
     @Column(columnDefinition = "BLOB")
     private byte[] picture;
 
-    public Artist(){}
+    public Artist(){
+    }
 
     public Artist(@NotNull String artistName, @NotNull String description, String website, String phone, String address, @NotNull int voteNumber, @Min(0) @Max(10) int rating, byte[] picture) {
         this.artistName = artistName;

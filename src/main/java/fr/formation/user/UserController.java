@@ -1,25 +1,23 @@
 package fr.formation.user;
 
+
+import fr.formation.controllers.AbstractController;
 import fr.formation.user.exceptions.InvalidPasswordException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import org.springframework.web.bind.annotation.*;
 
 import static fr.formation.security.SecurityConstants.ROLE_USER;
-
-
-
-import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
-import java.util.Base64;
-
 
 /**
  * The type User controller.
  */
 @RestController
 @RequestMapping("/users")
-public class UserController {
+public class UserController extends AbstractController {
 
 	@Autowired
 	private UserService userService;
