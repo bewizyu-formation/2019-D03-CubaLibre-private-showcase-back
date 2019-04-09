@@ -2,13 +2,17 @@ package fr.formation.user;
 
 
 import fr.formation.controllers.AbstractController;
-import fr.formation.user.exceptions.InvalidPasswordException;
+import fr.formation.user.exceptions.InvalidException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.server.ResponseStatusException;
 
+
+import java.io.UnsupportedEncodingException;
 
 import static fr.formation.security.SecurityConstants.ROLE_USER;
 
@@ -19,6 +23,7 @@ import static fr.formation.security.SecurityConstants.ROLE_USER;
 @RequestMapping("/users")
 public class UserController extends AbstractController {
 
+
 	@Autowired
 	private UserService userService;
 
@@ -28,12 +33,14 @@ public class UserController extends AbstractController {
 	 * @param user the user
 	 */
 	@PutMapping("/")
-	public void signup(@RequestBody User user) throws InvalidPasswordException {
-	    try {
-            userService.addNewUser(user, ROLE_USER);
-        } catch(InvalidPasswordException e){
-
-        }
+	public void signup(@RequestBody User user) throws InvalidException, UnsupportedEncodingException {
+		try {
+			userService.addNewUser(user, ROLE_USER);
+		} catch(InvalidException e){
+			throw new ResponseStatusException(
+					HttpStatus.BAD_REQUEST, e.getMessage(), e);
+		}
 	}
+
 
 }
