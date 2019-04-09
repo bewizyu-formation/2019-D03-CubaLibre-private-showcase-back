@@ -14,11 +14,8 @@ public class ArtistController extends AbstractController {
     @Autowired
     ArtistService artistService;
 
-
-    @PutMapping("/")
     public void signup(@RequestBody Artist artist) {
         artistService.addNewArtist(artist);
-
-
     }
+
 }
