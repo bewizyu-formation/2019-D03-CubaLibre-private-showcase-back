@@ -74,7 +74,8 @@ public class BoostrapData {
 		Artist artist69 = new Artist(
 				"69 rue du test",
 				"Artist",
-				"description de l'artiste",
+				"description courte de l'artiste",
+				"description longue très longue de l'artiste",
 				"0102030405",
 				"Artist.com",
 				365,
@@ -86,7 +87,8 @@ public class BoostrapData {
 		Artist artist6944 = new Artist(
 				"6944 rue du test",
 				"Artist",
-				"description de l'artiste",
+				"description courte de l'artiste",
+				"description longue très longue de l'artiste",
 				"0102030405",
 				"Artist.com",
 				365,
@@ -99,7 +101,8 @@ public class BoostrapData {
 		Artist artist44 = new Artist(
 				"44 rue du test",
 				"Artist",
-				"description de l'artiste",
+				"description courte de l'artiste",
+				"description longue très longue de l'artiste",
 				"0102030405",
 				"Artist.com",
 				245324,

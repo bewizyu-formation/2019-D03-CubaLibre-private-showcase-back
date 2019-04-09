@@ -20,28 +20,23 @@ public class Artist {
     private Long id;
 
     @NotNull
-    @Column
     private String artistName;
 
-    @NotNull
-    @Column
     private String description;
 
-    @Column
+    @NotNull
+    private String shortDescrption;
+
     private String website;
 
-    @Column
     private String phone;
 
-    @Column
     private String address;
 
-    @Column
     private int voteNumber = 0;
 
     @Min(0)
     @Max(10)
-    @Column
     private int rating;
 
     @Lob
@@ -51,7 +46,7 @@ public class Artist {
     public Artist(){
     }
 
-    public Artist(@NotNull String artistName, @NotNull String description, String website, String phone, String address, @NotNull int voteNumber, @Min(0) @Max(10) int rating, byte[] picture) {
+    public Artist(@NotNull String artistName, String description, @NotNull String shortDescrption,String website, String phone, String address, @NotNull int voteNumber, @Min(0) @Max(10) int rating, byte[] picture) {
         this.artistName = artistName;
         this.description = description;
         this.website = website;
@@ -60,6 +55,7 @@ public class Artist {
         this.voteNumber = voteNumber;
         this.rating = rating;
         this.picture = picture;
+        this.shortDescrption = shortDescrption;
     }
 
     /**
@@ -222,5 +218,23 @@ public class Artist {
      */
     public void setPicture(byte[] picture) {
         this.picture = picture;
+    }
+
+    /**
+     * Gets shortDescrption
+     *
+     * @return value of shortDescrption
+     */
+    public String getShortDescrption() {
+        return shortDescrption;
+    }
+
+    /**
+     * Sets shortDescrption
+     *
+     * @param shortDescrption the shortDescrption
+     */
+    public void setShortDescrption(String shortDescrption) {
+        this.shortDescrption = shortDescrption;
     }
 }
