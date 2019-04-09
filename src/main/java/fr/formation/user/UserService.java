@@ -122,7 +122,7 @@ public class UserService implements UserDetailsService {
 		}
 
 		userToAdd.setEmail(user.getEmail());
-		userToAdd.setCity(user.getCity());
+
 
 		List<LinkedHashMap> cities = communeServiceImpl.getCommunes(user.getCity());
 		boolean cityExist = false;
@@ -130,6 +130,7 @@ public class UserService implements UserDetailsService {
 			if(city.get("nom").equalsIgnoreCase(user.getCity())){
 				userToAdd.setCodeDepartment(city.get("codeDepartement"));
 				userToAdd.setCodeCity(city.get("code"));
+                userToAdd.setCity(user.getCity());
 				cityExist = true;
 			}
 		}
