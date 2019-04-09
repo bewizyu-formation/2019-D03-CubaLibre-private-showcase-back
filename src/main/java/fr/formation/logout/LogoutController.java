@@ -19,9 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/logout")
 public class LogoutController extends AbstractController {
 
-    @Autowired
-    private static final Logger log = LoggerFactory.getLogger(UserService.class);
-
     @GetMapping("/")
     public void logout(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
