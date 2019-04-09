@@ -24,10 +24,7 @@ public class LogoutController extends AbstractController {
 
     @GetMapping("/")
     public void logout(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println( "test");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("done1");
         new SecurityContextLogoutHandler().logout(request, response, auth);
-        System.out.println("done2");
     }
 }
