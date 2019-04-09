@@ -106,11 +106,35 @@ public class UserService implements UserDetailsService {
 	public void addNewUser(User user, String... roles) throws InvalidPasswordException{
 
 		User userToAdd = new User();
-
-		userToAdd.setUsername(user.getUsername());
 		try{
 			if(validPassword((user.getPassword()))){
 				userToAdd.setPassword(passwordEncoder.encode(user.getPassword()));
+				userToAdd.setEmail(user.getEmail());
+				userToAdd.setCity(user.getCity());
+				userToAdd.setUsername(user.getUsername());
+				List<LinkedHashMap> cities = communeServiceImpl.getCommunes(user.getCity());
+				LinkedHashMap<String, String> city = cities.get(0);
+				String codeDepartment = city.get("codeDepartement");
+				String codeCity = city.get("code");
+				userToAdd.setCodeDepartment(codeDepartment);
+				userToAdd.setCodeCity(codeCity);
+
+				if(user.getArtist()!=null){
+					artistService.addNewArtist(user.getArtist());
+					departementAcceptedService.addNewDepartementAcceptedService(Integer.parseInt(userToAdd.getCodeDepartment()), user.getArtist());
+				}
+
+
+				userToAdd = userRepository.save(userToAdd);
+
+				for (String role : roles) {
+
+					UserRole userRole = new UserRole();
+					userRole.setRole(role);
+					userRole.setUserId(userToAdd.getId());
+
+					userRoleRepository.save(userRole);
+				}
 			}
 			else {
 				throw new InvalidPasswordException("Le mot de passe doit contenir au moins 8 " +
@@ -120,34 +144,10 @@ public class UserService implements UserDetailsService {
 			log.error(e.getMessage());
 		}
 
-		userToAdd.setPassword(passwordEncoder.encode(user.getPassword()));
-		userToAdd.setEmail(user.getEmail());
-		userToAdd.setCity(user.getCity());
 
 
-		List<LinkedHashMap> cities = communeServiceImpl.getCommunes(user.getCity());
-		LinkedHashMap<String, String> city = cities.get(0);
-		String codeDepartment = city.get("codeDepartement");
-		String codeCity = city.get("code");
-		userToAdd.setCodeDepartment(codeDepartment);
-		userToAdd.setCodeCity(codeCity);
-
-		if(user.getArtist()!=null){
-			artistService.addNewArtist(user.getArtist());
-			departementAcceptedService.addNewDepartementAcceptedService(Integer.parseInt(userToAdd.getCodeDepartment()), user.getArtist());
-		}
 
 
-		userToAdd = userRepository.save(userToAdd);
-
-		for (String role : roles) {
-
-			UserRole userRole = new UserRole();
-			userRole.setRole(role);
-			userRole.setUserId(userToAdd.getId());
-
-			userRoleRepository.save(userRole);
-		}
 
 
 	}
