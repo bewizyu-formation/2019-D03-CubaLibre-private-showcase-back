@@ -45,7 +45,7 @@ public class BoostrapData {
 	 * On start.
 	 */
 	@EventListener(ContextRefreshedEvent.class)
-	public void onStart() throws InvalidPasswordException {
+	public void onStart() throws Exception {
 
 		User admin = new User();
 
