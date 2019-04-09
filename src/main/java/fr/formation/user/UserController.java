@@ -3,7 +3,6 @@ package fr.formation.user;
 
 import fr.formation.controllers.AbstractController;
 import fr.formation.user.exceptions.InvalidException;
-import fr.formation.user.exceptions.InvalidPasswordException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PutMapping;

@@ -46,6 +46,7 @@ public class Artist {
     public Artist(){
     }
 
+
     public Artist(@NotNull String artistName, String description, @NotNull String shortDescription,String website, String phone, String address, @NotNull int voteNumber, @Min(0) @Max(10) int rating, byte[] picture) {
         this.artistName = artistName;
         this.description = description;
@@ -56,6 +57,7 @@ public class Artist {
         this.rating = rating;
         this.picture = picture;
         this.shortDescription = shortDescription;
+
     }
 
     /**
