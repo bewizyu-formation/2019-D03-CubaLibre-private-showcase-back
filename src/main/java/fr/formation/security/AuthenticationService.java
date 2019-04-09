@@ -7,6 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -70,5 +71,17 @@ public class AuthenticationService {
 			return user != null ? new UsernamePasswordAuthenticationToken(user, null, roles) : null;
 		}
 		return null;
+	}
+
+	static void disconnect(HttpServletRequest request){
+		String token = request.getHeader(SecurityConstants.HEADER_STRING);
+		if(token != null){
+			Claims claims = Jwts.parser()
+					.setSigningKey(SecurityConstants.SECRET)
+					.parseClaimsJws(token.replace(SecurityConstants.TOKEN_PREFIX, ""))
+					.getBody();
+
+			claims.setExpiration(new Date(System.currentTimeMillis()));
+		}
 	}
 }
