@@ -40,8 +40,7 @@ public class UserController extends AbstractController {
                     "caractères dont une minuscule, une majuscule et un chiffre", e);
         } catch (UserAlreadyExistsException e) {
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Le mot de passe doit contenir au moins 8 " +
-                    "caractères dont une minuscule, une majuscule et un chiffre", e);
+                    HttpStatus.BAD_REQUEST, "Ce nom d'utilisateur est déja utilisé.", e);
         }
     }
 
