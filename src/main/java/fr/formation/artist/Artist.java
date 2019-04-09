@@ -25,7 +25,7 @@ public class Artist {
     private String description;
 
     @NotNull
-    private String shortDescrption;
+    private String shortDescription;
 
     private String website;
 
@@ -46,7 +46,8 @@ public class Artist {
     public Artist(){
     }
 
-    public Artist(@NotNull String artistName, String description, @NotNull String shortDescrption,String website, String phone, String address, @NotNull int voteNumber, @Min(0) @Max(10) int rating, byte[] picture) {
+
+    public Artist(@NotNull String artistName, String description, @NotNull String shortDescription,String website, String phone, String address, @NotNull int voteNumber, @Min(0) @Max(10) int rating, byte[] picture) {
         this.artistName = artistName;
         this.description = description;
         this.website = website;
@@ -55,7 +56,8 @@ public class Artist {
         this.voteNumber = voteNumber;
         this.rating = rating;
         this.picture = picture;
-        this.shortDescrption = shortDescrption;
+        this.shortDescription = shortDescription;
+
     }
 
     /**
@@ -221,20 +223,20 @@ public class Artist {
     }
 
     /**
-     * Gets shortDescrption
+     * Gets shortDescription
      *
-     * @return value of shortDescrption
+     * @return value of shortDescription
      */
-    public String getShortDescrption() {
-        return shortDescrption;
+    public String getShortDescription() {
+        return shortDescription;
     }
 
     /**
      * Sets shortDescrption
      *
-     * @param shortDescrption the shortDescrption
+     * @param shortDescription the shortDescription
      */
-    public void setShortDescrption(String shortDescrption) {
-        this.shortDescrption = shortDescrption;
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
     }
 }

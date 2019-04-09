@@ -6,11 +6,15 @@ import fr.formation.geo.services.CommuneService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -36,14 +40,14 @@ public class CommuneServiceImpl implements CommuneService {
 	}
 
 	@Override
-	public List<LinkedHashMap> getCommunes(String nom) {
+	public List<LinkedHashMap> getCommunes(String nom) throws UnsupportedEncodingException {
 
 		UriComponentsBuilder builder = UriComponentsBuilder
 				.fromUriString(GeoApiConstants.GEO_API_BASE_URL + GeoApiConstants.RESOURCE_COMMUNE)
 				.queryParam(GeoApiConstants.PARAMS_NOM, nom)
 				.queryParam(GeoApiConstants.PARAMS_FIELDS, GeoApiConstants.COMMUNE_FIELDS_VALUES);
 
-		return this.restTemplate.getForObject(builder.toUriString(),List.class);
+		return this.restTemplate.getForObject(URLDecoder.decode(builder.toUriString(), "UTF-8"),List.class);
 	}
 
 }

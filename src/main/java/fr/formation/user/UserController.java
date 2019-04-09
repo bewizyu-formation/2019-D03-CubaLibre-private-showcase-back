@@ -2,8 +2,7 @@ package fr.formation.user;
 
 
 import fr.formation.controllers.AbstractController;
-import fr.formation.user.exceptions.InvalidPasswordException;
-import fr.formation.user.exceptions.UserAlreadyExistsException;
+import fr.formation.user.exceptions.InvalidException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -12,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 
+
+import java.io.UnsupportedEncodingException;
 
 import static fr.formation.security.SecurityConstants.ROLE_USER;
 
@@ -22,27 +23,22 @@ import static fr.formation.security.SecurityConstants.ROLE_USER;
 @RequestMapping("/users")
 public class UserController extends AbstractController {
 
-    @Autowired
-    private UserService userService;
+	@Autowired
+	private UserService userService;
 
-    /**
-     * Signup.
-     *
-     * @param user the user
-     */
-    @PutMapping("/")
-    public void signup(@RequestBody User user) throws Exception {
-        try {
-            userService.addNewUser(user, ROLE_USER);
-        } catch (InvalidPasswordException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Le mot de passe doit contenir au moins 8 " +
-                    "caractères dont une minuscule, une majuscule et un chiffre", e);
-        } catch (UserAlreadyExistsException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Le mot de passe doit contenir au moins 8 " +
-                    "caractères dont une minuscule, une majuscule et un chiffre", e);
-        }
-    }
+	/**
+	 * Signup.
+	 *
+	 * @param user the user
+	 */
+	@PutMapping("/")
+	public void signup(@RequestBody User user) throws InvalidException, UnsupportedEncodingException {
+		try {
+			userService.addNewUser(user, ROLE_USER);
+		} catch(InvalidException e){
+			throw new ResponseStatusException(
+					HttpStatus.BAD_REQUEST, "Un champ a été mal remplis", e);
+		}
+	}
 
 }

@@ -4,6 +4,8 @@ package fr.formation.user;
 import fr.formation.artist.ArtistService;
 import fr.formation.departement_accepted.DepartementAcceptedService;
 import fr.formation.geo.services.impl.CommuneServiceImpl;
+import fr.formation.user.exceptions.InvalidCityException;
+import fr.formation.user.exceptions.InvalidException;
 import fr.formation.user.exceptions.InvalidPasswordException;
 import fr.formation.user.exceptions.UserAlreadyExistsException;
 import org.slf4j.Logger;
@@ -18,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -96,55 +99,63 @@ public class UserService implements UserDetailsService {
         return userRepository.findByUsername(username);
     }
 
+
     /**
      * Add a new user with the user repository
      *
      * @param user  the user
      * @param roles the roles
      */
-
-    public void addNewUser(User user, String... roles) throws Exception {
-
+    public void addNewUser(User user, String... roles) throws InvalidException, UnsupportedEncodingException {
         User userToAdd = new User();
+		userToAdd.setUsername(user.getUsername());
 
-            if (userRepository.findByUsername(user.getUsername()) == null) {
-                userToAdd.setUsername(user.getUsername());
-            } else {
-                throw new UserAlreadyExistsException("Ce nom d'utilisateur est déja utilisé.");
-            }
+		if (validPassword((user.getPassword()))) {
+			userToAdd.setPassword(passwordEncoder.encode(user.getPassword()));
+		} else {
+			throw new InvalidPasswordException();
+		}
 
-            if (validPassword((user.getPassword()))) {
-                userToAdd.setPassword(passwordEncoder.encode(user.getPassword()));
-            } else {
-                throw new InvalidPasswordException("Le mot de passe doit contenir au moins 8 " +
-                        "caractères dont une minuscule, une majuscule et un chiffre");
-            }
 
-            userToAdd.setEmail(user.getEmail());
-            userToAdd.setCity(user.getCity());
+		userToAdd.setPassword(passwordEncoder.encode(user.getPassword()));
+		userToAdd.setEmail(user.getEmail());
+		userToAdd.setCity(user.getCity());
 
-            List<LinkedHashMap> cities = communeServiceImpl.getCommunes(user.getCity());
-            LinkedHashMap<String, String> city = cities.get(0);
-            String codeDepartment = city.get("codeDepartement");
-            String codeCity = city.get("code");
-            userToAdd.setCodeDepartment(codeDepartment);
-            userToAdd.setCodeCity(codeCity);
+        if (userRepository.findByUsername(user.getUsername()) == null) {
+            userToAdd.setUsername(user.getUsername());
+        } else {
+            throw new UserAlreadyExistsException();
+        }
 
-            if (user.getArtist() != null) {
-                artistService.addNewArtist(user.getArtist());
-                departementAcceptedService.addNewDepartementAcceptedService(Integer.parseInt(userToAdd.getCodeDepartment()), user.getArtist());
-            }
+		List<LinkedHashMap> cities = communeServiceImpl.getCommunes(user.getCity());
+		boolean cityExist = false;
+		for (LinkedHashMap<String, String> city : cities) {
+			if(city.get("nom").equalsIgnoreCase(user.getCity())){
+				userToAdd.setCodeDepartment(city.get("codeDepartement"));
+				userToAdd.setCodeCity(city.get("code"));
+				cityExist = true;
+			}
+		}
+		if (!cityExist) {
+			throw new InvalidCityException();
+		}
 
-            userToAdd = userRepository.save(userToAdd);
+		if(user.getArtist()!=null && cityExist){
+			artistService.addNewArtist(user.getArtist());
+			departementAcceptedService.addNewDepartementAcceptedService(Integer.parseInt(userToAdd.getCodeDepartment()), user.getArtist());
+		}
 
-            for (String role : roles) {
 
-                UserRole userRole = new UserRole();
-                userRole.setRole(role);
-                userRole.setUserId(userToAdd.getId());
+		userToAdd = userRepository.save(userToAdd);
 
-                userRoleRepository.save(userRole);
-            }
+		for (String role : roles) {
+
+		    UserRole userRole = new UserRole();
+		    userRole.setRole(role);
+		    userRole.setUserId(userToAdd.getId());
+
+		    userRoleRepository.save(userRole);
+		}
 
 
     }
