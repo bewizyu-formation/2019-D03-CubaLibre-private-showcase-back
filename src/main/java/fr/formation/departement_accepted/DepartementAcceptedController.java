@@ -1,6 +1,7 @@
 package fr.formation.departement_accepted;
 
 import fr.formation.artist.Artist;
+import fr.formation.artist.ArtistService;
 import fr.formation.controllers.AbstractController;
 import fr.formation.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +18,9 @@ import java.util.List;
 public class DepartementAcceptedController extends AbstractController {
 
     @Autowired
-    private DepartementAcceptedService departementAcceptedService;
+    private ArtistService artistService;
 
 
-    /**
-     * getArtistsByDepartment.
-     */
-    @GetMapping("/")
-    public List<Artist> getArtistsByDepartment() {
-        User user = getAuthenticatedUser();
-        return departementAcceptedService.getArtistByDepartement(Integer.parseInt(user.getCodeDepartment()));
 
-    }
 
 }

@@ -84,7 +84,7 @@ public class BoostrapData {
 				9,
 				new byte[50]);
 		artistService.addNewArtist(artist69);
-		departementAcceptedService.addNewDepartementAcceptedService(69, artist69);
+		departementAcceptedService.addNewDepartementAccepted(69, artist69);
 
 		Artist artist6944 = new Artist(
 				"Artist",
@@ -97,8 +97,8 @@ public class BoostrapData {
 				9,
 				new byte[50]);
 		artistService.addNewArtist(artist6944);
-		departementAcceptedService.addNewDepartementAcceptedService(69, artist6944);
-		departementAcceptedService.addNewDepartementAcceptedService(44, artist6944);
+		departementAcceptedService.addNewDepartementAccepted(69, artist6944);
+		departementAcceptedService.addNewDepartementAccepted(44, artist6944);
 
 		Artist artist44 = new Artist(
 				"Artist ",
@@ -111,7 +111,7 @@ public class BoostrapData {
 				8,
 				new byte[50]);
 		artistService.addNewArtist(artist44);
-		departementAcceptedService.addNewDepartementAcceptedService(44, artist44);
+		departementAcceptedService.addNewDepartementAccepted(44, artist44);
 
 
 	}
