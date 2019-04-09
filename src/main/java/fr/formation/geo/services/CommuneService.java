@@ -2,6 +2,7 @@ package fr.formation.geo.services;
 
 import fr.formation.geo.model.Commune;
 
+import java.io.UnsupportedEncodingException;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -19,6 +20,6 @@ public interface CommuneService {
 	 *
 	 * @return the communes
 	 */
-	List<LinkedHashMap> getCommunes(final String nom);
+	List<LinkedHashMap> getCommunes(final String nom) throws UnsupportedEncodingException;
 
 }

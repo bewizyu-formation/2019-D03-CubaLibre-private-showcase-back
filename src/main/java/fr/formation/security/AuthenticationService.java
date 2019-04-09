@@ -41,7 +41,6 @@ public class AuthenticationService {
 				.setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATIONTIME))
 				.signWith(SignatureAlgorithm.HS512, SecurityConstants.SECRET).compact();
 		res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + " " + JWT);
-		System.out.println(SecurityConstants.TOKEN_PREFIX + " " + JWT);
 	}
 
 	/**
