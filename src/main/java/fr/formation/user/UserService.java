@@ -108,7 +108,12 @@ public class UserService implements UserDetailsService {
      */
     public void addNewUser(User user, String... roles) throws InvalidException, UnsupportedEncodingException {
         User userToAdd = new User();
-		userToAdd.setUsername(user.getUsername());
+
+        if (userRepository.findByUsername(user.getUsername()) == null) {
+            userToAdd.setUsername(user.getUsername());
+        } else {
+            throw new UserAlreadyExistsException();
+        }
 
 		if (validPassword((user.getPassword()))) {
 			userToAdd.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -116,16 +121,8 @@ public class UserService implements UserDetailsService {
 			throw new InvalidPasswordException();
 		}
 
-
-		userToAdd.setPassword(passwordEncoder.encode(user.getPassword()));
 		userToAdd.setEmail(user.getEmail());
 		userToAdd.setCity(user.getCity());
-
-        if (userRepository.findByUsername(user.getUsername()) == null) {
-            userToAdd.setUsername(user.getUsername());
-        } else {
-            throw new UserAlreadyExistsException();
-        }
 
 		List<LinkedHashMap> cities = communeServiceImpl.getCommunes(user.getCity());
 		boolean cityExist = false;
