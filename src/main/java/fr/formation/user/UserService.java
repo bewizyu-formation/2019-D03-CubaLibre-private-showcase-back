@@ -4,6 +4,8 @@ package fr.formation.user;
 import fr.formation.artist.ArtistService;
 import fr.formation.departement_accepted.DepartementAcceptedService;
 import fr.formation.geo.services.impl.CommuneServiceImpl;
+import fr.formation.user.exceptions.InvalidCityException;
+import fr.formation.user.exceptions.InvalidException;
 import fr.formation.user.exceptions.InvalidPasswordException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -103,22 +106,18 @@ public class UserService implements UserDetailsService {
 	 * @param roles    the roles
 	 */
 
-	public void addNewUser(User user, String... roles) throws InvalidPasswordException{
+	public void addNewUser(User user, String... roles) throws InvalidException, UnsupportedEncodingException {
 
 		User userToAdd = new User();
 
 		userToAdd.setUsername(user.getUsername());
-		try{
-			if(validPassword((user.getPassword()))){
-				userToAdd.setPassword(passwordEncoder.encode(user.getPassword()));
-			}
-			else {
-				throw new InvalidPasswordException("Le mot de passe doit contenir au moins 8 " +
-						"caractères dont une minuscule, une majuscule et un chiffre");
-			}
-		} catch(InvalidPasswordException e) {
-			log.error(e.getMessage());
+
+		if (validPassword((user.getPassword()))) {
+			userToAdd.setPassword(passwordEncoder.encode(user.getPassword()));
+		} else {
+			throw new InvalidPasswordException();
 		}
+
 
 		userToAdd.setPassword(passwordEncoder.encode(user.getPassword()));
 		userToAdd.setEmail(user.getEmail());
@@ -126,13 +125,19 @@ public class UserService implements UserDetailsService {
 
 
 		List<LinkedHashMap> cities = communeServiceImpl.getCommunes(user.getCity());
-		LinkedHashMap<String, String> city = cities.get(0);
-		String codeDepartment = city.get("codeDepartement");
-		String codeCity = city.get("code");
-		userToAdd.setCodeDepartment(codeDepartment);
-		userToAdd.setCodeCity(codeCity);
+		boolean cityExist = false;
+		for (LinkedHashMap<String, String> city : cities) {
+			if(city.get("nom").equalsIgnoreCase(user.getCity())){
+				userToAdd.setCodeDepartment(city.get("codeDepartement"));
+				userToAdd.setCodeCity(city.get("code"));
+				cityExist = true;
+			}
+		}
+		if (!cityExist) {
+			throw new InvalidCityException();
+		}
 
-		if(user.getArtist()!=null){
+		if(user.getArtist()!=null && cityExist){
 			artistService.addNewArtist(user.getArtist());
 			departementAcceptedService.addNewDepartementAcceptedService(Integer.parseInt(userToAdd.getCodeDepartment()), user.getArtist());
 		}
