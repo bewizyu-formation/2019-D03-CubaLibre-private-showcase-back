@@ -23,6 +23,7 @@ import static fr.formation.security.SecurityConstants.ROLE_USER;
 @RequestMapping("/users")
 public class UserController extends AbstractController {
 
+
 	@Autowired
 	private UserService userService;
 
@@ -37,8 +38,9 @@ public class UserController extends AbstractController {
 			userService.addNewUser(user, ROLE_USER);
 		} catch(InvalidException e){
 			throw new ResponseStatusException(
-					HttpStatus.BAD_REQUEST, "Un champ a été mal remplis", e);
+					HttpStatus.BAD_REQUEST, e.getMessage(), e);
 		}
 	}
+
 
 }
