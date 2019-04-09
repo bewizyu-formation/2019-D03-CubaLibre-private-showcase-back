@@ -140,7 +140,7 @@ public class UserService implements UserDetailsService {
 
 		if(user.getArtist()!=null && cityExist){
 			artistService.addNewArtist(user.getArtist());
-			departementAcceptedService.addNewDepartementAcceptedService(Integer.parseInt(userToAdd.getCodeDepartment()), user.getArtist());
+			departementAcceptedService.addNewDepartementAccepted(Integer.parseInt(userToAdd.getCodeDepartment()), user.getArtist());
 		}
 
 
