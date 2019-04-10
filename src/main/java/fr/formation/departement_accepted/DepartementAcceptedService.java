@@ -26,17 +26,9 @@ public class DepartementAcceptedService {
         this.departementAcceptedRepository = departementAcceptedRepository;
     }
 
-    public List<Artist> getArtistByDepartement(int code){
-        List<DepartementAccepted> listDepartementAccepted = departementAcceptedRepository.findByCode(code);
-        List<Artist> artistIds = listDepartementAccepted
-                .stream()
-                .map(da -> { return da.getArtist();})
-                .collect(Collectors.toList());
 
-        return artistIds;
-    }
 
-    public void addNewDepartementAcceptedService (int code, Artist artist){
+    public void addNewDepartementAccepted(int code, Artist artist){
         DepartementAccepted departementAccepted = new DepartementAccepted();
         departementAccepted.setArtist(artist);
         departementAccepted.setCode(code);

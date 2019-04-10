@@ -108,18 +108,6 @@ public class UserService implements UserDetailsService {
      */
     public void addNewUser(User user, String... roles) throws InvalidException, UnsupportedEncodingException {
         User userToAdd = new User();
-		userToAdd.setUsername(user.getUsername());
-
-		if (validPassword((user.getPassword()))) {
-			userToAdd.setPassword(passwordEncoder.encode(user.getPassword()));
-		} else {
-			throw new InvalidPasswordException();
-		}
-
-
-		userToAdd.setPassword(passwordEncoder.encode(user.getPassword()));
-		userToAdd.setEmail(user.getEmail());
-		userToAdd.setCity(user.getCity());
 
         if (userRepository.findByUsername(user.getUsername()) == null) {
             userToAdd.setUsername(user.getUsername());
@@ -127,12 +115,22 @@ public class UserService implements UserDetailsService {
             throw new UserAlreadyExistsException();
         }
 
+		if (validPassword((user.getPassword()))) {
+			userToAdd.setPassword(passwordEncoder.encode(user.getPassword()));
+		} else {
+			throw new InvalidPasswordException();
+		}
+
+		userToAdd.setEmail(user.getEmail());
+
+
 		List<LinkedHashMap> cities = communeServiceImpl.getCommunes(user.getCity());
 		boolean cityExist = false;
 		for (LinkedHashMap<String, String> city : cities) {
 			if(city.get("nom").equalsIgnoreCase(user.getCity())){
 				userToAdd.setCodeDepartment(city.get("codeDepartement"));
 				userToAdd.setCodeCity(city.get("code"));
+                userToAdd.setCity(user.getCity());
 				cityExist = true;
 			}
 		}
@@ -142,7 +140,7 @@ public class UserService implements UserDetailsService {
 
 		if(user.getArtist()!=null && cityExist){
 			artistService.addNewArtist(user.getArtist());
-			departementAcceptedService.addNewDepartementAcceptedService(Integer.parseInt(userToAdd.getCodeDepartment()), user.getArtist());
+			departementAcceptedService.addNewDepartementAccepted(Integer.parseInt(userToAdd.getCodeDepartment()), user.getArtist());
 		}
 
 
