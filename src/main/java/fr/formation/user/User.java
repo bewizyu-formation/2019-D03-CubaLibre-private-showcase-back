@@ -1,10 +1,12 @@
 package fr.formation.user;
 
 import fr.formation.artist.Artist;
+import fr.formation.event.Event;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 /**
  * The type User.
@@ -35,6 +37,12 @@ public class User {
 
 	@OneToOne
 	private Artist artist;
+
+	@ManyToMany(mappedBy = "invitatedUserList")
+	private Set<Event> eventInvitatedList;
+
+	@ManyToMany(mappedBy = "confirmedUserList")
+	private Set<Event> eventConfirmedList;
 
 	public User(){
 
@@ -187,5 +195,41 @@ public class User {
 	 */
 	public void setCodeCounty(String codeCounty) {
 		this.codeCounty = codeCounty;
+	}
+
+	/**
+	 * Gets eventInvitatedList
+	 *
+	 * @return value of eventInvitatedList
+	 */
+	public Set<Event> getEventInvitatedList() {
+		return eventInvitatedList;
+	}
+
+	/**
+	 * Sets eventInvitatedList
+	 *
+	 * @param eventInvitatedList the eventInvitatedList
+	 */
+	public void setEventInvitatedList(Set<Event> eventInvitatedList) {
+		this.eventInvitatedList = eventInvitatedList;
+	}
+
+	/**
+	 * Gets eventConfirmedList
+	 *
+	 * @return value of eventConfirmedList
+	 */
+	public Set<Event> getEventConfirmedList() {
+		return eventConfirmedList;
+	}
+
+	/**
+	 * Sets eventConfirmedList
+	 *
+	 * @param eventConfirmedList the eventConfirmedList
+	 */
+	public void setEventConfirmedList(Set<Event> eventConfirmedList) {
+		this.eventConfirmedList = eventConfirmedList;
 	}
 }

@@ -1,12 +1,14 @@
 package fr.formation.artist;
 
 
+import fr.formation.event.Event;
 import fr.formation.user.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 /**
  * The type artist
@@ -42,6 +44,9 @@ public class Artist {
     @Lob
     @Column(columnDefinition = "BLOB")
     private byte[] picture;
+
+    @OneToMany(mappedBy = "artist")
+    private Set<Event> eventList;
 
     public Artist(){
     }
@@ -238,5 +243,24 @@ public class Artist {
      */
     public void setShortDescription(String shortDescription) {
         this.shortDescription = shortDescription;
+    }
+
+
+    /**
+     * Gets eventList
+     *
+     * @return value of eventList
+     */
+    public Set<Event> getEventList() {
+        return eventList;
+    }
+
+    /**
+     * Sets eventList
+     *
+     * @param eventList the eventList
+     */
+    public void setEventList(Set<Event> eventList) {
+        this.eventList = eventList;
     }
 }
