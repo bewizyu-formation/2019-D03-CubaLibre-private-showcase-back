@@ -61,5 +61,8 @@ public class ArtistService {
         return artists;
     }
 
-
+    public Artist getArtistByName(String artistName){
+        Artist artist = artistRepository.findByArtistName(artistName);
+        return artist;
+    }
 }

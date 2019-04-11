@@ -74,7 +74,7 @@ public class BoostrapData {
 				SecurityConstants.ROLE_USER
 		);
 		Artist artist69 = new Artist(
-				"Artist",
+				"Artist1",
 				"description longue très longue de l'artiste",
 				"description courte de l'artiste",
 				"Artist.com ",
@@ -87,7 +87,7 @@ public class BoostrapData {
 		countyAcceptedService.addNewCountyAccepted(69, artist69);
 
 		Artist artist6944 = new Artist(
-				"Artist",
+				"Artist2",
 				"description longue très longue de l'artiste",
 				"description courte de l'artiste",
 				"Artist.com",
@@ -101,7 +101,7 @@ public class BoostrapData {
 		countyAcceptedService.addNewCountyAccepted(44, artist6944);
 
 		Artist artist44 = new Artist(
-				"Artist ",
+				"Artist3",
 				"description longue très longue de l'artiste",
 				"description courte de l'artiste",
 				"Artist.com",
