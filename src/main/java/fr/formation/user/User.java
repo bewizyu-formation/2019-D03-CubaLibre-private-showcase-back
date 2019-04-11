@@ -38,10 +38,10 @@ public class User {
 	@OneToOne
 	private Artist artist;
 
-	@ManyToMany(mappedBy = "invitatedUser")
+	@ManyToMany(mappedBy = "invitatedUserList")
 	private Set<Event> eventInvitatedList;
 
-	@ManyToMany(mappedBy = "confirmedUser")
+	@ManyToMany(mappedBy = "confirmedUserList")
 	private Set<Event> eventConfirmedList;
 
 	public User(){
