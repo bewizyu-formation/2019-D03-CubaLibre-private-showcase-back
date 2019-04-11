@@ -31,7 +31,7 @@ public class User {
 
 	private String codeCity;
 
-	private String codeDepartment;
+	private String codeCounty;
 
 	@OneToOne
 	private Artist artist;
@@ -172,20 +172,20 @@ public class User {
 	}
 
 	/**
-	 * Gets codeDepartment
+	 * Gets codeCounty
 	 *
-	 * @return value of codeDepartment
+	 * @return value of codeCounty
 	 */
-	public String getCodeDepartment() {
-		return codeDepartment;
+	public String getCodeCounty() {
+		return codeCounty;
 	}
 
 	/**
-	 * Sets codeDepartment
+	 * Sets codeCounty
 	 *
-	 * @param codeDepartment the codeDepartment
+	 * @param codeCounty the codeCounty
 	 */
-	public void setCodeDepartment(String codeDepartment) {
-		this.codeDepartment = codeDepartment;
+	public void setCodeCounty(String codeCounty) {
+		this.codeCounty = codeCounty;
 	}
 }
