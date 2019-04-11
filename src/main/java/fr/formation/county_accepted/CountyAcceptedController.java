@@ -34,7 +34,7 @@ public class CountyAcceptedController extends AbstractController {
     public List<LinkedHashMap> getCountyByArtist(@PathVariable("artistName") String artistName) {
 
             List<CountyAccepted> countyAcceptedByArtist = this.countyAcceptedService.getCountyByArtist(artistService.getArtistByName(artistName));
-            List<LinkedHashMap> machin = countyAcceptedByArtist
+            List<LinkedHashMap> nameCountyAcceptedByArtist = countyAcceptedByArtist
                     .stream()
                     .map(
                             c -> {
@@ -46,7 +46,7 @@ public class CountyAcceptedController extends AbstractController {
                                 return null;
                             })
                     .collect(Collectors.toList());
-            return machin;
+            return nameCountyAcceptedByArtist;
     }
 
 
