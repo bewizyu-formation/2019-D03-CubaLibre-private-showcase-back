@@ -21,12 +21,12 @@ public class ArtistController extends AbstractController {
     }
 
     /**
-     * getArtistsByDepartment.
+     * getArtistsByCounty.
      */
     @GetMapping("/")
-    public List<Artist> getArtistsByDepartment() {
+    public List<Artist> getArtistsByCounty() {
         User user = getAuthenticatedUser();
-        return artistService.getArtistByDepartement(Integer.parseInt(user.getCodeDepartment()));
+        return artistService.getArtistByDepartement(Integer.parseInt(user.getCodeCounty()));
     }
 
     @GetMapping("/all/")

@@ -1,4 +1,4 @@
-package fr.formation.departement_accepted;
+package fr.formation.county_accepted;
 
 import fr.formation.artist.Artist;
 
@@ -6,13 +6,13 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
- * The type DepartementAccepted.
- * Transition entyti between the artists and the departments
+ * The type CountyAccepted.
+ * Transition entyti between the artists and the counties
  *
  */
 @Entity
-@Table(name = "departement_accepted")
-public class DepartementAccepted {
+@Table(name = "county_accepted")
+public class CountyAccepted {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

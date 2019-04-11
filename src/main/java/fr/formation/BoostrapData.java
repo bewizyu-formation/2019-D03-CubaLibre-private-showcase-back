@@ -1,7 +1,7 @@
 package fr.formation;
 
 import fr.formation.artist.Artist;
-import fr.formation.departement_accepted.DepartementAcceptedService;
+import fr.formation.county_accepted.CountyAcceptedService;
 import fr.formation.security.SecurityConstants;
 import fr.formation.user.User;
 import fr.formation.user.UserService;
@@ -27,7 +27,7 @@ public class BoostrapData {
 
 	private PasswordEncoder passwordEncoder;
 
-	private DepartementAcceptedService departementAcceptedService;
+	private CountyAcceptedService countyAcceptedService;
 
 	/**
 	 * Instantiates a new Boostrap data.
@@ -36,11 +36,11 @@ public class BoostrapData {
 	 * @param passwordEncoder the password encoder
 	 */
 	@Autowired
-	public BoostrapData(UserService userService, PasswordEncoder passwordEncoder, ArtistService artistService, DepartementAcceptedService departementAcceptedService) {
+	public BoostrapData(UserService userService, PasswordEncoder passwordEncoder, ArtistService artistService, CountyAcceptedService countyAcceptedService) {
 		this.userService = userService;
 		this.passwordEncoder = passwordEncoder;
 		this.artistService = artistService;
-		this.departementAcceptedService = departementAcceptedService;
+		this.countyAcceptedService = countyAcceptedService;
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class BoostrapData {
 				9,
 				new byte[50]);
 		artistService.addNewArtist(artist69);
-		departementAcceptedService.addNewDepartementAccepted(69, artist69);
+		countyAcceptedService.addNewCountyAccepted(69, artist69);
 
 		Artist artist6944 = new Artist(
 				"Artist",
@@ -97,8 +97,8 @@ public class BoostrapData {
 				9,
 				new byte[50]);
 		artistService.addNewArtist(artist6944);
-		departementAcceptedService.addNewDepartementAccepted(69, artist6944);
-		departementAcceptedService.addNewDepartementAccepted(44, artist6944);
+		countyAcceptedService.addNewCountyAccepted(69, artist6944);
+		countyAcceptedService.addNewCountyAccepted(44, artist6944);
 
 		Artist artist44 = new Artist(
 				"Artist ",
@@ -111,7 +111,7 @@ public class BoostrapData {
 				8,
 				new byte[50]);
 		artistService.addNewArtist(artist44);
-		departementAcceptedService.addNewDepartementAccepted(44, artist44);
+		countyAcceptedService.addNewCountyAccepted(44, artist44);
 
 
 	}
