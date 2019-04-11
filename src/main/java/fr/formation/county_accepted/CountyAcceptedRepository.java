@@ -1,5 +1,6 @@
 package fr.formation.county_accepted;
 
+import fr.formation.artist.Artist;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -16,4 +17,6 @@ public interface CountyAcceptedRepository extends JpaRepository<CountyAccepted, 
      * @return the CountyAccepted
      */
     public List<CountyAccepted> findByCode(int code);
+
+    public List<CountyAccepted> findByArtistId(long artistId);
 }
