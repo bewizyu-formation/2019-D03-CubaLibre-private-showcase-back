@@ -1,22 +1,45 @@
 package fr.formation.county_accepted;
 
+import fr.formation.artist.Artist;
 import fr.formation.artist.ArtistService;
 import fr.formation.controllers.AbstractController;
+import fr.formation.geo.model.Departement;
+import fr.formation.geo.services.DepartementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
  * The type CountyAccepted controller.
  */
 @RestController
-@RequestMapping("/home")
+@RequestMapping("/county")
 public class CountyAcceptedController extends AbstractController {
 
     @Autowired
     private ArtistService artistService;
 
+    @Autowired
+    private CountyAcceptedService countyAcceptedService;
 
+    @Autowired
+    private DepartementService departementService;
+
+    @GetMapping("/{artistName}")
+    public List<LinkedHashMap> getCountyByArtist(@PathVariable("artistName") String artistName){
+        List<CountyAccepted> countyAcceptedByArtist = this.countyAcceptedService.getCountyByArtist(artistService.getArtistByName(artistName));
+        List<LinkedHashMap> machin = countyAcceptedByArtist
+                .stream()
+                .map(
+                        c -> departementService.getDepartementByCode("" + c.getCode()).get(0))
+                .collect(Collectors.toList())
+        ;
+        return machin;
+    }
 
 
 }
