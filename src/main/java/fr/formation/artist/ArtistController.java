@@ -35,4 +35,8 @@ public class ArtistController extends AbstractController {
 
     }
 
+    @GetMapping("/{artistName}")
+    public Artist findByArtistName(@PathVariable("artistName") String artistName){
+        return artistService.getArtistByName(artistName);
+    }
 }
