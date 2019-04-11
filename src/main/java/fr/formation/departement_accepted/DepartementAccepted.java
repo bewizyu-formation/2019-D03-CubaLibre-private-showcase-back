@@ -7,6 +7,8 @@ import javax.validation.constraints.NotNull;
 
 /**
  * The type DepartementAccepted.
+ * Transition entyti between the artists and the departments
+ *
  */
 @Entity
 @Table(name = "departement_accepted")

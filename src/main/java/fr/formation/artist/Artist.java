@@ -22,7 +22,7 @@ public class Artist {
     @NotNull
     private String artistName;
 
-    private String description;
+    private String longDescription;
 
     @NotNull
     private String shortDescription;
@@ -47,9 +47,9 @@ public class Artist {
     }
 
 
-    public Artist(@NotNull String artistName, String description, @NotNull String shortDescription,String website, String phone, String address, @NotNull int voteNumber, @Min(0) @Max(10) int rating, byte[] picture) {
+    public Artist(@NotNull String artistName, String longDescription, @NotNull String shortDescription,String website, String phone, String address, @NotNull int voteNumber, @Min(0) @Max(10) int rating, byte[] picture) {
         this.artistName = artistName;
-        this.description = description;
+        this.longDescription = longDescription;
         this.website = website;
         this.phone = phone;
         this.address = address;
@@ -101,17 +101,17 @@ public class Artist {
      *
      * @return value of description
      */
-    public String getDescription() {
-        return description;
+    public String getLongDescription() {
+        return longDescription;
     }
 
     /**
-     * Sets description
+     * Sets longDescription
      *
-     * @param description the description
+     * @param longDescription the longDescription
      */
-    public void setDescription(String description) {
-        this.description = description;
+    public void setLongDescription(String longDescription) {
+        this.longDescription = longDescription;
     }
 
     /**
