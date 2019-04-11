@@ -8,6 +8,10 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.util.Set;
 
+/**
+ * The type Event.
+ *
+ */
 @Entity
 @Table()
 public class Event {
@@ -21,7 +25,13 @@ public class Event {
     private Artist artist;
 
     @ManyToMany
-    private Set<User> userList;
+    private Set<User> confirmedUserList;
+
+    @ManyToMany
+    private Set<User> invitatedUserList;
+
+    @ManyToOne
+    private User organizer;
 
     /**
      * Gets id
@@ -78,20 +88,56 @@ public class Event {
     }
 
     /**
-     * Gets userList
+     * Gets organizer
      *
-     * @return value of userList
+     * @return value of organizer
      */
-    public Set<User> getUserList() {
-        return userList;
+    public User getOrganizer() {
+        return organizer;
     }
 
     /**
-     * Sets userList
+     * Sets organizer
      *
-     * @param userList the userList
+     * @param organizer the organizer
      */
-    public void setUserList(Set<User> userList) {
-        this.userList = userList;
+    public void setOrganizer(User organizer) {
+        this.organizer = organizer;
+    }
+
+    /**
+     * Gets confirmedUserList
+     *
+     * @return value of confirmedUserList
+     */
+    public Set<User> getConfirmedUserList() {
+        return confirmedUserList;
+    }
+
+    /**
+     * Sets confirmedUserList
+     *
+     * @param confirmedUserList the confirmedUserList
+     */
+    public void setConfirmedUserList(Set<User> confirmedUserList) {
+        this.confirmedUserList = confirmedUserList;
+    }
+
+    /**
+     * Gets invitatedUserList
+     *
+     * @return value of invitatedUserList
+     */
+    public Set<User> getInvitatedUserList() {
+        return invitatedUserList;
+    }
+
+    /**
+     * Sets invitatedUserList
+     *
+     * @param invitatedUserList the invitatedUserList
+     */
+    public void setInvitatedUserList(Set<User> invitatedUserList) {
+        this.invitatedUserList = invitatedUserList;
     }
 }

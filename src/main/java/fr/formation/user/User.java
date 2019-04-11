@@ -38,8 +38,11 @@ public class User {
 	@OneToOne
 	private Artist artist;
 
-	@ManyToMany(mappedBy = "userList")
-	private Set<Event> eventList;
+	@ManyToMany(mappedBy = "invitatedUser")
+	private Set<Event> eventInvitatedList;
+
+	@ManyToMany(mappedBy = "confirmedUser")
+	private Set<Event> eventConfirmedList;
 
 	public User(){
 
@@ -195,20 +198,38 @@ public class User {
 	}
 
 	/**
-	 * Gets eventList
+	 * Gets eventInvitatedList
 	 *
-	 * @return value of eventList
+	 * @return value of eventInvitatedList
 	 */
-	public Set<Event> getEventList() {
-		return eventList;
+	public Set<Event> getEventInvitatedList() {
+		return eventInvitatedList;
 	}
 
 	/**
-	 * Sets eventList
+	 * Sets eventInvitatedList
 	 *
-	 * @param eventList the eventList
+	 * @param eventInvitatedList the eventInvitatedList
 	 */
-	public void setEventList(Set<Event> eventList) {
-		this.eventList = eventList;
+	public void setEventInvitatedList(Set<Event> eventInvitatedList) {
+		this.eventInvitatedList = eventInvitatedList;
+	}
+
+	/**
+	 * Gets eventConfirmedList
+	 *
+	 * @return value of eventConfirmedList
+	 */
+	public Set<Event> getEventConfirmedList() {
+		return eventConfirmedList;
+	}
+
+	/**
+	 * Sets eventConfirmedList
+	 *
+	 * @param eventConfirmedList the eventConfirmedList
+	 */
+	public void setEventConfirmedList(Set<Event> eventConfirmedList) {
+		this.eventConfirmedList = eventConfirmedList;
 	}
 }
