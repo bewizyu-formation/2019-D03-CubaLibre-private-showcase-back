@@ -2,7 +2,7 @@ package fr.formation.user;
 
 
 import fr.formation.artist.ArtistService;
-import fr.formation.departement_accepted.DepartementAcceptedService;
+import fr.formation.county_accepted.CountyAcceptedService;
 import fr.formation.geo.services.impl.CommuneServiceImpl;
 import fr.formation.user.exceptions.InvalidCityException;
 import fr.formation.user.exceptions.InvalidException;
@@ -43,7 +43,7 @@ public class UserService implements UserDetailsService {
 
     private ArtistService artistService;
 
-    private DepartementAcceptedService departementAcceptedService;
+    private CountyAcceptedService countyAcceptedService;
 
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
@@ -54,12 +54,12 @@ public class UserService implements UserDetailsService {
      * @param userRoleRepository the user role repository
      */
     @Autowired
-    public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder, CommuneServiceImpl communeServiceImpl, ArtistService artistService, DepartementAcceptedService departementAcceptedService) {
+    public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder, CommuneServiceImpl communeServiceImpl, ArtistService artistService, CountyAcceptedService countyAcceptedService) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.passwordEncoder = passwordEncoder;
         this.communeServiceImpl = communeServiceImpl;
-        this.departementAcceptedService = departementAcceptedService;
+        this.countyAcceptedService = countyAcceptedService;
         this.artistService = artistService;
 
     }
@@ -128,7 +128,7 @@ public class UserService implements UserDetailsService {
 		boolean cityExist = false;
 		for (LinkedHashMap<String, String> city : cities) {
 			if(city.get("nom").equalsIgnoreCase(user.getCity())){
-				userToAdd.setCodeDepartment(city.get("codeDepartement"));
+				userToAdd.setCodeCounty(city.get("codeDepartement"));
 				userToAdd.setCodeCity(city.get("code"));
                 userToAdd.setCity(user.getCity());
 				cityExist = true;
@@ -140,7 +140,7 @@ public class UserService implements UserDetailsService {
 
 		if(user.getArtist()!=null && cityExist){
 			artistService.addNewArtist(user.getArtist());
-			departementAcceptedService.addNewDepartementAccepted(Integer.parseInt(userToAdd.getCodeDepartment()), user.getArtist());
+			countyAcceptedService.addNewCountyAccepted(Integer.parseInt(userToAdd.getCodeCounty()), user.getArtist());
 		}
 
 

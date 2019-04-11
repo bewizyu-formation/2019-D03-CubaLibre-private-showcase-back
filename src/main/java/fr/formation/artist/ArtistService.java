@@ -1,9 +1,8 @@
 package fr.formation.artist;
 
-import fr.formation.departement_accepted.DepartementAccepted;
-import fr.formation.departement_accepted.DepartementAcceptedRepository;
-import fr.formation.departement_accepted.DepartementAcceptedService;
-import fr.formation.user.UserService;
+import fr.formation.county_accepted.CountyAccepted;
+import fr.formation.county_accepted.CountyAcceptedRepository;
+import fr.formation.county_accepted.CountyAcceptedService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +20,9 @@ public class ArtistService {
 
     private ArtistRepository artistRepository;
 
-    private DepartementAcceptedService departementAcceptedService;
+    private CountyAcceptedService countyAcceptedService;
 
-    private DepartementAcceptedRepository departementAcceptedRepository;
+    private CountyAcceptedRepository countyAcceptedRepository;
 
     private static final Logger log = LoggerFactory.getLogger(ArtistService.class);
 
@@ -34,10 +33,10 @@ public class ArtistService {
      * @param artistRepository the artist repository
      */
     @Autowired
-    public ArtistService(DepartementAcceptedRepository departementAcceptedRepository, ArtistRepository artistRepository, DepartementAcceptedService departementAcceptedService) {
+    public ArtistService(CountyAcceptedRepository countyAcceptedRepository, ArtistRepository artistRepository, CountyAcceptedService countyAcceptedService) {
         this.artistRepository = artistRepository;
-        this.departementAcceptedService = departementAcceptedService;
-        this.departementAcceptedRepository = departementAcceptedRepository;
+        this.countyAcceptedService = countyAcceptedService;
+        this.countyAcceptedRepository = countyAcceptedRepository;
     }
 
     public void addNewArtist(Artist artist) {
@@ -45,9 +44,9 @@ public class ArtistService {
     }
 
     public List<Artist> getArtistByDepartement(int code){
-        List<DepartementAccepted> listDepartementAccepted = departementAcceptedRepository.findByCode(code);
-        log.debug("Size of listDepartement" + listDepartementAccepted.size());
-        List<Artist> artists = listDepartementAccepted
+        List<CountyAccepted> listCountyAccepted = countyAcceptedRepository.findByCode(code);
+        log.debug("Size of listDepartement" + listCountyAccepted.size());
+        List<Artist> artists = listCountyAccepted
                 .stream()
                 .map(depAccepted ->  depAccepted.getArtist())
                 .collect(Collectors.toList());
