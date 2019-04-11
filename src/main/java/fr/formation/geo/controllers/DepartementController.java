@@ -40,7 +40,7 @@ public class DepartementController {
 	 */
 	@GetMapping("/")
 	public ResponseEntity<List<Departement>> getDepartement(@RequestParam final String nom) {
-		final List<Departement> departements = this.departementService.getDepartement(nom);
+		final List<Departement> departements = this.departementService.getDepartements(nom);
 		return new ResponseEntity<>(departements, HttpStatus.OK);
 	}
 
