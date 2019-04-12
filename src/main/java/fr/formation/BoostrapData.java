@@ -4,6 +4,7 @@ import fr.formation.artist.Artist;
 import fr.formation.county_accepted.CountyAcceptedService;
 import fr.formation.security.SecurityConstants;
 import fr.formation.user.User;
+import fr.formation.user.UserDTO;
 import fr.formation.user.UserService;
 import fr.formation.user.exceptions.InvalidException;
 import fr.formation.artist.ArtistService;
@@ -49,7 +50,7 @@ public class BoostrapData {
 	@EventListener(ContextRefreshedEvent.class)
 	public void onStart() throws InvalidException, UnsupportedEncodingException {
 
-		User admin = new User();
+		UserDTO admin = new UserDTO();
 
 		admin.setUsername("admin");
 		admin.setPassword("adminPass1");
@@ -62,7 +63,7 @@ public class BoostrapData {
 				SecurityConstants.ROLE_ADMIN
 		);
 
-		User user = new User();
+		UserDTO user = new UserDTO();
 
 		user.setUsername("user");
 		user.setPassword("userPass1");
@@ -73,6 +74,7 @@ public class BoostrapData {
 				user,
 				SecurityConstants.ROLE_USER
 		);
+
 		Artist artist69 = new Artist(
 				"Artist1",
 				"description longue très longue de l'artiste",

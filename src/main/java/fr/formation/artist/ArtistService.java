@@ -3,6 +3,7 @@ package fr.formation.artist;
 import fr.formation.county_accepted.CountyAccepted;
 import fr.formation.county_accepted.CountyAcceptedRepository;
 import fr.formation.county_accepted.CountyAcceptedService;
+import fr.formation.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import java.util.stream.Collectors;
 public class ArtistService {
 
     private ArtistRepository artistRepository;
+
+    private UserService userService;
 
     private CountyAcceptedService countyAcceptedService;
 
@@ -40,6 +43,7 @@ public class ArtistService {
     }
 
     public void addNewArtist(Artist artist) {
+        //countyAcceptedService.addNewCountyAccepted(Integer.parseInt(userService.findByArtistName(artist.getArtistName()).getCodeCounty()), artist);
         artistRepository.save(artist);
     }
 
@@ -57,13 +61,11 @@ public class ArtistService {
     }
 
     public List<Artist> getArtistsList(){
-        List<Artist> artists = artistRepository.findAll();
-        return artists;
+        return artistRepository.findAll();
     }
 
-    public Artist getArtistByName(String artistName){
-        Artist artist = artistRepository.findByArtistName(artistName);
-        return artist;
+    public Artist findByArtistName(String artistName) {
+        return artistRepository.findByArtistName(artistName);
     }
 
     public Artist findById(Long id){

@@ -13,7 +13,7 @@ public class UserDTO {
     private String password;
     private String email;
     private String city;
-    private long artistId;
+    private String artistName;
     private Set<Long> eventIdInvitatedList;
     private Set<Long> eventIdConfirmedList;
 
@@ -94,21 +94,21 @@ public class UserDTO {
     }
 
     /**
-     * Gets artistId
+     * Gets artistName
      *
-     * @return value of artistId
+     * @return value of artistName
      */
-    public long getArtistId() {
-        return artistId;
+    public String getArtistName() {
+        return artistName;
     }
 
     /**
-     * Sets artistId
+     * Sets artistName
      *
-     * @param artistId the artistId
+     * @param artistName the artistName
      */
-    public void setArtistId(long artistId) {
-        this.artistId = artistId;
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
     }
 
     /**

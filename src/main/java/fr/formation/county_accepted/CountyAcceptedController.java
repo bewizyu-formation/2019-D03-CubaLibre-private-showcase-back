@@ -1,9 +1,7 @@
 package fr.formation.county_accepted;
 
-import fr.formation.artist.Artist;
 import fr.formation.artist.ArtistService;
 import fr.formation.controllers.AbstractController;
-import fr.formation.geo.model.Departement;
 import fr.formation.geo.services.DepartementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +31,7 @@ public class CountyAcceptedController extends AbstractController {
     @GetMapping("/{artistName}")
     public List<LinkedHashMap> getCountyByArtist(@PathVariable("artistName") String artistName) {
 
-            List<CountyAccepted> countyAcceptedByArtist = this.countyAcceptedService.getCountyByArtist(artistService.getArtistByName(artistName));
+            List<CountyAccepted> countyAcceptedByArtist = this.countyAcceptedService.getCountyByArtist(artistService.findByArtistName(artistName));
             List<LinkedHashMap> nameCountyAcceptedByArtist = countyAcceptedByArtist
                     .stream()
                     .map(

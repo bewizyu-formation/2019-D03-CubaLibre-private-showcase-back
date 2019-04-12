@@ -1,6 +1,8 @@
 package fr.formation.user;
 
 
+import fr.formation.artist.Artist;
+import fr.formation.artist.ArtistRepository;
 import fr.formation.artist.ArtistService;
 import fr.formation.county_accepted.CountyAcceptedService;
 import fr.formation.event.EventService;
@@ -37,6 +39,8 @@ public class UserService implements UserDetailsService {
 
     private UserRepository userRepository;
 
+    private ArtistRepository artistRepository;
+
     private UserRoleRepository userRoleRepository;
 
     private PasswordEncoder passwordEncoder;
@@ -59,6 +63,7 @@ public class UserService implements UserDetailsService {
      */
     @Autowired
     public UserService(UserRepository userRepository,
+                       ArtistRepository artistRepository,
                        UserRoleRepository userRoleRepository,
                        PasswordEncoder passwordEncoder,
                        CommuneServiceImpl communeServiceImpl,
@@ -66,6 +71,7 @@ public class UserService implements UserDetailsService {
                        EventService eventService,
                        CountyAcceptedService countyAcceptedService) {
         this.userRepository = userRepository;
+        this.artistRepository = artistRepository;
         this.userRoleRepository = userRoleRepository;
         this.passwordEncoder = passwordEncoder;
         this.communeServiceImpl = communeServiceImpl;
@@ -118,6 +124,21 @@ public class UserService implements UserDetailsService {
                 .isPresent();
     }
 
+    private UserDTO encryptPassword(UserDTO userDTO){
+
+        UserDTO passwordEncryptedUserDTO = new UserDTO();
+
+        passwordEncryptedUserDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        passwordEncryptedUserDTO.setUsername(userDTO.getUsername());
+        passwordEncryptedUserDTO.setEventIdInvitatedList(userDTO.getEventIdInvitatedList());
+        passwordEncryptedUserDTO.setEventIdConfirmedList(userDTO.getEventIdConfirmedList());
+        passwordEncryptedUserDTO.setEmail(userDTO.getEmail());
+        passwordEncryptedUserDTO.setArtistName(userDTO.getArtistName());
+        passwordEncryptedUserDTO.setCity(userDTO.getCity());
+
+        return passwordEncryptedUserDTO;
+    }
+
 
     /**
      * Add a new user with the user repository
@@ -127,6 +148,7 @@ public class UserService implements UserDetailsService {
     public void addNewUser(UserDTO userDTO, String... roles) throws InvalidException, UnsupportedEncodingException {
 
 
+
         if (userRepository.findByUsername(userDTO.getUsername()) != null) {
             throw new UserAlreadyExistsException();
         } else if (!isValidPassword((userDTO.getPassword()))){
@@ -134,40 +156,19 @@ public class UserService implements UserDetailsService {
         } else if (!cityExists(userDTO.getCity())) {
             throw new InvalidCityException();
         } else {
-            userRepository.save(createUser(userDTO));
-            if (userDTO.getArtistId())
+            userRepository.save(createUser(encryptPassword(userDTO)));
         }
-
-
-
-
-        List<LinkedHashMap> cities = communeServiceImpl.getCommunes(userDTO.getCity());
-        boolean cityExist = false;
-        for (LinkedHashMap<String, String> city : cities) {
-            if (city.get("nom").equalsIgnoreCase(userDTO.getCity())) {
-                userToAdd.setCodeCounty(city.get("codeDepartement"));
-                userToAdd.setCodeCity(city.get("code"));
-                userToAdd.setCity(userDTO.getCity());
-                cityExist = true;
-            }
-        }
-        if (!cityExist) {
-            throw new InvalidCityException();
-        }
-
+/* A faire dans addNewArtist
         if (userDTO.getArtist() != null && cityExist) {
             artistService.addNewArtist(userDTO.getArtist());
             countyAcceptedService.addNewCountyAccepted(Integer.parseInt(userToAdd.getCodeCounty()), userDTO.getArtist());
-        }
-
-
-        userToAdd = userRepository.save(userToAdd);
+        }*/
 
         for (String role : roles) {
 
             UserRole userRole = new UserRole();
             userRole.setRole(role);
-            userRole.setUserId(userToAdd.getId());
+            userRole.setUserId(userRepository.findByUsername(userDTO.getUsername()).getId());
 
             userRoleRepository.save(userRole);
         }
@@ -175,10 +176,14 @@ public class UserService implements UserDetailsService {
 
     }
 
+    public User findByArtistName(String artistName){
+        return userRepository.findByArtist(artistRepository.findByArtistName(artistName));
+    }
+
     public UserDTO createUserDTO(User user) {
         UserDTO userDTO = new UserDTO();
 
-        userDTO.setArtistId(user.getArtist().getId());
+        userDTO.setArtistName(user.getArtist().getArtistName());
         userDTO.setCity(user.getCity());
         userDTO.setEmail(user.getEmail());
         userDTO.setEventIdConfirmedList(
@@ -224,22 +229,22 @@ public class UserService implements UserDetailsService {
                 .get(0)
                 .get("codeDepartement"));
 
-        user.setEventInvitatedList(
+        /*user.setEventInvitatedList(
                 userDTO.getEventIdInvitatedList()
                 .stream()
                 .map(id -> eventService.findById(id))
                 .collect(Collectors.toSet())
-        );
+        );*/
 
-        user.setEventConfirmedList(
+        /*user.setEventConfirmedList(
                 userDTO.getEventIdConfirmedList()
                 .stream()
                 .map(id -> eventService.findById(id))
                 .collect(Collectors.toSet())
-        );
+        );*/
 
-        if (artistService.findById(userDTO.getArtistId()) != null) {
-            user.setArtist(artistService.findById(userDTO.getArtistId()));
+        if (artistService.findByArtistName(userDTO.getArtistName()) != null) {
+            user.setArtist(artistService.findByArtistName(userDTO.getArtistName()));
         }
 
         return user;

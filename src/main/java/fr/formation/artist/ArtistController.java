@@ -14,8 +14,8 @@ public class ArtistController extends AbstractController {
     @Autowired
     ArtistService artistService;
 
-    @PutMapping("/")
-    public void signup(@RequestBody Artist artist) {
+    @PostMapping("/new")
+    public void addArtist(@RequestBody Artist artist) {
         artistService.addNewArtist(artist);
 
     }
@@ -37,6 +37,6 @@ public class ArtistController extends AbstractController {
 
     @GetMapping("/{artistName}")
     public Artist findByArtistName(@PathVariable("artistName") String artistName){
-        return artistService.getArtistByName(artistName);
+        return artistService.findByArtistName(artistName);
     }
 }
