@@ -30,7 +30,7 @@ public class UserController extends AbstractController {
 	 * @param user the user
 	 */
 	@PostMapping("/")
-	public void signup(@RequestBody User user) throws InvalidException, UnsupportedEncodingException {
+	public void signup( User user) throws InvalidException, UnsupportedEncodingException {
 		try {
 			userService.addNewUser(user, ROLE_USER);
 		} catch(InvalidException e){
@@ -39,5 +39,19 @@ public class UserController extends AbstractController {
 		}
 	}
 
+	@PutMapping("/changePassword/")
+	public void changePassword(@RequestBody String oldPassword, String newPassword, String email) throws InvalidException, UnsupportedEncodingException {
+		System.out.println("Chui dedans !");
+		try {
+			if(getAuthenticatedUser().getPassword().equals(this.userService.passwordEncode(oldPassword)) && getAuthenticatedUser().getEmail().equals(email)){
+				getAuthenticatedUser().setPassword(this.userService.passwordEncode(newPassword));
+			}
+		}catch(Exception e){
+			System.out.println("Error");
+			throw new ResponseStatusException(
+					HttpStatus.BAD_REQUEST, e.getMessage(), e);
+		}
+
+	}
 
 }
