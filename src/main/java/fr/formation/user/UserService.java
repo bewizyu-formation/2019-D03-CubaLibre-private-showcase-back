@@ -157,4 +157,8 @@ public class UserService implements UserDetailsService {
 
 
     }
+
+    public String passwordEncode(String password){
+        return this.passwordEncoder.encode(password);
+    }
 }
