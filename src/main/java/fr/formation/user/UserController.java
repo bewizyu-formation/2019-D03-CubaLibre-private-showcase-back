@@ -6,9 +6,11 @@ import fr.formation.user.exceptions.InvalidException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 
 import static fr.formation.security.SecurityConstants.ROLE_USER;
@@ -31,6 +33,7 @@ public class UserController extends AbstractController {
 	 */
 	@PostMapping("/")
 	public void signup(@RequestBody User user) throws InvalidException, UnsupportedEncodingException {
+
 		try {
 			userService.addNewUser(user, ROLE_USER);
 		} catch(InvalidException e){
