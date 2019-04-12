@@ -15,6 +15,7 @@ import java.util.Set;
 @Entity
 @Table()
 public class Event {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

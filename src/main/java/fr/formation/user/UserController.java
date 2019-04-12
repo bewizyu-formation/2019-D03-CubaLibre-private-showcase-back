@@ -27,12 +27,12 @@ public class UserController extends AbstractController {
 	/**
 	 * Signup.
 	 *
-	 * @param user the user
+	 * @param userDTO the user
 	 */
 	@PostMapping("/")
-	public void signup(@RequestBody User user) throws InvalidException, UnsupportedEncodingException {
+	public void signup(@RequestBody UserDTO userDTO) throws InvalidException, UnsupportedEncodingException {
 		try {
-			userService.addNewUser(user, ROLE_USER);
+			userService.addNewUser(userDTO, ROLE_USER);
 		} catch(InvalidException e){
 			throw new ResponseStatusException(
 					HttpStatus.BAD_REQUEST, e.getMessage(), e);

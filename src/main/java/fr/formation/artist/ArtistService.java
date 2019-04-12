@@ -65,4 +65,8 @@ public class ArtistService {
         Artist artist = artistRepository.findByArtistName(artistName);
         return artist;
     }
+
+    public Artist findById(Long id){
+        return artistRepository.findById(id).get();
+    }
 }
