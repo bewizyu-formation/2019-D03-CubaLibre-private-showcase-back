@@ -1,7 +1,7 @@
 package fr.formation.geo.services;
 
-import fr.formation.geo.model.Departement;
-
+import java.io.UnsupportedEncodingException;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -9,24 +9,22 @@ import java.util.List;
  */
 public interface DepartementService {
 
-	/**
-	 * Gets departement.
-	 *
-	 * @param nom the nom
-	 *
-	 * @return the departement
-	 */
-	List<Departement> getDepartement(final String nom);
+    /**
+     * Gets departement.
+     *
+     * @param nom the nom
+     * @return the departement
+     */
+    List<LinkedHashMap> getDepartements(final String nom) throws UnsupportedEncodingException;
 
 
-	/**
-	 * Gets departement by code.
-	 *
-	 * @param code the code
-	 *
-	 * @return the departement by code
-	 */
-	List<Departement> getDepartementByCode(final String code);
+    /**
+     * Gets departement by code.
+     *
+     * @param code the code
+     * @return the departement by code
+     */
+    List<LinkedHashMap> getDepartementByCode(final String code) throws UnsupportedEncodingException;
 
 
 }

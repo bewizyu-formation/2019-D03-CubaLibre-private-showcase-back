@@ -5,10 +5,7 @@ import fr.formation.controllers.AbstractController;
 import fr.formation.user.exceptions.InvalidException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 
@@ -32,7 +29,7 @@ public class UserController extends AbstractController {
 	 *
 	 * @param user the user
 	 */
-	@PutMapping("/")
+	@PostMapping("/")
 	public void signup(@RequestBody User user) throws InvalidException, UnsupportedEncodingException {
 		try {
 			userService.addNewUser(user, ROLE_USER);

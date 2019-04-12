@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -19,41 +21,41 @@ import java.util.List;
 @Secured(SecurityConstants.ROLE_USER)
 public class DepartementController {
 
-	private DepartementService departementService;
+    private DepartementService departementService;
 
-	/**
-	 * Instantiates a new Departement controller.
-	 *
-	 * @param departementService the departement service
-	 */
-	@Autowired
-	public DepartementController(DepartementService departementService) {
-		this.departementService = departementService;
-	}
+    /**
+     * Instantiates a new Departement controller.
+     *
+     * @param departementService the departement service
+     */
+    @Autowired
+    public DepartementController(DepartementService departementService) {
+        this.departementService = departementService;
+    }
 
-	/**
-	 * Gets departement.
-	 *
-	 * @param nom the nom
-	 *
-	 * @return the departement
-	 */
-	@GetMapping("/")
-	public ResponseEntity<List<Departement>> getDepartement(@RequestParam final String nom) {
-		final List<Departement> departements = this.departementService.getDepartement(nom);
-		return new ResponseEntity<>(departements, HttpStatus.OK);
-	}
+    /**
+     * Gets departement.
+     *
+     * @param nom the nom
+     * @return the departement
+     */
+    @GetMapping("/")
+    public ResponseEntity<List<Departement>> getDepartement(@RequestParam final String nom)
+            throws UnsupportedEncodingException {
+        final List<LinkedHashMap> departements = this.departementService.getDepartements(nom);
+        return new ResponseEntity(departements, HttpStatus.OK);
+    }
 
-	/**
-	 * Gets departement by code.
-	 *
-	 * @param code the code
-	 *
-	 * @return the departement by code
-	 */
-	@GetMapping("/{code}")
-	public ResponseEntity<List<Departement>> getDepartementByCode(@PathVariable(value = "code") final String code) {
-		final List<Departement> departements = this.departementService.getDepartementByCode(code);
-		return new ResponseEntity<>(departements, HttpStatus.OK);
-	}
+    /**
+     * Gets departement by code.
+     *
+     * @param code the code
+     * @return the departement by code
+     */
+    @GetMapping("/{code}")
+    public ResponseEntity<List<Departement>> getDepartementByCode(@PathVariable(value = "code") final String code)
+            throws UnsupportedEncodingException {
+        final List<LinkedHashMap> departements = this.departementService.getDepartementByCode(code);
+        return new ResponseEntity(departements, HttpStatus.OK);
+    }
 }

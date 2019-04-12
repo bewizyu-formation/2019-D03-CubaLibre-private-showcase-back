@@ -4,6 +4,8 @@ import fr.formation.artist.Artist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * The type Artist service.
  */
@@ -31,5 +33,9 @@ public class CountyAcceptedService {
         countyAccepted.setCode(code);
 
         countyAcceptedRepository.save(countyAccepted);
+    }
+
+    public List<CountyAccepted> getCountyByArtist(Artist artist){
+        return this.countyAcceptedRepository.findByArtistId(artist.getId());
     }
 }
