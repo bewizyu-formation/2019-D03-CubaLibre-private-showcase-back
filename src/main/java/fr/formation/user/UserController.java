@@ -30,7 +30,7 @@ public class UserController extends AbstractController {
 	 * @param user the user
 	 */
 	@PostMapping("/")
-	public void signup( User user) throws InvalidException, UnsupportedEncodingException {
+	public void signup(@RequestBody User user) throws InvalidException, UnsupportedEncodingException {
 		try {
 			userService.addNewUser(user, ROLE_USER);
 		} catch(InvalidException e){
