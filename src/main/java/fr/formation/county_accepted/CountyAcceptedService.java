@@ -27,7 +27,7 @@ public class CountyAcceptedService {
 
 
 
-    public void addNewCountyAccepted(int code, Artist artist){
+    public void addCountyAccepted(int code, Artist artist){
         CountyAccepted countyAccepted = new CountyAccepted();
         countyAccepted.setArtist(artist);
         countyAccepted.setCode(code);

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,17 +43,21 @@ public class ArtistService {
         this.countyAcceptedRepository = countyAcceptedRepository;
     }
 
-    public void addNewArtist(Artist artist) {
-        //countyAcceptedService.addNewCountyAccepted(Integer.parseInt(userService.findByArtistName(artist.getArtistName()).getCodeCounty()), artist);
+    public void addNewArtist(Artist artist) throws UnsupportedEncodingException {
+
         artistRepository.save(artist);
+        /*log.info("Artist name : " + artist.getArtistName());
+        log.info("User of artist : " + userService.findByArtistName(artist.getArtistName()));
+        countyAcceptedService.addCountyAccepted(Integer.parseInt(artist.getUser().getCodeCounty()), artist);*/
+
     }
 
-    public List<Artist> getArtistByDepartement(int code){
+    public List<Artist> getArtistByDepartement(int code) {
         List<CountyAccepted> listCountyAccepted = countyAcceptedRepository.findByCode(code);
         log.debug("Size of listDepartement" + listCountyAccepted.size());
         List<Artist> artists = listCountyAccepted
                 .stream()
-                .map(depAccepted ->  depAccepted.getArtist())
+                .map(depAccepted -> depAccepted.getArtist())
                 .collect(Collectors.toList());
 
         log.debug("Size of listDepartement" + artists.size());
@@ -60,7 +65,7 @@ public class ArtistService {
         return artists;
     }
 
-    public List<Artist> getArtistsList(){
+    public List<Artist> getArtistsList() {
         return artistRepository.findAll();
     }
 
@@ -68,7 +73,80 @@ public class ArtistService {
         return artistRepository.findByArtistName(artistName);
     }
 
-    public Artist findById(Long id){
+    public Artist findById(Long id) {
         return artistRepository.findById(id).get();
+    }
+
+    public ArtistDTO createArtistDTO(Artist artist) {
+        ArtistDTO artistDTO = new ArtistDTO();
+
+        artistDTO.setArtistName(artist.getArtistName());
+        artistDTO.setShortDescription(artist.getShortDescription());
+        artistDTO.setLongDescription(artist.getLongDescription());
+        artistDTO.setVoteNumber(artist.getVoteNumber());
+        artistDTO.setRating(artist.getRating());
+
+        if(artist.getWebsite() != null){
+            artistDTO.setWebsite(artist.getWebsite());
+        }
+
+        if(artist.getPhone() != null){
+            artistDTO.setPhone(artist.getPhone());
+        }
+
+        if(artist.getAddress() != null){
+            artistDTO.setAddress(artist.getAddress());
+        }
+
+        if(artist.getPicture() != null){
+            artistDTO.setPicture(artist.getPicture());
+        }
+
+        if(artist.getEventList() != null){
+            artistDTO.setEventIdList(
+                    artist.getEventList()
+                    .stream()
+                    .map(e -> e.getId())
+                    .collect(Collectors.toSet())
+            );
+        }
+
+        return artistDTO;
+    }
+
+    public Artist createArtist(ArtistDTO artistDTO){
+        Artist artist = new Artist();
+
+        artist.setArtistName(artistDTO.getArtistName());
+        artist.setShortDescription(artistDTO.getShortDescription());
+        artist.setLongDescription(artistDTO.getLongDescription());
+        artist.setVoteNumber(artistDTO.getVoteNumber());
+        artist.setRating(artistDTO.getRating());
+
+        if(artistDTO.getWebsite() != null){
+            artist.setWebsite(artistDTO.getWebsite());
+        }
+
+        if(artist.getPhone() != null){
+            artist.setPhone(artistDTO.getPhone());
+        }
+
+        if(artistDTO.getAddress() != null){
+            artist.setAddress(artistDTO.getAddress());
+        }
+
+        if(artist.getPicture() != null){
+            artist.setPicture(artistDTO.getPicture());
+        }
+
+        if(artistDTO.getEventIdList() != null){
+            artist.setEventList(
+                    artistDTO.getEventIdList()
+                    .stream()
+                    .map(eId -> eventService.findById(eId))
+            );
+        }
+
+        return artist;
     }
 }

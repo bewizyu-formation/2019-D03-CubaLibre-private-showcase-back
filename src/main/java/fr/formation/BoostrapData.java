@@ -50,7 +50,7 @@ public class BoostrapData {
 	@EventListener(ContextRefreshedEvent.class)
 	public void onStart() throws InvalidException, UnsupportedEncodingException {
 
-		UserDTO admin = new UserDTO();
+		/*UserDTO admin = new UserDTO();
 
 		admin.setUsername("admin");
 		admin.setPassword("adminPass1");
@@ -69,6 +69,7 @@ public class BoostrapData {
 		user.setPassword("userPass1");
 		user.setEmail("user@mail.com");
 		user.setCity("Lyon");
+		user.setArtistName("Artist1");
 
 		userService.addNewUser(
 				user,
@@ -86,9 +87,9 @@ public class BoostrapData {
 				9,
 				new byte[50]);
 		artistService.addNewArtist(artist69);
-		countyAcceptedService.addNewCountyAccepted(69, artist69);
+		//countyAcceptedService.addCountyAccepted(69, artist69);
 
-		Artist artist6944 = new Artist(
+		/*Artist artist6944 = new Artist(
 				"Artist2",
 				"description longue très longue de l'artiste",
 				"description courte de l'artiste",
@@ -99,8 +100,8 @@ public class BoostrapData {
 				9,
 				new byte[50]);
 		artistService.addNewArtist(artist6944);
-		countyAcceptedService.addNewCountyAccepted(69, artist6944);
-		countyAcceptedService.addNewCountyAccepted(44, artist6944);
+		countyAcceptedService.addCountyAccepted(69, artist6944);
+		countyAcceptedService.addCountyAccepted(44, artist6944);
 
 		Artist artist44 = new Artist(
 				"Artist3",
@@ -113,7 +114,7 @@ public class BoostrapData {
 				8,
 				new byte[50]);
 		artistService.addNewArtist(artist44);
-		countyAcceptedService.addNewCountyAccepted(44, artist44);
+		//countyAcceptedService.addCountyAccepted(44, artist44);*/
 
 
 	}

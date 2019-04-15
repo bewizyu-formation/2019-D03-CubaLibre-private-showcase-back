@@ -2,9 +2,11 @@ package fr.formation.artist;
 
 import fr.formation.controllers.AbstractController;
 import fr.formation.user.User;
+import fr.formation.user.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @RestController
@@ -13,12 +15,6 @@ public class ArtistController extends AbstractController {
 
     @Autowired
     ArtistService artistService;
-
-    @PostMapping("/new")
-    public void addArtist(@RequestBody Artist artist) {
-        artistService.addNewArtist(artist);
-
-    }
 
     /**
      * getArtistsByCounty.

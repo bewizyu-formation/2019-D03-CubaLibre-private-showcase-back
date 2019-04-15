@@ -25,7 +25,6 @@ import org.springframework.util.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -117,14 +116,14 @@ public class UserService implements UserDetailsService {
     }
 
     private boolean cityExists(String city) throws UnsupportedEncodingException {
-        return   communeServiceImpl.getCommunes(city)
+        return communeServiceImpl.getCommunes(city)
                 .stream()
                 .map(c -> ((String) c.get("nom")).equalsIgnoreCase(city))
                 .reduce((a, b) -> a || b)
                 .isPresent();
     }
 
-    private UserDTO encryptPassword(UserDTO userDTO){
+    private UserDTO encryptPassword(UserDTO userDTO) {
 
         UserDTO passwordEncryptedUserDTO = new UserDTO();
 
@@ -142,27 +141,33 @@ public class UserService implements UserDetailsService {
 
     /**
      * Add a new user with the user repository
-     *  @param userDTO  the user
-     * @param roles the roles
+     *
+     * @param userAndArtist the user and artist if there
+     * @param roles         the roles
      */
-    public void addNewUser(UserDTO userDTO, String... roles) throws InvalidException, UnsupportedEncodingException {
+    public void addNewUser(UserAndArtist userAndArtist, String... roles) throws InvalidException, UnsupportedEncodingException {
 
+        UserDTO userDTO = userAndArtist.getUser();
 
+        log.info("user : " + userDTO);
 
         if (userRepository.findByUsername(userDTO.getUsername()) != null) {
             throw new UserAlreadyExistsException();
-        } else if (!isValidPassword((userDTO.getPassword()))){
+        } else if (!isValidPassword((userDTO.getPassword()))) {
             throw new InvalidPasswordException();
         } else if (!cityExists(userDTO.getCity())) {
             throw new InvalidCityException();
         } else {
+            //On créé un artist d'abord si il existe
+            if (userAndArtist.getArtist() != null) {
+                Artist artist = userAndArtist.getArtist();
+                artistService.addNewArtist(artist);
+            }
             userRepository.save(createUser(encryptPassword(userDTO)));
+            countyAcceptedService.addCountyAccepted(
+                    Integer.parseInt(getUserByUsername(userDTO.getUsername()).getCodeCounty()),
+                    artistService.findByArtistName(userDTO.getArtistName()));
         }
-/* A faire dans addNewArtist
-        if (userDTO.getArtist() != null && cityExist) {
-            artistService.addNewArtist(userDTO.getArtist());
-            countyAcceptedService.addNewCountyAccepted(Integer.parseInt(userToAdd.getCodeCounty()), userDTO.getArtist());
-        }*/
 
         for (String role : roles) {
 
@@ -172,39 +177,46 @@ public class UserService implements UserDetailsService {
 
             userRoleRepository.save(userRole);
         }
-
-
     }
 
-    public User findByArtistName(String artistName){
+    public User findByArtistName(String artistName) {
         return userRepository.findByArtist(artistRepository.findByArtistName(artistName));
     }
 
     public UserDTO createUserDTO(User user) {
         UserDTO userDTO = new UserDTO();
 
-        userDTO.setArtistName(user.getArtist().getArtistName());
-        userDTO.setCity(user.getCity());
-        userDTO.setEmail(user.getEmail());
-        userDTO.setEventIdConfirmedList(
-                user.getEventConfirmedList()
-                        .stream()
-                        .map(e -> e.getId())
-                        .collect(Collectors.toSet())
-        );
-        userDTO.setEventIdInvitatedList(
-                user.getEventConfirmedList()
-                .stream()
-                .map(e -> e.getId())
-                .collect(Collectors.toSet())
-        );
         userDTO.setUsername(user.getEmail());
         userDTO.setPassword(user.getPassword());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setCity(user.getCity());
+
+        if (user.getArtist() != null) {
+            userDTO.setArtistName(user.getArtist().getArtistName());
+        }
+
+        if (user.getEventConfirmedList() != null) {
+            userDTO.setEventIdConfirmedList(
+                    user.getEventConfirmedList()
+                            .stream()
+                            .map(e -> e.getId())
+                            .collect(Collectors.toSet())
+            );
+        }
+
+        if (user.getEventInvitatedList() != null) {
+            userDTO.setEventIdInvitatedList(
+                    user.getEventConfirmedList()
+                            .stream()
+                            .map(e -> e.getId())
+                            .collect(Collectors.toSet())
+            );
+        }
 
         return userDTO;
     }
 
-    public User createUser(UserDTO userDTO) throws UnsupportedEncodingException{
+    public User createUser(UserDTO userDTO) throws UnsupportedEncodingException {
         User user = new User();
 
         user.setUsername(userDTO.getUsername());
@@ -214,34 +226,38 @@ public class UserService implements UserDetailsService {
 
         user.setCodeCity(
                 (String) communeServiceImpl.getCommunes(userDTO.getCity())
-                .stream()
-                .filter(c -> ((String) c.get("nom")).equalsIgnoreCase(userDTO.getCity()))
-                .collect(Collectors.toList())
-                .get(0)
-                .get("code")
+                        .stream()
+                        .filter(c -> ((String) c.get("nom")).equalsIgnoreCase(userDTO.getCity()))
+                        .collect(Collectors.toList())
+                        .get(0)
+                        .get("code")
         );
 
         user.setCodeCounty(
                 (String) communeServiceImpl.getCommunes(userDTO.getCity())
-                .stream()
-                .filter(c -> ((String) c.get("nom")).equalsIgnoreCase(userDTO.getCity()))
-                .collect(Collectors.toList())
-                .get(0)
-                .get("codeDepartement"));
+                        .stream()
+                        .filter(c -> ((String) c.get("nom")).equalsIgnoreCase(userDTO.getCity()))
+                        .collect(Collectors.toList())
+                        .get(0)
+                        .get("codeDepartement"));
 
-        /*user.setEventInvitatedList(
-                userDTO.getEventIdInvitatedList()
-                .stream()
-                .map(id -> eventService.findById(id))
-                .collect(Collectors.toSet())
-        );*/
+        if (userDTO.getEventIdInvitatedList() != null) {
+            user.setEventInvitatedList(
+                    userDTO.getEventIdInvitatedList()
+                            .stream()
+                            .map(id -> eventService.findById(id))
+                            .collect(Collectors.toSet())
+            );
+        }
 
-        /*user.setEventConfirmedList(
-                userDTO.getEventIdConfirmedList()
-                .stream()
-                .map(id -> eventService.findById(id))
-                .collect(Collectors.toSet())
-        );*/
+        if (userDTO.getEventIdConfirmedList() != null) {
+            user.setEventConfirmedList(
+                    userDTO.getEventIdConfirmedList()
+                            .stream()
+                            .map(id -> eventService.findById(id))
+                            .collect(Collectors.toSet())
+            );
+        }
 
         if (artistService.findByArtistName(userDTO.getArtistName()) != null) {
             user.setArtist(artistService.findByArtistName(userDTO.getArtistName()));

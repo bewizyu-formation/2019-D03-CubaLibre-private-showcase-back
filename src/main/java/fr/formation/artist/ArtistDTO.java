@@ -1,90 +1,20 @@
 package fr.formation.artist;
 
-
-import fr.formation.event.Event;
-import fr.formation.user.User;
-
-import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import java.util.Set;
 
-/**
- * The type artist
- */
-@Entity
-@Table()
-public class Artist {
+public class ArtistDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @NotNull
     private String artistName;
-
-    private String longDescription;
-
-    @NotNull
     private String shortDescription;
-
+    private String longDescription;
+    private int voteNumber = 0;
+    private int rating;
     private String website;
-
     private String phone;
-
     private String address;
 
-    private int voteNumber = 0;
-
-    @Min(0)
-    @Max(10)
-    private int rating;
-
-    //@OneToOne(mappedBy = "artist")
-    //private User user;
-
-    @Lob
-    @Column(columnDefinition = "BLOB")
     private byte[] picture;
-
-    @OneToMany(mappedBy = "artist")
-    private Set<Event> eventList;
-
-    public Artist(){
-    }
-
-
-    public Artist(@NotNull String artistName, String longDescription, @NotNull String shortDescription,String website, String phone, String address, @NotNull int voteNumber, @Min(0) @Max(10) int rating, byte[] picture) {
-        this.artistName = artistName;
-        this.longDescription = longDescription;
-        this.website = website;
-        this.phone = phone;
-        this.address = address;
-        this.voteNumber = voteNumber;
-        this.rating = rating;
-        this.picture = picture;
-        this.shortDescription = shortDescription;
-    }
-
-
-    /**
-     * Gets id
-     *
-     * @return value of id
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * Sets id
-     *
-     * @param id the id
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private Set<Long> eventIdList;
 
     /**
      * Gets artistName
@@ -105,9 +35,9 @@ public class Artist {
     }
 
     /**
-     * Gets description
+     * Gets longDescription
      *
-     * @return value of description
+     * @return value of longDescription
      */
     public String getLongDescription() {
         return longDescription;
@@ -120,6 +50,24 @@ public class Artist {
      */
     public void setLongDescription(String longDescription) {
         this.longDescription = longDescription;
+    }
+
+    /**
+     * Gets shortDescription
+     *
+     * @return value of shortDescription
+     */
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    /**
+     * Sets shortDescription
+     *
+     * @param shortDescription the shortDescription
+     */
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
     }
 
     /**
@@ -231,39 +179,20 @@ public class Artist {
     }
 
     /**
-     * Gets shortDescription
+     * Gets eventIdList
      *
-     * @return value of shortDescription
+     * @return value of eventIdList
      */
-    public String getShortDescription() {
-        return shortDescription;
+    public Set<Long> getEventIdList() {
+        return eventIdList;
     }
 
     /**
-     * Sets shortDescrption
+     * Sets eventIdList
      *
-     * @param shortDescription the shortDescription
+     * @param eventIdList the eventIdList
      */
-    public void setShortDescription(String shortDescription) {
-        this.shortDescription = shortDescription;
-    }
-
-
-    /**
-     * Gets eventList
-     *
-     * @return value of eventList
-     */
-    public Set<Event> getEventList() {
-        return eventList;
-    }
-
-    /**
-     * Sets eventList
-     *
-     * @param eventList the eventList
-     */
-    public void setEventList(Set<Event> eventList) {
-        this.eventList = eventList;
+    public void setEventIdList(Set<Long> eventIdList) {
+        this.eventIdList = eventIdList;
     }
 }

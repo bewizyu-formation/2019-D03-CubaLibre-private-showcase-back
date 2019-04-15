@@ -1,5 +1,6 @@
 package fr.formation.county_accepted;
 
+import fr.formation.artist.Artist;
 import fr.formation.artist.ArtistService;
 import fr.formation.controllers.AbstractController;
 import fr.formation.geo.services.DepartementService;
@@ -46,6 +47,8 @@ public class CountyAcceptedController extends AbstractController {
                     .collect(Collectors.toList());
             return nameCountyAcceptedByArtist;
     }
+
+
 
 
 }
