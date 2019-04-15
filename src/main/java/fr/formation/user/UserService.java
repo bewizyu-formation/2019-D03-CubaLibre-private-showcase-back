@@ -11,6 +11,7 @@ import fr.formation.user.exceptions.UserAlreadyExistsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +20,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.UnsupportedEncodingException;
 import java.util.*;
@@ -170,10 +172,9 @@ public class UserService implements UserDetailsService {
             }
             String value = map.get(key);
         }
-
     }
 
-    public String passwordEncode(String password){
-        return this.passwordEncoder.encode(password);
+    public boolean isSamePassword(String oldPasswordDataBase, String oldPasswordUser){
+    	return oldPasswordDataBase.equals(this.passwordEncoder.encode(oldPasswordUser));
     }
 }
