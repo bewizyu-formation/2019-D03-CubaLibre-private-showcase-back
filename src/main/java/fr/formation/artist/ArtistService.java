@@ -65,4 +65,5 @@ public class ArtistService {
         Artist artist = artistRepository.findByArtistName(artistName);
         return artist;
     }
+
 }
