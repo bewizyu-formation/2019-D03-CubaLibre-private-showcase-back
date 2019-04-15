@@ -6,9 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
@@ -28,13 +26,13 @@ public class ArtistController extends AbstractController {
      * getArtistsByCounty.
      */
     @GetMapping("/")
-    public List<Artist> getArtistsByCounty() {
+    public List<ArtistDTO> getArtistsByCounty() {
         User user = getAuthenticatedUser();
-        return artistService.getArtistByDepartement(Integer.parseInt(user.getCodeCounty()));
+        return artistService.getArtistByDepartementAcceptedCode(Integer.parseInt(user.getCodeCounty()));
     }
 
     @GetMapping("/all/")
-    public List<Artist> getArtistsList() {
+    public List<ArtistDTO> getArtistsList() {
         return artistService.getArtistsList();
 
     }
@@ -42,6 +40,11 @@ public class ArtistController extends AbstractController {
     @GetMapping("/{artistName}")
     public ArtistDTO findByArtistName(@PathVariable("artistName") String artistName) throws UnsupportedEncodingException {
         return artistService.findByArtistName(artistName);
+    }
+
+    @PutMapping("/")
+    public void saveArtist(@RequestBody ArtistDTO artistDTO) throws UnsupportedEncodingException{
+        artistService.saveArtist(artistDTO);
     }
 
 

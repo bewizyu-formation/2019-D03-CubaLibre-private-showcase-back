@@ -20,5 +20,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	public User findByArtist(Artist artist);
 
+	public User findByArtistArtistName(String artistName);
+
 
 }

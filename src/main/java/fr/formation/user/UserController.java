@@ -62,12 +62,12 @@ public class UserController extends AbstractController {
 	 * @param fields[2] --> email
 	 * */
 	@PutMapping("/changePassword")
-	public void changePassword(@RequestBody String []fields) throws InvalidException, UnsupportedEncodingException {
+	public void changePassword(@RequestBody UserDTO userDTO) throws InvalidException, UnsupportedEncodingException {
 		try {
 			User user = getAuthenticatedUser();
-			if(userService.isSamePassword(user.getPassword(), fields[0]) && user.getEmail().equals(fields[2])){
-				user.setPassword(this.userService.passwordEncode(fields[1]));
-				userService.saveUser(user);
+			if(userService.isSamePassword(user.getPassword(),
+					userDTO.getPassword()) && user.getEmail().equals(userDTO.getEmail())){
+				userService.changeUserPassword(userDTO);
 			}
 		}catch(Exception e){
 			System.out.println("Error");
