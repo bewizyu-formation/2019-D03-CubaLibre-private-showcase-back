@@ -18,6 +18,9 @@ public class ArtistController extends AbstractController {
     @Autowired
     private ArtistService artistService;
 
+    @Autowired
+    private ArtistRepository artistRepository;
+
     private static final Logger log = LoggerFactory.getLogger(ArtistController.class);
 
     /**
@@ -51,7 +54,7 @@ public class ArtistController extends AbstractController {
 
             Artist artistWithImage = artistService.findByArtistName(artistName);
             artistWithImage.setPicture(bytesImage);
-            artistService.saveArtist(artistWithImage);
+            artistRepository.save(artistWithImage);
 
         }
     }
