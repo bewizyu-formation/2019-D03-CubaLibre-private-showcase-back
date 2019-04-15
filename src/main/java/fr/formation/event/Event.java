@@ -5,7 +5,7 @@ import fr.formation.artist.Artist;
 import fr.formation.user.User;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 import java.util.Set;
 
 /**
