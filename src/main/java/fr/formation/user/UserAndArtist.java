@@ -1,17 +1,22 @@
 package fr.formation.user;
 
-import fr.formation.artist.Artist;
+import fr.formation.artist.ArtistDTO;
 
 public class UserAndArtist {
-    public Artist artist;
+    public ArtistDTO artist;
     public UserDTO user;
+
+    public UserAndArtist(UserDTO user, ArtistDTO artist){
+        this.artist = artist;
+        this.user = user;
+    }
 
     /**
      * Gets artist
      *
      * @return value of artist
      */
-    public Artist getArtist() {
+    public ArtistDTO getArtist() {
         return artist;
     }
 
@@ -20,7 +25,7 @@ public class UserAndArtist {
      *
      * @param artist the artist
      */
-    public void setArtist(Artist artist) {
+    public void setArtist(ArtistDTO artist) {
         this.artist = artist;
     }
 

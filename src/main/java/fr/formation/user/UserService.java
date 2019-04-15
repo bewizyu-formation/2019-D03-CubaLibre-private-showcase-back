@@ -2,15 +2,13 @@ package fr.formation.user;
 
 
 import fr.formation.artist.Artist;
+import fr.formation.artist.ArtistDTO;
 import fr.formation.artist.ArtistRepository;
 import fr.formation.artist.ArtistService;
 import fr.formation.county_accepted.CountyAcceptedService;
 import fr.formation.event.EventService;
 import fr.formation.geo.services.impl.CommuneServiceImpl;
-import fr.formation.user.exceptions.InvalidCityException;
-import fr.formation.user.exceptions.InvalidException;
-import fr.formation.user.exceptions.InvalidPasswordException;
-import fr.formation.user.exceptions.UserAlreadyExistsException;
+import fr.formation.user.exceptions.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -148,6 +146,7 @@ public class UserService implements UserDetailsService {
     public void addNewUser(UserAndArtist userAndArtist, String... roles) throws InvalidException, UnsupportedEncodingException {
 
         UserDTO userDTO = userAndArtist.getUser();
+        ArtistDTO artistDTO = userAndArtist.getArtist();
 
         log.info("user : " + userDTO);
 
@@ -159,14 +158,22 @@ public class UserService implements UserDetailsService {
             throw new InvalidCityException();
         } else {
             //On créé un artist d'abord si il existe
-            if (userAndArtist.getArtist() != null) {
-                Artist artist = userAndArtist.getArtist();
-                artistService.addNewArtist(artist);
+            if (artistDTO != null) {
+                if(artistRepository.findByArtistName(artistDTO.getArtistName()) != null){
+                    throw new ArtistAlreadyExistsException();
+                } else {
+                    artistService.addNewArtist(artistDTO);
+                }
             }
+
             userRepository.save(createUser(encryptPassword(userDTO)));
-            countyAcceptedService.addCountyAccepted(
-                    Integer.parseInt(getUserByUsername(userDTO.getUsername()).getCodeCounty()),
-                    artistService.findByArtistName(userDTO.getArtistName()));
+
+            //On ne peut rajouter le département que une fois que l'utilisateur et l'artiste ont été créés
+            if (artistDTO != null) {
+                countyAcceptedService.addCountyAccepted(
+                        Integer.parseInt(getUserByUsername(userDTO.getUsername()).getCodeCounty()),
+                        artistRepository.findByArtistName(userDTO.getArtistName()));
+            }
         }
 
         for (String role : roles) {
@@ -259,8 +266,8 @@ public class UserService implements UserDetailsService {
             );
         }
 
-        if (artistService.findByArtistName(userDTO.getArtistName()) != null) {
-            user.setArtist(artistService.findByArtistName(userDTO.getArtistName()));
+        if (artistRepository.findByArtistName(userDTO.getArtistName()) != null) {
+            user.setArtist(artistRepository.findByArtistName(userDTO.getArtistName()));
         }
 
         return user;

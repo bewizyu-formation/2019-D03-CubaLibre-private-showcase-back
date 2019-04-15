@@ -3,7 +3,7 @@ package fr.formation.artist;
 import fr.formation.county_accepted.CountyAccepted;
 import fr.formation.county_accepted.CountyAcceptedRepository;
 import fr.formation.county_accepted.CountyAcceptedService;
-import fr.formation.user.UserService;
+import fr.formation.event.EventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class ArtistService {
 
     private ArtistRepository artistRepository;
 
-    private UserService userService;
+    private EventService eventService;
 
     private CountyAcceptedService countyAcceptedService;
 
@@ -37,13 +37,20 @@ public class ArtistService {
      * @param artistRepository the artist repository
      */
     @Autowired
-    public ArtistService(CountyAcceptedRepository countyAcceptedRepository, ArtistRepository artistRepository, CountyAcceptedService countyAcceptedService) {
+    public ArtistService(EventService eventService,
+                         CountyAcceptedRepository countyAcceptedRepository,
+                         ArtistRepository artistRepository,
+                         CountyAcceptedService countyAcceptedService) {
+
+        this.eventService = eventService;
         this.artistRepository = artistRepository;
         this.countyAcceptedService = countyAcceptedService;
         this.countyAcceptedRepository = countyAcceptedRepository;
     }
 
-    public void addNewArtist(Artist artist) throws UnsupportedEncodingException {
+    public void addNewArtist(ArtistDTO artistDTO) throws UnsupportedEncodingException {
+
+        Artist artist = createArtist(artistDTO);
 
         artistRepository.save(artist);
         /*log.info("Artist name : " + artist.getArtistName());
@@ -86,35 +93,35 @@ public class ArtistService {
         artistDTO.setVoteNumber(artist.getVoteNumber());
         artistDTO.setRating(artist.getRating());
 
-        if(artist.getWebsite() != null){
+        if (artist.getWebsite() != null) {
             artistDTO.setWebsite(artist.getWebsite());
         }
 
-        if(artist.getPhone() != null){
+        if (artist.getPhone() != null) {
             artistDTO.setPhone(artist.getPhone());
         }
 
-        if(artist.getAddress() != null){
+        if (artist.getAddress() != null) {
             artistDTO.setAddress(artist.getAddress());
         }
 
-        if(artist.getPicture() != null){
+        if (artist.getPicture() != null) {
             artistDTO.setPicture(artist.getPicture());
         }
 
-        if(artist.getEventList() != null){
+        if (artist.getEventList() != null) {
             artistDTO.setEventIdList(
                     artist.getEventList()
-                    .stream()
-                    .map(e -> e.getId())
-                    .collect(Collectors.toSet())
+                            .stream()
+                            .map(e -> e.getId())
+                            .collect(Collectors.toSet())
             );
         }
 
         return artistDTO;
     }
 
-    public Artist createArtist(ArtistDTO artistDTO){
+    public Artist createArtist(ArtistDTO artistDTO) {
         Artist artist = new Artist();
 
         artist.setArtistName(artistDTO.getArtistName());
@@ -123,27 +130,28 @@ public class ArtistService {
         artist.setVoteNumber(artistDTO.getVoteNumber());
         artist.setRating(artistDTO.getRating());
 
-        if(artistDTO.getWebsite() != null){
+        if (artistDTO.getWebsite() != null) {
             artist.setWebsite(artistDTO.getWebsite());
         }
 
-        if(artist.getPhone() != null){
+        if (artist.getPhone() != null) {
             artist.setPhone(artistDTO.getPhone());
         }
 
-        if(artistDTO.getAddress() != null){
+        if (artistDTO.getAddress() != null) {
             artist.setAddress(artistDTO.getAddress());
         }
 
-        if(artist.getPicture() != null){
+        if (artist.getPicture() != null) {
             artist.setPicture(artistDTO.getPicture());
         }
 
-        if(artistDTO.getEventIdList() != null){
+        if (artistDTO.getEventIdList() != null) {
             artist.setEventList(
                     artistDTO.getEventIdList()
-                    .stream()
-                    .map(eId -> eventService.findById(eId))
+                            .stream()
+                            .map(eId -> eventService.findById(eId))
+                            .collect(Collectors.toSet())
             );
         }
 
