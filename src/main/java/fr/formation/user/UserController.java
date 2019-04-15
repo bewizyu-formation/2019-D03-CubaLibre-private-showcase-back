@@ -28,12 +28,16 @@ public class UserController extends AbstractController {
 
 	/**
 	 * Signup.
-	 *
+	 *	
 	 * @param user the user
 	 */
 	@PostMapping("/")
+<<<<<<< HEAD
 	public void signup(@RequestBody User user) throws InvalidException, UnsupportedEncodingException {
 
+=======
+	public void signup( User user) throws InvalidException, UnsupportedEncodingException {
+>>>>>>> b98a84fc5570c3352995d3363fd8aa2771df4b80
 		try {
 			userService.addNewUser(user, ROLE_USER);
 		} catch(InvalidException e){
@@ -42,6 +46,7 @@ public class UserController extends AbstractController {
 		}
 	}
 
+<<<<<<< HEAD
 	@PutMapping("/changePassword/")
 	public void changePassword(@RequestBody String oldPassword, String newPassword, String email) throws InvalidException, UnsupportedEncodingException {
 		try {
@@ -49,6 +54,23 @@ public class UserController extends AbstractController {
 				getAuthenticatedUser().setPassword(this.userService.passwordEncode(newPassword));
 			}
 		}catch(Exception e){
+=======
+	/**
+	 * @param fields[0] --> oldPassword
+	 * @param fields[1] --> password
+	 * @param fields[2] --> email
+	 * */
+	@PutMapping("/changePassword")
+	public void changePassword(@RequestBody String []fields) throws InvalidException, UnsupportedEncodingException {
+		try {
+			if(userService.isSamePassword(getAuthenticatedUser().getPassword(), fields[0]) && getAuthenticatedUser().getEmail().equals(fields[2])){
+				getAuthenticatedUser().setPassword(this.userService.passwordEncode(fields[1]));
+				User user = userService.getUserByUsername(getAuthenticatedUser().getUsername());
+				user.setPassword(this.userService.passwordEncode(fields[1]));
+			}
+		}catch(Exception e){
+			System.out.println("Error");
+>>>>>>> b98a84fc5570c3352995d3363fd8aa2771df4b80
 			throw new ResponseStatusException(
 					HttpStatus.BAD_REQUEST, e.getMessage(), e);
 		}

@@ -11,6 +11,7 @@ import fr.formation.user.exceptions.UserAlreadyExistsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,11 +20,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,6 +58,7 @@ public class UserService implements UserDetailsService {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.passwordEncoder = passwordEncoder;
+        System.out.println("Modification de : passwordEncoder");
         this.communeServiceImpl = communeServiceImpl;
         this.countyAcceptedService = countyAcceptedService;
         this.artistService = artistService;
@@ -157,7 +158,29 @@ public class UserService implements UserDetailsService {
 
     }
 
+<<<<<<< HEAD
     public String passwordEncode(String password){
         return this.passwordEncoder.encode(password);
     }
 }
+=======
+    public void modifyUser(User user, HashMap<String, String> map){
+        Set keys = map.keySet();
+        Iterator iterator = keys.iterator();
+        while(iterator.hasNext()){
+            String key = (String) iterator.next();
+
+            if(key.equals("userName")){
+
+            }else if(key.equals("password")){
+
+            }
+            String value = map.get(key);
+        }
+    }
+
+    public boolean isSamePassword(String oldPasswordDataBase, String oldPasswordUser){
+    	return oldPasswordDataBase.equals(this.passwordEncoder.encode(oldPasswordUser));
+    }
+}
+>>>>>>> b98a84fc5570c3352995d3363fd8aa2771df4b80
