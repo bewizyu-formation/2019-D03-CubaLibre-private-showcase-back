@@ -108,7 +108,6 @@ public class UserService implements UserDetailsService {
      */
     public void addNewUser(User user, String... roles) throws InvalidException, UnsupportedEncodingException {
         User userToAdd = new User();
-        System.out.println("test "+user.getUsername());
         if (userRepository.findByUsername(user.getUsername()) == null) {
             userToAdd.setUsername(user.getUsername());
         } else {
