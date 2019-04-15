@@ -39,5 +39,17 @@ public class UserController extends AbstractController {
 		}
 	}
 
+	@PutMapping("/changePassword/")
+	public void changePassword(@RequestBody String oldPassword, String newPassword, String email) throws InvalidException, UnsupportedEncodingException {
+		try {
+			if(getAuthenticatedUser().getPassword().equals(this.userService.passwordEncode(oldPassword)) && getAuthenticatedUser().getEmail().equals(email)){
+				getAuthenticatedUser().setPassword(this.userService.passwordEncode(newPassword));
+			}
+		}catch(Exception e){
+			throw new ResponseStatusException(
+					HttpStatus.BAD_REQUEST, e.getMessage(), e);
+		}
+
+	}
 
 }

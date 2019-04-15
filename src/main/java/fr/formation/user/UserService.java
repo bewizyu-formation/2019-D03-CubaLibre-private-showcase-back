@@ -108,7 +108,6 @@ public class UserService implements UserDetailsService {
      */
     public void addNewUser(User user, String... roles) throws InvalidException, UnsupportedEncodingException {
         User userToAdd = new User();
-
         if (userRepository.findByUsername(user.getUsername()) == null) {
             userToAdd.setUsername(user.getUsername());
         } else {
@@ -156,5 +155,9 @@ public class UserService implements UserDetailsService {
 		}
 
 
+    }
+
+    public String passwordEncode(String password){
+        return this.passwordEncoder.encode(password);
     }
 }
