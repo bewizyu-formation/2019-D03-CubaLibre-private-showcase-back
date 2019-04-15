@@ -23,7 +23,7 @@ public class ArtistController extends AbstractController {
 
     @PutMapping("/")
     public void signup(@RequestBody Artist artist) {
-        artistService.addNewArtist(artist);
+        artistService.saveArtist(artist);
 
     }
 
@@ -48,19 +48,17 @@ public class ArtistController extends AbstractController {
     }
 
     @PostMapping("/picture")
-    public void putArtistPicture(@RequestParam("name") String name, @RequestParam("file") MultipartFile file)
+    public void putArtistPicture(@RequestParam("artistName") String artistName, @RequestParam("name") String name, @RequestParam("file") MultipartFile file)
             throws IOException {
         if (!file.isEmpty()) {
-
-            // Vous pouvez trouvez dans ce post un exemple pour sauvegarder un fichier sur le filesystem
-            // https://grokonez.com/frontend/angular/angular-4-uploadget-multipartfile-tofrom-spring-boot-server
             log.info("File Name : " + name);
             log.info("File Type : " + file.getContentType());
 
-            byte[] bytes = file.getBytes();
+            byte[] bytesImage = file.getBytes();
 
-            // For the test, we gave txt files that we can display
-            // Remove all the code below for production !
+            Artist artistWithImage = artistService.getArtistByName(artistName);
+            artistWithImage.setPicture(bytesImage);
+            artistService.saveArtist(artistWithImage);
         }
     }
 

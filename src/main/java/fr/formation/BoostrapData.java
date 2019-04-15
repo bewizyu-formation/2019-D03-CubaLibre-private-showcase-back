@@ -83,7 +83,7 @@ public class BoostrapData {
 				365,
 				9,
 				new byte[50]);
-		artistService.addNewArtist(artist69);
+		artistService.saveArtist(artist69);
 		countyAcceptedService.addNewCountyAccepted(69, artist69);
 
 		Artist artist6944 = new Artist(
@@ -96,7 +96,7 @@ public class BoostrapData {
 				365,
 				9,
 				new byte[50]);
-		artistService.addNewArtist(artist6944);
+		artistService.saveArtist(artist6944);
 		countyAcceptedService.addNewCountyAccepted(69, artist6944);
 		countyAcceptedService.addNewCountyAccepted(44, artist6944);
 
@@ -110,7 +110,7 @@ public class BoostrapData {
 				245324,
 				8,
 				new byte[50]);
-		artistService.addNewArtist(artist44);
+		artistService.saveArtist(artist44);
 		countyAcceptedService.addNewCountyAccepted(44, artist44);
 
 
