@@ -58,7 +58,6 @@ public class UserService implements UserDetailsService {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.passwordEncoder = passwordEncoder;
-        System.out.println("Modification de : passwordEncoder");
         this.communeServiceImpl = communeServiceImpl;
         this.countyAcceptedService = countyAcceptedService;
         this.artistService = artistService;
@@ -158,12 +157,11 @@ public class UserService implements UserDetailsService {
 
     }
 
-<<<<<<< HEAD
+
     public String passwordEncode(String password){
         return this.passwordEncoder.encode(password);
     }
-}
-=======
+
     public void modifyUser(User user, HashMap<String, String> map){
         Set keys = map.keySet();
         Iterator iterator = keys.iterator();
@@ -180,7 +178,8 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean isSamePassword(String oldPasswordDataBase, String oldPasswordUser){
-    	return oldPasswordDataBase.equals(this.passwordEncoder.encode(oldPasswordUser));
+    	return this.passwordEncoder.matches(oldPasswordUser, oldPasswordDataBase);
     }
+
+    public void saveUser(User user){userRepository.save(user);}
 }
->>>>>>> b98a84fc5570c3352995d3363fd8aa2771df4b80

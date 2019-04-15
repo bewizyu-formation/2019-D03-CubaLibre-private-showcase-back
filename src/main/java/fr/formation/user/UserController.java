@@ -32,12 +32,8 @@ public class UserController extends AbstractController {
 	 * @param user the user
 	 */
 	@PostMapping("/")
-<<<<<<< HEAD
 	public void signup(@RequestBody User user) throws InvalidException, UnsupportedEncodingException {
 
-=======
-	public void signup( User user) throws InvalidException, UnsupportedEncodingException {
->>>>>>> b98a84fc5570c3352995d3363fd8aa2771df4b80
 		try {
 			userService.addNewUser(user, ROLE_USER);
 		} catch(InvalidException e){
@@ -46,15 +42,6 @@ public class UserController extends AbstractController {
 		}
 	}
 
-<<<<<<< HEAD
-	@PutMapping("/changePassword/")
-	public void changePassword(@RequestBody String oldPassword, String newPassword, String email) throws InvalidException, UnsupportedEncodingException {
-		try {
-			if(getAuthenticatedUser().getPassword().equals(this.userService.passwordEncode(oldPassword)) && getAuthenticatedUser().getEmail().equals(email)){
-				getAuthenticatedUser().setPassword(this.userService.passwordEncode(newPassword));
-			}
-		}catch(Exception e){
-=======
 	/**
 	 * @param fields[0] --> oldPassword
 	 * @param fields[1] --> password
@@ -63,14 +50,13 @@ public class UserController extends AbstractController {
 	@PutMapping("/changePassword")
 	public void changePassword(@RequestBody String []fields) throws InvalidException, UnsupportedEncodingException {
 		try {
-			if(userService.isSamePassword(getAuthenticatedUser().getPassword(), fields[0]) && getAuthenticatedUser().getEmail().equals(fields[2])){
-				getAuthenticatedUser().setPassword(this.userService.passwordEncode(fields[1]));
-				User user = userService.getUserByUsername(getAuthenticatedUser().getUsername());
+			User user = getAuthenticatedUser();
+			if(userService.isSamePassword(user.getPassword(), fields[0]) && user.getEmail().equals(fields[2])){
 				user.setPassword(this.userService.passwordEncode(fields[1]));
+				userService.saveUser(user);
 			}
 		}catch(Exception e){
 			System.out.println("Error");
->>>>>>> b98a84fc5570c3352995d3363fd8aa2771df4b80
 			throw new ResponseStatusException(
 					HttpStatus.BAD_REQUEST, e.getMessage(), e);
 		}
