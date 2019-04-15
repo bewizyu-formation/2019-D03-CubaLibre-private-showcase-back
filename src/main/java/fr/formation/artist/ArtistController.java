@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @RestController
@@ -39,24 +40,11 @@ public class ArtistController extends AbstractController {
     }
 
     @GetMapping("/{artistName}")
-    public Artist findByArtistName(@PathVariable("artistName") String artistName) {
+    public ArtistDTO findByArtistName(@PathVariable("artistName") String artistName) throws UnsupportedEncodingException {
         return artistService.findByArtistName(artistName);
     }
 
-    @PostMapping("/picture")
-    public void putArtistPicture(@RequestParam("artistName") String artistName, @RequestParam("name") String name, @RequestParam("file") MultipartFile file)
-            throws IOException {
-        if (!file.isEmpty()) {
-            log.info("File Name : " + name);
-            log.info("File Type : " + file.getContentType());
 
-            byte[] bytesImage = file.getBytes();
 
-            Artist artistWithImage = artistService.findByArtistName(artistName);
-            artistWithImage.setPicture(bytesImage);
-            artistRepository.save(artistWithImage);
-
-        }
-    }
 
 }
