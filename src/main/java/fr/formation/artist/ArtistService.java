@@ -48,9 +48,11 @@ public class ArtistService {
         this.countyAcceptedRepository = countyAcceptedRepository;
     }
 
+
     public void addNewArtist(ArtistDTO artistDTO) throws UnsupportedEncodingException {
 
         Artist artist = createArtist(artistDTO);
+
 
         artistRepository.save(artist);
         /*log.info("Artist name : " + artist.getArtistName());
@@ -82,6 +84,10 @@ public class ArtistService {
 
     public Artist findById(Long id) {
         return artistRepository.findById(id).get();
+    }
+
+    public Artist update(Artist artist) {
+        return artistRepository.update(artist);
     }
 
     public ArtistDTO createArtistDTO(Artist artist) {

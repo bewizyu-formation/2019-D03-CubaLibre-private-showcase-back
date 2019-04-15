@@ -94,6 +94,7 @@ public class BoostrapData {
 
 
 
+
 		ArtistDTO artist6944 = new ArtistDTO(
 				"Artist2",
 				"description courte de l'artiste",
@@ -104,9 +105,11 @@ public class BoostrapData {
 				"0102030405",
 				"6944 rue du test",
 				new byte[50]);
+
 		artistService.addNewArtist(artist6944);
 		countyAcceptedService.addCountyAccepted(69, artistService.findByArtistName("Artist2"));
 		countyAcceptedService.addCountyAccepted(44, artistService.findByArtistName("Artist2"));
+
 
 		/*Artist artist44 = new Artist(
 				"Artist3",
@@ -118,8 +121,10 @@ public class BoostrapData {
 				245324,
 				8,
 				new byte[50]);
+
 		artistService.addNewArtist(artist44);
 		countyAcceptedService.addCountyAccepted(44, artist44);*/
+
 
 
 	}

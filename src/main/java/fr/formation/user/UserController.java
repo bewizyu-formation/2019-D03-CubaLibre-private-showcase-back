@@ -10,9 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 
 import static fr.formation.security.SecurityConstants.ROLE_USER;
@@ -44,6 +46,7 @@ public class UserController extends AbstractController {
 	public void addUser(@RequestBody UserAndArtist userAndArtist) throws InvalidException, UnsupportedEncodingException {
 
 		log.info("userandaartist : " + userAndArtist);
+
 		try {
 			userService.addNewUser(userAndArtist , ROLE_USER);
 
@@ -53,5 +56,17 @@ public class UserController extends AbstractController {
 		}
 	}
 
+	@PutMapping("/changePassword/")
+	public void changePassword(@RequestBody String oldPassword, String newPassword, String email) throws InvalidException, UnsupportedEncodingException {
+		try {
+			if(getAuthenticatedUser().getPassword().equals(this.userService.passwordEncode(oldPassword)) && getAuthenticatedUser().getEmail().equals(email)){
+				getAuthenticatedUser().setPassword(this.userService.passwordEncode(newPassword));
+			}
+		}catch(Exception e){
+			throw new ResponseStatusException(
+					HttpStatus.BAD_REQUEST, e.getMessage(), e);
+		}
+
+	}
 
 }

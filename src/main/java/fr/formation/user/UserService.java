@@ -143,6 +143,7 @@ public class UserService implements UserDetailsService {
      * @param userAndArtist the user and artist if there
      * @param roles         the roles
      */
+
     public void addNewUser(UserAndArtist userAndArtist, String... roles) throws InvalidException, UnsupportedEncodingException {
 
         UserDTO userDTO = userAndArtist.getUser();
@@ -201,6 +202,7 @@ public class UserService implements UserDetailsService {
         if (user.getArtist() != null) {
             userDTO.setArtistName(user.getArtist().getArtistName());
         }
+
 
         if (user.getEventConfirmedList() != null) {
             userDTO.setEventIdConfirmedList(
@@ -271,5 +273,9 @@ public class UserService implements UserDetailsService {
         }
 
         return user;
+    }
+
+    public String passwordEncode(String password){
+        return this.passwordEncoder.encode(password);
     }
 }
