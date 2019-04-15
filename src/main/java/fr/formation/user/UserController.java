@@ -28,7 +28,7 @@ public class UserController extends AbstractController {
 
 	/**
 	 * Signup.
-	 *
+	 *	
 	 * @param user the user
 	 */
 	@PostMapping("/")
@@ -42,13 +42,21 @@ public class UserController extends AbstractController {
 		}
 	}
 
-	@PutMapping("/changePassword/")
-	public void changePassword(@RequestBody String oldPassword, String newPassword, String email) throws InvalidException, UnsupportedEncodingException {
+	/**
+	 * @param fields[0] --> oldPassword
+	 * @param fields[1] --> password
+	 * @param fields[2] --> email
+	 * */
+	@PutMapping("/changePassword")
+	public void changePassword(@RequestBody String []fields) throws InvalidException, UnsupportedEncodingException {
 		try {
-			if(getAuthenticatedUser().getPassword().equals(this.userService.passwordEncode(oldPassword)) && getAuthenticatedUser().getEmail().equals(email)){
-				getAuthenticatedUser().setPassword(this.userService.passwordEncode(newPassword));
+			User user = getAuthenticatedUser();
+			if(userService.isSamePassword(user.getPassword(), fields[0]) && user.getEmail().equals(fields[2])){
+				user.setPassword(this.userService.passwordEncode(fields[1]));
+				userService.saveUser(user);
 			}
 		}catch(Exception e){
+			System.out.println("Error");
 			throw new ResponseStatusException(
 					HttpStatus.BAD_REQUEST, e.getMessage(), e);
 		}

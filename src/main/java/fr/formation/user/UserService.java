@@ -11,6 +11,7 @@ import fr.formation.user.exceptions.UserAlreadyExistsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,11 +20,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -157,7 +157,14 @@ public class UserService implements UserDetailsService {
 
     }
 
+
     public String passwordEncode(String password){
         return this.passwordEncoder.encode(password);
     }
+
+    public boolean isSamePassword(String oldPasswordDataBase, String oldPasswordUser){
+    	return this.passwordEncoder.matches(oldPasswordUser, oldPasswordDataBase);
+    }
+
+    public void saveUser(User user){userRepository.save(user);}
 }
