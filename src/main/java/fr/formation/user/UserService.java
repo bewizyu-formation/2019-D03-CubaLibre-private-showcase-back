@@ -162,21 +162,6 @@ public class UserService implements UserDetailsService {
         return this.passwordEncoder.encode(password);
     }
 
-    public void modifyUser(User user, HashMap<String, String> map){
-        Set keys = map.keySet();
-        Iterator iterator = keys.iterator();
-        while(iterator.hasNext()){
-            String key = (String) iterator.next();
-
-            if(key.equals("userName")){
-
-            }else if(key.equals("password")){
-
-            }
-            String value = map.get(key);
-        }
-    }
-
     public boolean isSamePassword(String oldPasswordDataBase, String oldPasswordUser){
     	return this.passwordEncoder.matches(oldPasswordUser, oldPasswordDataBase);
     }
