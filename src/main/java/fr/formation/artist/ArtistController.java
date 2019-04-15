@@ -17,15 +17,12 @@ import java.util.List;
 public class ArtistController extends AbstractController {
 
     @Autowired
-    ArtistService artistService;
+    private ArtistService artistService;
 
-    private static final Logger log = LoggerFactory.getLogger(UserService.class);
+    @Autowired
+    private ArtistRepository artistRepository;
 
-    @PutMapping("/")
-    public void signup(@RequestBody Artist artist) {
-        artistService.saveArtist(artist);
-
-    }
+    private static final Logger log = LoggerFactory.getLogger(ArtistController.class);
 
     /**
      * getArtistsByCounty.
@@ -43,8 +40,8 @@ public class ArtistController extends AbstractController {
     }
 
     @GetMapping("/{artistName}")
-    public Artist findByArtistName(@PathVariable("artistName") String artistName){
-        return artistService.getArtistByName(artistName);
+    public Artist findByArtistName(@PathVariable("artistName") String artistName) {
+        return artistService.findByArtistName(artistName);
     }
 
     @PostMapping("/picture")
@@ -56,7 +53,7 @@ public class ArtistController extends AbstractController {
 
             byte[] bytesImage = file.getBytes();
 
-            Artist artistWithImage = artistService.getArtistByName(artistName);
+            Artist artistWithImage = artistService.findByArtistName(artistName);
             artistWithImage.setPicture(bytesImage);
             artistService.saveArtist(artistWithImage);
         }
