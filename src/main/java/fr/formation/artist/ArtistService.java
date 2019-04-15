@@ -50,6 +50,7 @@ public class ArtistService {
 
 
     public void addNewArtist(ArtistDTO artistDTO) throws UnsupportedEncodingException {
+        //log.info(artistDTO.getPicture());
 
         Artist artist = createArtist(artistDTO);
 
@@ -78,8 +79,8 @@ public class ArtistService {
         return artistRepository.findAll();
     }
 
-    public Artist findByArtistName(String artistName) {
-        return artistRepository.findByArtistName(artistName);
+    public ArtistDTO findByArtistName(String artistName) throws UnsupportedEncodingException{
+        return createArtistDTO(artistRepository.findByArtistName(artistName));
     }
 
     public Artist findById(Long id) {
@@ -87,7 +88,7 @@ public class ArtistService {
     }
 
 
-    public ArtistDTO createArtistDTO(Artist artist) {
+    public ArtistDTO createArtistDTO(Artist artist) throws UnsupportedEncodingException{
         ArtistDTO artistDTO = new ArtistDTO();
 
         artistDTO.setArtistName(artist.getArtistName());
@@ -109,7 +110,7 @@ public class ArtistService {
         }
 
         if (artist.getPicture() != null) {
-            artistDTO.setPicture(artist.getPicture());
+            artistDTO.setPicture(new String(artist.getPicture(), "UTF-8"));
         }
 
         if (artist.getEventList() != null) {
@@ -145,8 +146,8 @@ public class ArtistService {
             artist.setAddress(artistDTO.getAddress());
         }
 
-        if (artist.getPicture() != null) {
-            artist.setPicture(artistDTO.getPicture());
+        if (artistDTO.getPicture() != null) {
+            artist.setPicture(artistDTO.getPicture().getBytes());
         }
 
         if (artistDTO.getEventIdList() != null) {

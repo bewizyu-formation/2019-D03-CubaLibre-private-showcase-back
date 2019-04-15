@@ -2,6 +2,7 @@ package fr.formation;
 
 import fr.formation.artist.Artist;
 import fr.formation.artist.ArtistDTO;
+import fr.formation.artist.ArtistRepository;
 import fr.formation.county_accepted.CountyAcceptedService;
 import fr.formation.security.SecurityConstants;
 import fr.formation.user.User;
@@ -26,6 +27,8 @@ public class BoostrapData {
 
 	private UserService userService;
 
+	private ArtistRepository artistRepository;
+
 	private ArtistService artistService;
 
 	private PasswordEncoder passwordEncoder;
@@ -39,7 +42,8 @@ public class BoostrapData {
 	 * @param passwordEncoder the password encoder
 	 */
 	@Autowired
-	public BoostrapData(UserService userService, PasswordEncoder passwordEncoder, ArtistService artistService, CountyAcceptedService countyAcceptedService) {
+	public BoostrapData(ArtistRepository artistRepository, UserService userService, PasswordEncoder passwordEncoder, ArtistService artistService, CountyAcceptedService countyAcceptedService) {
+		this.artistRepository = artistRepository;
 		this.userService = userService;
 		this.passwordEncoder = passwordEncoder;
 		this.artistService = artistService;
@@ -77,7 +81,6 @@ public class BoostrapData {
 		artist69.setAddress("69 rue du test");
 		artist69.setVoteNumber(365);
 		artist69.setRating(9);
-		artist69.setPicture(new byte[50]);
 
 		UserAndArtist adminWithoutArtist = new UserAndArtist(admin, null);
 		UserAndArtist userAndArtist69 = new UserAndArtist(user, artist69);
@@ -103,12 +106,11 @@ public class BoostrapData {
 				9,
 				"Artist.com",
 				"0102030405",
-				"6944 rue du test",
-				new byte[50]);
+				"6944 rue du test", "");
 
 		artistService.addNewArtist(artist6944);
-		countyAcceptedService.addCountyAccepted(69, artistService.findByArtistName("Artist2"));
-		countyAcceptedService.addCountyAccepted(44, artistService.findByArtistName("Artist2"));
+		countyAcceptedService.addCountyAccepted(69, artistRepository.findByArtistName("Artist2"));
+		countyAcceptedService.addCountyAccepted(44, artistRepository.findByArtistName("Artist2"));
 
 
 		/*Artist artist44 = new Artist(

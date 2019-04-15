@@ -13,7 +13,7 @@ public class ArtistDTO {
     private String phone;
     private String address;
 
-    private byte[] picture;
+    private String picture;
     private Set<Long> eventIdList;
 
     public ArtistDTO(){
@@ -28,7 +28,7 @@ public class ArtistDTO {
                      String website,
                      String phone,
                      String address,
-                     byte[] picture) {
+                     String picture) {
         this.artistName = artistName;
         this.shortDescription = shortDescription;
         this.longDescription = longDescription;
@@ -189,7 +189,7 @@ public class ArtistDTO {
      *
      * @return value of picture
      */
-    public byte[] getPicture() {
+    public String getPicture() {
         return picture;
     }
 
@@ -198,7 +198,7 @@ public class ArtistDTO {
      *
      * @param picture the picture
      */
-    public void setPicture(byte[] picture) {
+    public void setPicture(String picture) {
         this.picture = picture;
     }
 
