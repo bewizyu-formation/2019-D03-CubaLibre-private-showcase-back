@@ -51,6 +51,7 @@ public class ArtistController extends AbstractController {
 
             Artist artistWithImage = artistService.findByArtistName(artistName);
             artistWithImage.setPicture(bytesImage);
+            artistService.saveArtist(artistWithImage);
 
         }
     }
