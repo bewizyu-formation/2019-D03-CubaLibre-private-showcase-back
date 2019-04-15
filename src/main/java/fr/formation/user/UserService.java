@@ -138,7 +138,7 @@ public class UserService implements UserDetailsService {
 		}
 
 		if(user.getArtist()!=null && cityExist){
-			artistService.addNewArtist(user.getArtist());
+			artistService.saveArtist(user.getArtist());
 			countyAcceptedService.addNewCountyAccepted(Integer.parseInt(userToAdd.getCodeCounty()), user.getArtist());
 		}
 
