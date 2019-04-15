@@ -21,9 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,6 +56,7 @@ public class UserService implements UserDetailsService {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.passwordEncoder = passwordEncoder;
+        System.out.println("Modification de : passwordEncoder");
         this.communeServiceImpl = communeServiceImpl;
         this.countyAcceptedService = countyAcceptedService;
         this.artistService = artistService;
@@ -155,6 +154,22 @@ public class UserService implements UserDetailsService {
 		    userRoleRepository.save(userRole);
 		}
 
+
+    }
+
+    public void modifyUser(User user, HashMap<String, String> map){
+        Set keys = map.keySet();
+        Iterator iterator = keys.iterator();
+        while(iterator.hasNext()){
+            String key = (String) iterator.next();
+
+            if(key.equals("userName")){
+
+            }else if(key.equals("password")){
+
+            }
+            String value = map.get(key);
+        }
 
     }
 
