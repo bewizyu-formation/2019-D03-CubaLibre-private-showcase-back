@@ -50,7 +50,6 @@ public class ArtistController extends AbstractController {
     @PostMapping("/picture")
     public void putArtistPicture(@RequestParam("name") String name, @RequestParam("file") MultipartFile file)
             throws IOException {
-        System.out.println("Coucou");
         if (!file.isEmpty()) {
 
             // Vous pouvez trouvez dans ce post un exemple pour sauvegarder un fichier sur le filesystem
