@@ -39,7 +39,7 @@ public class ArtistService {
         this.countyAcceptedRepository = countyAcceptedRepository;
     }
 
-    public void addNewArtist(Artist artist) {
+    public void saveArtist(Artist artist) {
         artistRepository.save(artist);
     }
 
