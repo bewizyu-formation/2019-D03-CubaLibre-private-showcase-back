@@ -1,5 +1,6 @@
 package fr.formation.user;
 
+import fr.formation.artist.Artist;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
@@ -16,6 +17,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	 * @return the user
 	 */
 	public User findByUsername(String username);
+
+	public User findByArtist(Artist artist);
 
 
 }

@@ -1,9 +1,12 @@
 package fr.formation;
 
 import fr.formation.artist.Artist;
+import fr.formation.artist.ArtistDTO;
 import fr.formation.county_accepted.CountyAcceptedService;
 import fr.formation.security.SecurityConstants;
 import fr.formation.user.User;
+import fr.formation.user.UserAndArtist;
+import fr.formation.user.UserDTO;
 import fr.formation.user.UserService;
 import fr.formation.user.exceptions.InvalidException;
 import fr.formation.artist.ArtistService;
@@ -49,69 +52,75 @@ public class BoostrapData {
 	@EventListener(ContextRefreshedEvent.class)
 	public void onStart() throws InvalidException, UnsupportedEncodingException {
 
-		User admin = new User();
+		UserDTO admin = new UserDTO();
 
 		admin.setUsername("admin");
 		admin.setPassword("adminPass1");
 		admin.setEmail("admin@mail.com");
 		admin.setCity("Nantes");
 
-
-		userService.addNewUser(
-				admin,
-				SecurityConstants.ROLE_ADMIN
-		);
-
-		User user = new User();
+		UserDTO user = new UserDTO();
 
 		user.setUsername("user");
 		user.setPassword("userPass1");
 		user.setEmail("user@mail.com");
 		user.setCity("Lyon");
+		user.setArtistName("Artist1");
+
+		ArtistDTO artist69 = new ArtistDTO();
+
+		artist69.setArtistName("Artist1");
+		artist69.setLongDescription("description longue très longue de l'artiste");
+		artist69.setShortDescription("description courte de l'artiste");
+		artist69.setWebsite("Artist.com");
+		artist69.setPhone("0102030405");
+		artist69.setAddress("69 rue du test");
+		artist69.setVoteNumber(365);
+		artist69.setRating(9);
+		artist69.setPicture(new byte[50]);
+
+		UserAndArtist adminWithoutArtist = new UserAndArtist(admin, null);
+		UserAndArtist userAndArtist69 = new UserAndArtist(user, artist69);
 
 		userService.addNewUser(
-				user,
+				adminWithoutArtist,
+				SecurityConstants.ROLE_ADMIN
+		);
+		userService.addNewUser(
+				userAndArtist69,
 				SecurityConstants.ROLE_USER
 		);
-		Artist artist69 = new Artist(
-				"Artist1",
-				"description longue très longue de l'artiste",
+
+
+		ArtistDTO artist6944 = new ArtistDTO(
+				"artist6944",
 				"description courte de l'artiste",
-				"Artist.com ",
-				"0102030405",
-				"69 rue du test",
+				"description longue très longue de l'artiste",
 				365,
 				9,
-				new byte[50]);
-		artistService.saveArtist(artist69);
-		countyAcceptedService.addNewCountyAccepted(69, artist69);
-
-		Artist artist6944 = new Artist(
-				"Artist2",
-				"description longue très longue de l'artiste",
-				"description courte de l'artiste",
 				"Artist.com",
 				"0102030405",
 				"6944 rue du test",
-				365,
-				9,
 				new byte[50]);
-		artistService.saveArtist(artist6944);
-		countyAcceptedService.addNewCountyAccepted(69, artist6944);
-		countyAcceptedService.addNewCountyAccepted(44, artist6944);
 
-		Artist artist44 = new Artist(
-				"Artist3",
-				"description longue très longue de l'artiste",
+		artistService.addNewArtist(artist6944);
+		countyAcceptedService.addCountyAccepted(69, artistService.findByArtistName("artist6944"));
+		countyAcceptedService.addCountyAccepted(44, artistService.findByArtistName("artist6944"));
+
+
+		ArtistDTO artist44 = new ArtistDTO(
+				"artist44",
 				"description courte de l'artiste",
-				"Artist.com",
-				"0102030405",
-				"44 rue du test ",
-				245324,
+				"description longue très longue de l'artiste",
+				362555,
 				8,
+				"Artist44.com",
+				"0102030405",
+				"44 rue du test",
 				new byte[50]);
-		artistService.saveArtist(artist44);
-		countyAcceptedService.addNewCountyAccepted(44, artist44);
+
+		artistService.addNewArtist(artist44);
+		countyAcceptedService.addCountyAccepted(44, artistService.findByArtistName("artist44"));
 
 
 	}
