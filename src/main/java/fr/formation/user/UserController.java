@@ -32,7 +32,11 @@ public class UserController extends AbstractController {
 
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
-
+	private static class Password{
+		public String oldPassword;
+		public String password;
+		public String email;
+	}
 
 	/**
 	 * Signup.
@@ -59,12 +63,13 @@ public class UserController extends AbstractController {
 	 * @param fields[2] --> email
 	 * */
 	@PutMapping("/changePassword")
-	public void changePassword(@RequestBody UserDTO userDTO) throws InvalidException, UnsupportedEncodingException {
+	public void changePassword(@RequestBody Password password) throws InvalidException, UnsupportedEncodingException {
 		try {
 			UserDTO authenticatedUserDTO = getAuthenticatedUserDTO();
 			if(userService.isSamePassword(authenticatedUserDTO.getPassword(),
-					userDTO.getPassword()) && authenticatedUserDTO.getEmail().equals(userDTO.getEmail())){
-				userService.changeUserPassword(userDTO);
+					password.oldPassword) && authenticatedUserDTO.getEmail().equals(password.email)){
+				authenticatedUserDTO.setPassword(password.password);
+				userService.changeUserPassword(authenticatedUserDTO);
 			}
 		}catch(Exception e){
 			System.out.println("Error");
