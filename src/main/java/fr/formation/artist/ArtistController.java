@@ -50,7 +50,7 @@ public class ArtistController extends AbstractController {
             byte[] bytesImage = file.getBytes();
 
             Artist artistWithImage = artistService.findByArtistName(artistName);
-            artistService.update(artistWithImage);
+            artistWithImage.setPicture(bytesImage);
 
         }
     }

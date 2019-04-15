@@ -16,5 +16,4 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
      */
     public Artist findByArtistName(String artistName);
 
-    public Artist update(Artist artist);
 }

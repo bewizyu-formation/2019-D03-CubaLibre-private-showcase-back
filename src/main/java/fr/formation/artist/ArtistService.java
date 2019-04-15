@@ -86,9 +86,6 @@ public class ArtistService {
         return artistRepository.findById(id).get();
     }
 
-    public Artist update(Artist artist) {
-        return artistRepository.update(artist);
-    }
 
     public ArtistDTO createArtistDTO(Artist artist) {
         ArtistDTO artistDTO = new ArtistDTO();
