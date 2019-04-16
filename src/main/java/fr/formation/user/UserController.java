@@ -70,6 +70,7 @@ public class UserController extends AbstractController {
 		UserAndArtist userAndArtist = new UserAndArtist();
 		userAndArtist.setUser(userService.emptyPassword(getAuthenticatedUserDTO()));
 		userAndArtist.setArtist(artistService.findByArtistName(userAndArtist.getUser().getArtistName()));
+		log.info("userAndArtist : " + userAndArtist.getUser().getUsername() + " : " + userAndArtist.getArtist().getArtistName());
 		return userAndArtist;
 	}
 
