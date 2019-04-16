@@ -11,7 +11,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -62,6 +65,28 @@ public class EventService {
                 .stream()
                 .map(e -> createEventDTO(e))
                 .collect(Collectors.toList());
+    }
+
+    public List<EventDTO> findEventByUser(String username){
+        Set<EventDTO> events;
+        events = new HashSet<EventDTO> (eventRepository.findAll()
+                .stream()
+                .filter( o -> o.getOrganiser().getUsername().equals(username))
+                .map(e -> createEventDTO(e))
+                .collect(Collectors.toList()));
+
+       /* events += new HashSet<EventDTO> (eventRepository.findAll()
+        .stream()
+        .filter( o -> o.getConfirmedUserList()
+            .stream()
+            .filter(user -> user.getUsername().equals(username))
+            .map( )
+            .collect(Collectors.toList()))
+        .map(e -> createEventDTO(e))
+        .collect(Collectors.toList()));*/
+
+       return (List) events;
+
     }
 
     public List<EventDTO> findAll() {
