@@ -1,4 +1,4 @@
-package fr.formation.geo;
+/*package fr.formation.geo;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,6 +58,6 @@ public class CommuneControllerTest {
 //				"    }\n" +
 //				"]"))
 		//.andExpect(authenticated().withUsername("user"));
-	}
+	/*}
 
-}
+}*/
