@@ -110,6 +110,21 @@ public class UserService implements UserDetailsService {
         return passwordEncryptedUserDTO;
     }
 
+    public UserDTO emptyPassword(UserDTO userDTO) {
+
+        UserDTO passwordEncryptedUserDTO = new UserDTO();
+
+        passwordEncryptedUserDTO.setPassword("");
+        passwordEncryptedUserDTO.setUsername(userDTO.getUsername());
+        passwordEncryptedUserDTO.setEventIdInvitatedList(userDTO.getEventIdInvitatedList());
+        passwordEncryptedUserDTO.setEventIdConfirmedList(userDTO.getEventIdConfirmedList());
+        passwordEncryptedUserDTO.setEmail(userDTO.getEmail());
+        passwordEncryptedUserDTO.setArtistName(userDTO.getArtistName());
+        passwordEncryptedUserDTO.setCity(userDTO.getCity());
+
+        return passwordEncryptedUserDTO;
+    }
+
     private boolean cityExists(String city) throws UnsupportedEncodingException {
         return communeServiceImpl.getCommunes(city)
                 .stream()

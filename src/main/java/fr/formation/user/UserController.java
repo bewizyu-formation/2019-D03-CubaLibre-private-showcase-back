@@ -57,11 +57,22 @@ public class UserController extends AbstractController {
 		}
 	}
 
-	/**
-	 * @param fields[0] --> oldPassword
-	 * @param fields[1] --> password
-	 * @param fields[2] --> email
-	 * */
+	@GetMapping("/{userName}")
+	public UserAndArtist getUserAndArtist(@PathVariable String userName) throws UnsupportedEncodingException {
+		UserAndArtist userAndArtist = new UserAndArtist();
+		userAndArtist.setUser(userService.emptyPassword(userService.findByUsername(userName)));
+		userAndArtist.setArtist(artistService.findByArtistName(userAndArtist.getUser().getArtistName()));
+		return userAndArtist;
+	}
+
+	@GetMapping("/")
+	public UserAndArtist getCurrentUserAndArtist() throws UnsupportedEncodingException {
+		UserAndArtist userAndArtist = new UserAndArtist();
+		userAndArtist.setUser(userService.emptyPassword(getAuthenticatedUserDTO()));
+		userAndArtist.setArtist(artistService.findByArtistName(userAndArtist.getUser().getArtistName()));
+		return userAndArtist;
+	}
+
 	@PutMapping("/changePassword")
 	public void changePassword(@RequestBody Password password) throws InvalidException, UnsupportedEncodingException {
 		try {
