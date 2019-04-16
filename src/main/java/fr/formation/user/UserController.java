@@ -71,25 +71,26 @@ public class UserController extends AbstractController {
 	public UserAndArtist getCurrentUserAndArtist() throws UnsupportedEncodingException {
 		UserAndArtist userAndArtist = new UserAndArtist();
 		userAndArtist.setUser(userService.emptyPassword(getAuthenticatedUserDTO()));
-		userAndArtist.setArtist(artistService.findByArtistName(userAndArtist.getUser().getArtistName()));
+		if(userAndArtist.getUser().getArtistName() != null) {
+			userAndArtist.setArtist(artistService.findByArtistName(userAndArtist.getUser().getArtistName()));
+		}
 		return userAndArtist;
 	}
 
 	@PutMapping("/changePassword")
 	public void changePassword(@RequestBody Password password) throws InvalidException, UnsupportedEncodingException {
 		try {
-			UserDTO authenticatedUserDTO = getAuthenticatedUserDTO();
-			if(userService.isSamePassword(authenticatedUserDTO.getPassword(),
-					password.oldPassword) && authenticatedUserDTO.getEmail().equals(password.email)){
-				authenticatedUserDTO.setPassword(password.password);
-				userService.changeUserPassword(authenticatedUserDTO);
+			UserDTO authenticatedUserDto = userService.findByUsername(getAuthenticatedUsername());
+			if(userService.isSamePassword(authenticatedUserDto.getPassword(),
+					password.oldPassword) && authenticatedUserDto.getEmail().equals(password.email)){
+				authenticatedUserDto.setPassword(password.password);
+				userService.changeUserPassword(authenticatedUserDto);
 			}
 		}catch(Exception e){
-			System.out.println("Error");
+			log.info("Error");
 			throw new ResponseStatusException(
 					HttpStatus.BAD_REQUEST, e.getMessage(), e);
 		}
 
 	}
-
 }

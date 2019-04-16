@@ -4,6 +4,7 @@ import java.util.Set;
 
 public class ArtistDTO {
 
+    private Long id;
     private String artistName;
     private String shortDescription;
     private String longDescription;
@@ -193,5 +194,23 @@ public class ArtistDTO {
      */
     public void setEventIdList(Set<Long> eventIdList) {
         this.eventIdList = eventIdList;
+    }
+
+    /**
+     * Gets Id
+     *
+     * @return value of ID
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * Sets Id
+     *
+     * @param id the Id
+     */
+    public void setId(Long id) {
+        this.id = id;
     }
 }

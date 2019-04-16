@@ -5,6 +5,7 @@ import fr.formation.artist.Artist;
 import fr.formation.user.User;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -20,7 +21,7 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Date date;
+    private LocalDate date;
 
     @ManyToOne
     private Artist artist;
@@ -59,7 +60,7 @@ public class Event {
      *
      * @return value of date
      */
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
@@ -68,7 +69,7 @@ public class Event {
      *
      * @param date the date
      */
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

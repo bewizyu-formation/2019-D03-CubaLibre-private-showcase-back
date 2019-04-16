@@ -2,7 +2,6 @@ package fr.formation.artist;
 
 
 import fr.formation.event.Event;
-import fr.formation.user.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;

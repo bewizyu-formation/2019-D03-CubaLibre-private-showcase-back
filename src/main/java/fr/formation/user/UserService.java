@@ -98,6 +98,7 @@ public class UserService implements UserDetailsService {
 
         UserDTO passwordEncryptedUserDTO = new UserDTO();
 
+        passwordEncryptedUserDTO.setId(userDTO.getId());
         passwordEncryptedUserDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         passwordEncryptedUserDTO.setUsername(userDTO.getUsername());
         passwordEncryptedUserDTO.setEventIdInvitatedList(userDTO.getEventIdInvitatedList());
@@ -113,6 +114,7 @@ public class UserService implements UserDetailsService {
 
         UserDTO passwordEncryptedUserDTO = new UserDTO();
 
+        passwordEncryptedUserDTO.setId(userDTO.getId());
         passwordEncryptedUserDTO.setPassword("");
         passwordEncryptedUserDTO.setUsername(userDTO.getUsername());
         passwordEncryptedUserDTO.setEventIdInvitatedList(userDTO.getEventIdInvitatedList());
@@ -276,6 +278,7 @@ public class UserService implements UserDetailsService {
     public User createUser(UserDTO userDTO) throws UnsupportedEncodingException {
         User user = new User();
 
+        user.setId(userDTO.getId());
         user.setUsername(userDTO.getUsername());
         user.setPassword(userDTO.getPassword());
         user.setEmail(userDTO.getEmail());
@@ -309,4 +312,5 @@ public class UserService implements UserDetailsService {
 
         return user;
     }
+
 }

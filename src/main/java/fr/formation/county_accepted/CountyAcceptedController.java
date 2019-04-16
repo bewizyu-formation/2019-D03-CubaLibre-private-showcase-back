@@ -1,6 +1,5 @@
 package fr.formation.county_accepted;
 
-import fr.formation.artist.Artist;
 import fr.formation.artist.ArtistRepository;
 import fr.formation.artist.ArtistService;
 import fr.formation.controllers.AbstractController;

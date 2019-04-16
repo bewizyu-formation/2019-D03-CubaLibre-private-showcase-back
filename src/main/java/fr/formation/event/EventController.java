@@ -53,4 +53,10 @@ public class EventController extends AbstractController {
         eventService.saveEvent(eventDTO);
     }
 
+    @GetMapping("/byUser")
+    public List<EventDTO> findAllEventByUser(){
+        UserDTO userDTO = getAuthenticatedUserDTO();
+        return eventService.findEventByUser(userDTO.getUsername());
+    }
+
 }

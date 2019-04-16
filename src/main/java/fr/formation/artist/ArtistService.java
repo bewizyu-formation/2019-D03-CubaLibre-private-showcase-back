@@ -4,7 +4,6 @@ import fr.formation.county_accepted.CountyAccepted;
 import fr.formation.county_accepted.CountyAcceptedRepository;
 import fr.formation.county_accepted.CountyAcceptedService;
 import fr.formation.event.EventRepository;
-import fr.formation.event.EventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +85,7 @@ public class ArtistService {
     public ArtistDTO createArtistDTO(Artist artist) {
         ArtistDTO artistDTO = new ArtistDTO();
 
+        artistDTO.setId(artist.getId());
         artistDTO.setArtistName(artist.getArtistName());
         artistDTO.setShortDescription(artist.getShortDescription());
         artistDTO.setLongDescription(artist.getLongDescription());
@@ -110,6 +110,10 @@ public class ArtistService {
             }
         } catch (UnsupportedEncodingException e) {
             log.info(e.getMessage());
+        }
+
+        if(artist.getId() != null) {
+            artistDTO.setId(artist.getId());
         }
 
         if (artist.getEventList() != null) {
@@ -147,6 +151,10 @@ public class ArtistService {
 
         if (artistDTO.getPicture() != null) {
             artist.setPicture(artistDTO.getPicture().getBytes());
+        }
+
+        if(artistDTO.getId() != null) {
+            artist.setId(artistDTO.getId());
         }
 
         if (artistDTO.getEventIdList() != null) {

@@ -1,6 +1,5 @@
 package fr.formation.county_accepted;
 
-import fr.formation.artist.Artist;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
