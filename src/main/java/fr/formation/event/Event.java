@@ -32,7 +32,7 @@ public class Event {
     private Set<User> invitatedUserList;
 
     @ManyToOne
-    private User organizer;
+    private User organiser;
 
     private int maxConfirmed;
 
@@ -91,21 +91,21 @@ public class Event {
     }
 
     /**
-     * Gets organizer
+     * Gets organiser
      *
-     * @return value of organizer
+     * @return value of organiser
      */
-    public User getOrganizer() {
-        return organizer;
+    public User getOrganiser() {
+        return organiser;
     }
 
     /**
-     * Sets organizer
+     * Sets organiser
      *
-     * @param organizer the organizer
+     * @param organiser the organiser
      */
-    public void setOrganizer(User organizer) {
-        this.organizer = organizer;
+    public void setOrganiser(User organiser) {
+        this.organiser = organiser;
     }
 
     /**
