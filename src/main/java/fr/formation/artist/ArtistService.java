@@ -85,6 +85,7 @@ public class ArtistService {
     public ArtistDTO createArtistDTO(Artist artist) {
         ArtistDTO artistDTO = new ArtistDTO();
 
+        artistDTO.setId(artist.getId());
         artistDTO.setArtistName(artist.getArtistName());
         artistDTO.setShortDescription(artist.getShortDescription());
         artistDTO.setLongDescription(artist.getLongDescription());
