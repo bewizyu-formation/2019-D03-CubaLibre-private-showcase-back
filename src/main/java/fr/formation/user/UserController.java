@@ -71,7 +71,9 @@ public class UserController extends AbstractController {
 	public UserAndArtist getCurrentUserAndArtist() throws UnsupportedEncodingException {
 		UserAndArtist userAndArtist = new UserAndArtist();
 		userAndArtist.setUser(userService.emptyPassword(getAuthenticatedUserDTO()));
-		userAndArtist.setArtist(artistService.findByArtistName(userAndArtist.getUser().getArtistName()));
+		if(userAndArtist.getUser().getArtistName() != null) {
+			userAndArtist.setArtist(artistService.findByArtistName(userAndArtist.getUser().getArtistName()));
+		}
 		return userAndArtist;
 	}
 
