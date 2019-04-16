@@ -48,37 +48,37 @@ public class ArtistService {
         this.countyAcceptedRepository = countyAcceptedRepository;
     }
 
-    public void addNewArtist(ArtistDTO artistDTO){
 
+    public void saveArtist(ArtistDTO artistDTO) throws UnsupportedEncodingException {
         Artist artist = createArtist(artistDTO);
-
         artistRepository.save(artist);
-
     }
 
-    public List<Artist> getArtistByDepartement(int code) {
+    public List<ArtistDTO> getArtistByDepartementAcceptedCode(int code) {
         List<CountyAccepted> listCountyAccepted = countyAcceptedRepository.findByCode(code);
         log.debug("Size of listDepartement" + listCountyAccepted.size());
-        List<Artist> artists = listCountyAccepted
+        List<ArtistDTO> artistDTOs = listCountyAccepted
                 .stream()
                 .map(depAccepted -> depAccepted.getArtist())
+                .map(this::createArtistDTO)
                 .collect(Collectors.toList());
-
-        log.debug("Size of listDepartement" + artists.size());
-
-        return artists;
+        return artistDTOs;
     }
 
-    public List<Artist> getArtistsList() {
-        return artistRepository.findAll();
+    public List<ArtistDTO> getArtistsList() {
+        return artistRepository
+                .findAll()
+                .stream()
+                .map(this::createArtistDTO)
+                .collect(Collectors.toList());
     }
 
-    public Artist findByArtistName(String artistName) {
-        return artistRepository.findByArtistName(artistName);
+    public ArtistDTO findByArtistName(String artistName) throws UnsupportedEncodingException {
+        return createArtistDTO(artistRepository.findByArtistName(artistName));
     }
 
-    public Artist findById(Long id) {
-        return artistRepository.findById(id).get();
+    public ArtistDTO findById(Long id) {
+        return createArtistDTO(artistRepository.findById(id).get());
     }
 
 
@@ -103,8 +103,12 @@ public class ArtistService {
             artistDTO.setAddress(artist.getAddress());
         }
 
-        if (artist.getPicture() != null) {
-            artistDTO.setPicture(artist.getPicture());
+        try {
+            if (artist.getPicture() != null) {
+                artistDTO.setPicture(new String(artist.getPicture(), "UTF-8"));
+            }
+        } catch (UnsupportedEncodingException e) {
+            log.info(e.getMessage());
         }
 
         if (artist.getEventList() != null) {
@@ -140,8 +144,8 @@ public class ArtistService {
             artist.setAddress(artistDTO.getAddress());
         }
 
-        if (artist.getPicture() != null) {
-            artist.setPicture(artistDTO.getPicture());
+        if (artistDTO.getPicture() != null) {
+            artist.setPicture(artistDTO.getPicture().getBytes());
         }
 
         if (artistDTO.getEventIdList() != null) {

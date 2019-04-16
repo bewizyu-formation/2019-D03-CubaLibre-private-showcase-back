@@ -45,7 +45,7 @@ public class Artist {
     //private User user;
 
     @Lob
-    @Column(columnDefinition = "BLOB")
+    @Column(columnDefinition = "LONGBLOB")
     private byte[] picture;
 
     @OneToMany(mappedBy = "artist")

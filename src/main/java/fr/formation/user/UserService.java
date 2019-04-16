@@ -7,6 +7,7 @@ import fr.formation.artist.ArtistService;
 import fr.formation.county_accepted.CountyAcceptedService;
 import fr.formation.event.EventService;
 import fr.formation.geo.services.impl.CommuneServiceImpl;
+import fr.formation.geo.services.impl.DepartementServiceImpl;
 import fr.formation.user.exceptions.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +43,8 @@ public class UserService implements UserDetailsService {
 
     private CommuneServiceImpl communeServiceImpl;
 
+    private DepartementServiceImpl departementServiceImpl;
+
     private ArtistService artistService;
 
     private EventService eventService;
@@ -62,6 +65,7 @@ public class UserService implements UserDetailsService {
                        UserRoleRepository userRoleRepository,
                        PasswordEncoder passwordEncoder,
                        CommuneServiceImpl communeServiceImpl,
+                       DepartementServiceImpl departementServiceImpl,
                        ArtistService artistService,
                        EventService eventService,
                        CountyAcceptedService countyAcceptedService) {
@@ -70,6 +74,7 @@ public class UserService implements UserDetailsService {
         this.userRoleRepository = userRoleRepository;
         this.passwordEncoder = passwordEncoder;
         this.communeServiceImpl = communeServiceImpl;
+        this.departementServiceImpl = departementServiceImpl;
         this.countyAcceptedService = countyAcceptedService;
         this.artistService = artistService;
         this.eventService = eventService;
@@ -107,8 +112,26 @@ public class UserService implements UserDetailsService {
 
     }
 
-    public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public UserDTO findByUsername(String username) {
+        return createUserDTO(userRepository.findByUsername(username));
+    }
+
+    public String findCodeCounty(UserDTO userDTO) throws UnsupportedEncodingException {
+        return (String) communeServiceImpl.getCommunes(userDTO.getCity())
+                .stream()
+                .filter(c -> ((String) c.get("nom")).equalsIgnoreCase(userDTO.getCity()))
+                .collect(Collectors.toList())
+                .get(0)
+                .get("codeDepartement");
+    }
+
+    public String findCodeCity(UserDTO userDTO) throws UnsupportedEncodingException {
+        return (String) communeServiceImpl.getCommunes(userDTO.getCity())
+                .stream()
+                .filter(c -> ((String) c.get("nom")).equalsIgnoreCase(userDTO.getCity()))
+                .collect(Collectors.toList())
+                .get(0)
+                .get("code");
     }
 
     private boolean cityExists(String city) throws UnsupportedEncodingException {
@@ -119,7 +142,7 @@ public class UserService implements UserDetailsService {
                 .isPresent();
     }
 
-    private UserDTO encryptPassword(UserDTO userDTO) {
+    public UserDTO encryptPassword(UserDTO userDTO) {
 
         UserDTO passwordEncryptedUserDTO = new UserDTO();
 
@@ -147,8 +170,6 @@ public class UserService implements UserDetailsService {
         UserDTO userDTO = userAndArtist.getUser();
         ArtistDTO artistDTO = userAndArtist.getArtist();
 
-        log.info("user : " + userDTO);
-
         if (userRepository.findByUsername(userDTO.getUsername()) != null) {
             throw new UserAlreadyExistsException();
         } else if (!isValidPassword((userDTO.getPassword()))) {
@@ -158,19 +179,19 @@ public class UserService implements UserDetailsService {
         } else {
             //On créé un artist d'abord si il existe
             if (artistDTO != null) {
-                if(artistRepository.findByArtistName(artistDTO.getArtistName()) != null){
+                if (artistRepository.findByArtistName(artistDTO.getArtistName()) != null) {
                     throw new ArtistAlreadyExistsException();
                 } else {
-                    artistService.addNewArtist(artistDTO);
+                    artistService.saveArtist(artistDTO);
                 }
             }
 
-            userRepository.save(createUser(encryptPassword(userDTO)));
+            saveUser(createUser(encryptPassword(userDTO)));
 
             //On ne peut rajouter le département que une fois que l'utilisateur et l'artiste ont été créés
             if (artistDTO != null) {
                 countyAcceptedService.addCountyAccepted(
-                        Integer.parseInt(getUserByUsername(userDTO.getUsername()).getCodeCounty()),
+                        Integer.parseInt(findCodeCounty(userDTO)),
                         artistRepository.findByArtistName(userDTO.getArtistName()));
             }
         }
@@ -185,8 +206,8 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public User findByArtistName(String artistName) {
-        return userRepository.findByArtist(artistRepository.findByArtistName(artistName));
+    public UserDTO findByArtistName(String artistName) {
+        return createUserDTO(userRepository.findByArtistArtistName(artistName));
     }
 
     public UserDTO createUserDTO(User user) {
@@ -230,22 +251,9 @@ public class UserService implements UserDetailsService {
         user.setEmail(userDTO.getEmail());
         user.setCity(userDTO.getCity());
 
-        user.setCodeCity(
-                (String) communeServiceImpl.getCommunes(userDTO.getCity())
-                        .stream()
-                        .filter(c -> ((String) c.get("nom")).equalsIgnoreCase(userDTO.getCity()))
-                        .collect(Collectors.toList())
-                        .get(0)
-                        .get("code")
-        );
+        user.setCodeCity(findCodeCity(userDTO));
 
-        user.setCodeCounty(
-                (String) communeServiceImpl.getCommunes(userDTO.getCity())
-                        .stream()
-                        .filter(c -> ((String) c.get("nom")).equalsIgnoreCase(userDTO.getCity()))
-                        .collect(Collectors.toList())
-                        .get(0)
-                        .get("codeDepartement"));
+        user.setCodeCounty(findCodeCounty(userDTO));
 
         if (userDTO.getEventIdInvitatedList() != null) {
             user.setEventInvitatedList(
@@ -272,14 +280,19 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
-
-    public String passwordEncode(String password){
-        return this.passwordEncoder.encode(password);
+    public boolean isSamePassword(String oldPasswordDataBase, String oldPasswordUser) {
+        return this.passwordEncoder.matches(oldPasswordUser, oldPasswordDataBase);
     }
 
-    public boolean isSamePassword(String oldPasswordDataBase, String oldPasswordUser){
-    	return this.passwordEncoder.matches(oldPasswordUser, oldPasswordDataBase);
+    public void saveUser(User user) {
+        userRepository.save(user);
     }
 
-    public void saveUser(User user){userRepository.save(user);}
+    public void changeUserPassword(UserDTO userDTO) throws InvalidException, UnsupportedEncodingException {
+        if (isValidPassword((userDTO.getPassword()))) {
+            saveUser(createUser(encryptPassword(userDTO)));
+        } else {
+            throw new InvalidPasswordException();
+        }
+    }
 }
