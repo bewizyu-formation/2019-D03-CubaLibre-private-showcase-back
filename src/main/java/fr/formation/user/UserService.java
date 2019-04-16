@@ -221,6 +221,7 @@ public class UserService implements UserDetailsService {
     public UserDTO createUserDTO(User user) {
         UserDTO userDTO = new UserDTO();
 
+        userDTO.setId(user.getId());
         userDTO.setUsername(user.getEmail());
         userDTO.setPassword(user.getPassword());
         userDTO.setEmail(user.getEmail());

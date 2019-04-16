@@ -4,6 +4,8 @@ import fr.formation.artist.ArtistRepository;
 import fr.formation.user.UserDTO;
 import fr.formation.user.UserRepository;
 import fr.formation.user.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,8 @@ public class EventService {
     @Autowired
     private UserRepository userRepository;
 
+    private static final Logger log = LoggerFactory.getLogger(EventService.class);
+
     public Event findById(Long id) {
         return eventRepository.findById(id).get();
     }
@@ -41,12 +45,17 @@ public class EventService {
         int organiserCodeCounty = Integer.parseInt(userService.findCodeCounty(organiser));
         List<UserDTO> usersToInvite = userService.findByCountyCode(organiserCodeCounty);
 
-        eventDTOToAdd.setInvitatedUsernameList(
-                usersToInvite
-                        .stream()
-                .map(userDTO -> userDTO.getUsername())
-                .collect(Collectors.toSet())
-        );
+        if (usersToInvite != null) {
+            eventDTOToAdd.setInvitatedIdList(
+                    usersToInvite
+                            .stream()
+                            .map(userDTO -> userDTO.getId())
+                            .collect(Collectors.toSet())
+            );
+        }
+
+        usersToInvite.stream().forEach(user -> log.info("User id : " + user.getId()));
+        //log.info("users to invite : " + usersToInvite);
         //ajouter tous les users du departements dans invitatedList
 
         eventRepository.save(createEvent(eventDTOToAdd));
@@ -77,20 +86,20 @@ public class EventService {
         event.setDate(eventDTO.getDate());
         event.setArtist(artistRepository.findByArtistName(eventDTO.getArtistName()));
 
-        if (eventDTO.getConfirmedUsernameList() != null) {
+        if (eventDTO.getConfirmedIdList() != null) {
             event.setConfirmedUserList(
-                    eventDTO.getConfirmedUsernameList()
+                    eventDTO.getConfirmedIdList()
                             .stream()
-                            .map(username -> userRepository.findByUsername(username))
+                            .map(id -> userRepository.findById(id).get())
                             .collect(Collectors.toSet())
             );
         }
 
-        if (eventDTO.getInvitatedUsernameList() != null) {
+        if (eventDTO.getInvitatedIdList() != null) {
             event.setInvitatedUserList(
-                    eventDTO.getInvitatedUsernameList()
+                    eventDTO.getInvitatedIdList()
                             .stream()
-                            .map(username -> userRepository.findByUsername(username))
+                            .map(id -> userRepository.findById(id).get())
                             .collect(Collectors.toSet())
             );
         }
@@ -106,23 +115,24 @@ public class EventService {
 
         EventDTO eventDTO = new EventDTO();
 
+        eventDTO.setId(event.getId());
         eventDTO.setDate(event.getDate());
         eventDTO.setArtistName(event.getArtist().getArtistName());
 
         if (event.getConfirmedUserList() != null) {
-            eventDTO.setConfirmedUsernameList(
+            eventDTO.setConfirmedIdList(
                     event.getConfirmedUserList()
                             .stream()
-                            .map(user -> user.getUsername())
+                            .map(user -> user.getId())
                             .collect(Collectors.toSet())
             );
         }
 
         if (event.getInvitatedUserList() != null) {
-            eventDTO.setInvitatedUsernameList(
+            eventDTO.setInvitatedIdList(
                     event.getInvitatedUserList()
                             .stream()
-                            .map(user -> user.getUsername())
+                            .map(user -> user.getId())
                             .collect(Collectors.toSet())
             );
         }
