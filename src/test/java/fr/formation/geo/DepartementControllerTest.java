@@ -1,4 +1,4 @@
-package fr.formation.geo;
+/*package fr.formation.geo;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,7 +42,7 @@ public class DepartementControllerTest {
 						"        \"_score\": 1\n" +
 						"    }\n" +
 						"]"))
-				.andExpect(authenticated().withUsername("user"));*/
+				.andExpect(authenticated().withUsername("user"));
 	}
 
 	@Test
@@ -57,6 +57,6 @@ public class DepartementControllerTest {
 				.andExpect(status().isOk()
 				)
 				.andExpect(content().json("[{\"nom\":\"Ain\",\"code\":\"01\",\"codeRegion\":\"84\"}]"))
-				.andExpect(authenticated().withUsername("user"));*/
+				.andExpect(authenticated().withUsername("user"));
 	}
-}
+}*/
