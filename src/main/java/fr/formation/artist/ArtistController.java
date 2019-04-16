@@ -1,7 +1,6 @@
 package fr.formation.artist;
 
 import fr.formation.controllers.AbstractController;
-import fr.formation.user.User;
 import fr.formation.user.UserDTO;
 import fr.formation.user.UserService;
 import org.slf4j.Logger;
@@ -49,7 +48,13 @@ public class ArtistController extends AbstractController {
         artistService.saveArtist(artistDTO);
     }
 
-
+    @PostMapping("/update")
+    public void updateArtist(@RequestBody ArtistDTO artistDto) throws UnsupportedEncodingException{
+        UserDTO userDTO = getAuthenticatedUserDTO();
+        Artist artistToAdd = artistService.createArtist(artistDto);
+        artistToAdd.setId(artistService.findByArtistName(userDTO.getArtistName()).getId());
+        artistService.saveArtist(artistToAdd);
+    }
 
 
 }

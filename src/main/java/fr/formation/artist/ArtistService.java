@@ -4,7 +4,6 @@ import fr.formation.county_accepted.CountyAccepted;
 import fr.formation.county_accepted.CountyAcceptedRepository;
 import fr.formation.county_accepted.CountyAcceptedService;
 import fr.formation.event.EventRepository;
-import fr.formation.event.EventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,6 +111,10 @@ public class ArtistService {
             log.info(e.getMessage());
         }
 
+        if(artist.getId() != null) {
+            artistDTO.setId(artist.getId());
+        }
+
         if (artist.getEventList() != null) {
             artistDTO.setEventIdList(
                     artist.getEventList()
@@ -137,7 +140,7 @@ public class ArtistService {
             artist.setWebsite(artistDTO.getWebsite());
         }
 
-        if (artist.getPhone() != null) {
+        if (artistDTO.getPhone() != null) {
             artist.setPhone(artistDTO.getPhone());
         }
 
@@ -147,6 +150,10 @@ public class ArtistService {
 
         if (artistDTO.getPicture() != null) {
             artist.setPicture(artistDTO.getPicture().getBytes());
+        }
+
+        if(artistDTO.getId() != null) {
+            artist.setId(artistDTO.getId());
         }
 
         if (artistDTO.getEventIdList() != null) {
@@ -160,4 +167,7 @@ public class ArtistService {
 
         return artist;
     }
+
+
+    public void saveArtist(Artist artist){artistRepository.save(artist);}
 }

@@ -43,10 +43,12 @@ public class UserController extends AbstractController {
 	 *
 	 * @param userAndArtist the user and artist
 	 */
+
 	@PostMapping("/new")
 	public void addUser(@RequestBody UserAndArtist userAndArtist) throws InvalidException, UnsupportedEncodingException {
 
 		log.info("userandaartist : " + userAndArtist);
+
 
 		try {
 			userService.addNewUser(userAndArtist , ROLE_USER);
@@ -76,18 +78,17 @@ public class UserController extends AbstractController {
 	@PutMapping("/changePassword")
 	public void changePassword(@RequestBody Password password) throws InvalidException, UnsupportedEncodingException {
 		try {
-			UserDTO authenticatedUserDTO = getAuthenticatedUserDTO();
-			if(userService.isSamePassword(authenticatedUserDTO.getPassword(),
-					password.oldPassword) && authenticatedUserDTO.getEmail().equals(password.email)){
-				authenticatedUserDTO.setPassword(password.password);
-				userService.changeUserPassword(authenticatedUserDTO);
+			UserDTO authenticatedUserDto = userService.findByUsername(getAuthenticatedUsername());
+			if(userService.isSamePassword(authenticatedUserDto.getPassword(),
+					password.oldPassword) && authenticatedUserDto.getEmail().equals(password.email)){
+				authenticatedUserDto.setPassword(password.password);
+				userService.changeUserPassword(authenticatedUserDto);
 			}
 		}catch(Exception e){
-			System.out.println("Error");
+			log.info("Error");
 			throw new ResponseStatusException(
 					HttpStatus.BAD_REQUEST, e.getMessage(), e);
 		}
 
 	}
-
 }
