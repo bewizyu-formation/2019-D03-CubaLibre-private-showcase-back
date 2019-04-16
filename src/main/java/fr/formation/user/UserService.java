@@ -6,7 +6,6 @@ import fr.formation.artist.ArtistRepository;
 import fr.formation.artist.ArtistService;
 import fr.formation.county_accepted.CountyAcceptedService;
 import fr.formation.event.EventRepository;
-import fr.formation.event.EventService;
 import fr.formation.geo.services.impl.CommuneServiceImpl;
 import fr.formation.geo.services.impl.DepartementServiceImpl;
 import fr.formation.user.exceptions.*;
@@ -34,68 +33,42 @@ import java.util.stream.Collectors;
 @Service
 public class UserService implements UserDetailsService {
 
+    @Autowired
     private UserRepository userRepository;
 
+    @Autowired
     private ArtistRepository artistRepository;
 
+    @Autowired
     private UserRoleRepository userRoleRepository;
 
+    @Autowired
     private EventRepository eventRepository;
 
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
     private CommuneServiceImpl communeServiceImpl;
 
+    @Autowired
     private DepartementServiceImpl departementServiceImpl;
 
+    @Autowired
     private ArtistService artistService;
 
+    @Autowired
     private CountyAcceptedService countyAcceptedService;
 
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
-    /**
-     * Instantiates a new User service.
-     *
-     * @param userRepository     the user repository
-     * @param userRoleRepository the user role repository
-     */
-    @Autowired
-    public UserService(UserRepository userRepository,
-                       ArtistRepository artistRepository,
-                       UserRoleRepository userRoleRepository,
-                       EventRepository eventRepository,
-                       PasswordEncoder passwordEncoder,
-                       CommuneServiceImpl communeServiceImpl,
-                       DepartementServiceImpl departementServiceImpl,
-                       ArtistService artistService,
-                       CountyAcceptedService countyAcceptedService) {
-        this.userRepository = userRepository;
-        this.artistRepository = artistRepository;
-        this.userRoleRepository = userRoleRepository;
-        this.eventRepository = eventRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.communeServiceImpl = communeServiceImpl;
-        this.departementServiceImpl = departementServiceImpl;
-        this.countyAcceptedService = countyAcceptedService;
-        this.artistService = artistService;
-    }
 
-    /**
-     * transform a list of roles (as {@link String}) into a list of {@link GrantedAuthority}
-     *
-     * @param userRoles
-     * @return
+    /*
+    We didn't touch these two methods,they have to to with security
      */
     private static Collection<? extends GrantedAuthority> transformToAuthorities(List<String> userRoles) {
         String roles = StringUtils.collectionToCommaDelimitedString(userRoles);
         return AuthorityUtils.commaSeparatedStringToAuthorityList(roles);
-    }
-
-    public static Boolean isValidPassword(String password) {
-        Pattern pattern = Pattern.compile("(?=.{8,}$)(?=.*[a-z]+)(?=.*[A-Z]+)(?=.*[0-9]+)");
-        Matcher matcher = pattern.matcher(password);
-        return matcher.find();
     }
 
     @Override
@@ -109,8 +82,63 @@ public class UserService implements UserDetailsService {
         } else {
             throw new UsernameNotFoundException("No user exists with username: " + username);
         }
-
     }
+
+    /*
+    Utility methods
+     */
+
+    public static Boolean isValidPassword(String password) {
+        Pattern pattern = Pattern.compile("(?=.{8,}$)(?=.*[a-z]+)(?=.*[A-Z]+)(?=.*[0-9]+)");
+        Matcher matcher = pattern.matcher(password);
+        return matcher.find();
+    }
+
+    public UserDTO encryptPassword(UserDTO userDTO) {
+
+        UserDTO passwordEncryptedUserDTO = new UserDTO();
+
+        passwordEncryptedUserDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        passwordEncryptedUserDTO.setUsername(userDTO.getUsername());
+        passwordEncryptedUserDTO.setEventIdInvitatedList(userDTO.getEventIdInvitatedList());
+        passwordEncryptedUserDTO.setEventIdConfirmedList(userDTO.getEventIdConfirmedList());
+        passwordEncryptedUserDTO.setEmail(userDTO.getEmail());
+        passwordEncryptedUserDTO.setArtistName(userDTO.getArtistName());
+        passwordEncryptedUserDTO.setCity(userDTO.getCity());
+
+        return passwordEncryptedUserDTO;
+    }
+
+    public UserDTO emptyPassword(UserDTO userDTO) {
+
+        UserDTO passwordEncryptedUserDTO = new UserDTO();
+
+        passwordEncryptedUserDTO.setPassword("");
+        passwordEncryptedUserDTO.setUsername(userDTO.getUsername());
+        passwordEncryptedUserDTO.setEventIdInvitatedList(userDTO.getEventIdInvitatedList());
+        passwordEncryptedUserDTO.setEventIdConfirmedList(userDTO.getEventIdConfirmedList());
+        passwordEncryptedUserDTO.setEmail(userDTO.getEmail());
+        passwordEncryptedUserDTO.setArtistName(userDTO.getArtistName());
+        passwordEncryptedUserDTO.setCity(userDTO.getCity());
+
+        return passwordEncryptedUserDTO;
+    }
+
+    private boolean cityExists(String city) throws UnsupportedEncodingException {
+        return communeServiceImpl.getCommunes(city)
+                .stream()
+                .map(c -> ((String) c.get("nom")).equalsIgnoreCase(city))
+                .reduce((a, b) -> a || b)
+                .isPresent();
+    }
+
+    public boolean isSamePassword(String oldPasswordDataBase, String oldPasswordUser) {
+        return this.passwordEncoder.matches(oldPasswordUser, oldPasswordDataBase);
+    }
+
+    /*
+    Methods that consult/modify the database
+     */
 
     public UserDTO findByUsername(String username) {
         return createUserDTO(userRepository.findByUsername(username));
@@ -134,29 +162,28 @@ public class UserService implements UserDetailsService {
                 .get("code");
     }
 
-    private boolean cityExists(String city) throws UnsupportedEncodingException {
-        return communeServiceImpl.getCommunes(city)
+    public UserDTO findByArtistName(String artistName) {
+        return createUserDTO(userRepository.findByArtistArtistName(artistName));
+    }
+
+    public List<UserDTO> findByCountyCode(int code) {
+        return userRepository.findByCodeCounty("" + code)
                 .stream()
-                .map(c -> ((String) c.get("nom")).equalsIgnoreCase(city))
-                .reduce((a, b) -> a || b)
-                .isPresent();
+                .map(user -> createUserDTO(user))
+                .collect(Collectors.toList());
     }
 
-    public UserDTO encryptPassword(UserDTO userDTO) {
-
-        UserDTO passwordEncryptedUserDTO = new UserDTO();
-
-        passwordEncryptedUserDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        passwordEncryptedUserDTO.setUsername(userDTO.getUsername());
-        passwordEncryptedUserDTO.setEventIdInvitatedList(userDTO.getEventIdInvitatedList());
-        passwordEncryptedUserDTO.setEventIdConfirmedList(userDTO.getEventIdConfirmedList());
-        passwordEncryptedUserDTO.setEmail(userDTO.getEmail());
-        passwordEncryptedUserDTO.setArtistName(userDTO.getArtistName());
-        passwordEncryptedUserDTO.setCity(userDTO.getCity());
-
-        return passwordEncryptedUserDTO;
+    public void saveUser(User user) {
+        userRepository.save(user);
     }
 
+    public void changeUserPassword(UserDTO userDTO) throws InvalidException, UnsupportedEncodingException {
+        if (isValidPassword((userDTO.getPassword()))) {
+            saveUser(createUser(encryptPassword(userDTO)));
+        } else {
+            throw new InvalidPasswordException();
+        }
+    }
 
     /**
      * Add a new user with the user repository
@@ -206,22 +233,17 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public UserDTO findByArtistName(String artistName) {
-        return createUserDTO(userRepository.findByArtistArtistName(artistName));
-    }
 
-    public List<UserDTO> findByCountyCode(int code) {
-        return userRepository.findByCodeCounty("" + code)
-                .stream()
-                .map(user -> createUserDTO(user))
-                .collect(Collectors.toList());
-    }
+    /*
+    Methods to convert User to UserDTO and UserDTO to User
+     */
+
 
     public UserDTO createUserDTO(User user) {
         UserDTO userDTO = new UserDTO();
 
         userDTO.setId(user.getId());
-        userDTO.setUsername(user.getEmail());
+        userDTO.setUsername(user.getUsername());
         userDTO.setPassword(user.getPassword());
         userDTO.setEmail(user.getEmail());
         userDTO.setCity(user.getCity());
@@ -286,21 +308,5 @@ public class UserService implements UserDetailsService {
         }
 
         return user;
-    }
-
-    public boolean isSamePassword(String oldPasswordDataBase, String oldPasswordUser) {
-        return this.passwordEncoder.matches(oldPasswordUser, oldPasswordDataBase);
-    }
-
-    public void saveUser(User user) {
-        userRepository.save(user);
-    }
-
-    public void changeUserPassword(UserDTO userDTO) throws InvalidException, UnsupportedEncodingException {
-        if (isValidPassword((userDTO.getPassword()))) {
-            saveUser(createUser(encryptPassword(userDTO)));
-        } else {
-            throw new InvalidPasswordException();
-        }
     }
 }

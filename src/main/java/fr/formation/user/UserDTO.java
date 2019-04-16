@@ -1,10 +1,5 @@
 package fr.formation.user;
 
-import fr.formation.artist.Artist;
-import fr.formation.event.Event;
-
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 import java.util.Set;
 
 public class UserDTO {
@@ -17,20 +12,6 @@ public class UserDTO {
     private String artistName;
     private Set<Long> eventIdInvitatedList;
     private Set<Long> eventIdConfirmedList;
-
-    public UserDTO(){
-
-    }
-
-    public UserDTO(String username, String password, String email, String city, String artistName, Set<Long> eventIdInvitatedList, Set<Long> eventIdConfirmedList) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.city = city;
-        this.artistName = artistName;
-        this.eventIdInvitatedList = eventIdInvitatedList;
-        this.eventIdConfirmedList = eventIdConfirmedList;
-    }
 
     /**
      * Gets id

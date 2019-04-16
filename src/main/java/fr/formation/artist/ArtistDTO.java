@@ -12,33 +12,8 @@ public class ArtistDTO {
     private String website;
     private String phone;
     private String address;
-
     private String picture;
     private Set<Long> eventIdList;
-
-    public ArtistDTO(){
-
-    }
-
-    public ArtistDTO(String artistName,
-                     String shortDescription,
-                     String longDescription,
-                     int voteNumber,
-                     int rating,
-                     String website,
-                     String phone,
-                     String address,
-                     String picture) {
-        this.artistName = artistName;
-        this.shortDescription = shortDescription;
-        this.longDescription = longDescription;
-        this.voteNumber = voteNumber;
-        this.rating = rating;
-        this.website = website;
-        this.phone = phone;
-        this.address = address;
-        this.picture = picture;
-    }
 
     /**
      * Gets artistName
