@@ -211,6 +211,12 @@ public class UserService implements UserDetailsService {
         return createUserDTO(userRepository.findByArtistArtistName(artistName));
     }
 
+    public List<UserDTO> findByCountyCode(int code){
+        return userRepository.findByCity(
+                
+        )
+    }
+
     public UserDTO createUserDTO(User user) {
         UserDTO userDTO = new UserDTO();
 

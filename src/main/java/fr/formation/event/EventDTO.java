@@ -9,7 +9,7 @@ public class EventDTO {
     private String artistName;
     private Set<String> confirmedUsernameList;
     private Set<String> invitatedUsernameList;
-    private String organizerUsername;
+    private String organiserUsername;
     private int maxConfirmed;
 
     public Date getDate() {
@@ -44,12 +44,12 @@ public class EventDTO {
         this.invitatedUsernameList = invitatedUsernameList;
     }
 
-    public String getOrganizerUsername() {
-        return organizerUsername;
+    public String getOrganiserUsername() {
+        return organiserUsername;
     }
 
-    public void setOrganizerUsername(String organizerUsername) {
-        this.organizerUsername = organizerUsername;
+    public void setOrganiserUsername(String organiserUsername) {
+        this.organiserUsername = organiserUsername;
     }
 
     public int getMaxConfirmed() {
