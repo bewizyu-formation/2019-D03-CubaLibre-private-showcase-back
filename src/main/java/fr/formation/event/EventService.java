@@ -54,10 +54,6 @@ public class EventService {
             );
         }
 
-        usersToInvite.stream().forEach(user -> log.info("User id : " + user.getId()));
-        //log.info("users to invite : " + usersToInvite);
-        //ajouter tous les users du departements dans invitatedList
-
         eventRepository.save(createEvent(eventDTOToAdd));
     }
 
