@@ -5,7 +5,7 @@ import fr.formation.artist.Artist;
 import fr.formation.user.User;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -32,7 +32,9 @@ public class Event {
     private Set<User> invitatedUserList;
 
     @ManyToOne
-    private User organizer;
+    private User organiser;
+
+    private int maxConfirmed;
 
     /**
      * Gets id
@@ -89,21 +91,21 @@ public class Event {
     }
 
     /**
-     * Gets organizer
+     * Gets organiser
      *
-     * @return value of organizer
+     * @return value of organiser
      */
-    public User getOrganizer() {
-        return organizer;
+    public User getOrganiser() {
+        return organiser;
     }
 
     /**
-     * Sets organizer
+     * Sets organiser
      *
-     * @param organizer the organizer
+     * @param organiser the organiser
      */
-    public void setOrganizer(User organizer) {
-        this.organizer = organizer;
+    public void setOrganiser(User organiser) {
+        this.organiser = organiser;
     }
 
     /**
@@ -140,5 +142,23 @@ public class Event {
      */
     public void setInvitatedUserList(Set<User> invitatedUserList) {
         this.invitatedUserList = invitatedUserList;
+    }
+
+    /**
+     * Gets maxConfirmed
+     *
+     * @return value of maxConfirmed
+     */
+    public int getMaxConfirmed() {
+        return maxConfirmed;
+    }
+
+    /**
+     * Sets maxConfirmed
+     *
+     * @param maxConfirmed the maxConfirmed
+     */
+    public void setMaxConfirmed(int maxConfirmed) {
+        this.maxConfirmed = maxConfirmed;
     }
 }

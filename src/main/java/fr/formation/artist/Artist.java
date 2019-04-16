@@ -2,7 +2,6 @@ package fr.formation.artist;
 
 
 import fr.formation.event.Event;
-import fr.formation.user.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -45,7 +44,7 @@ public class Artist {
     //private User user;
 
     @Lob
-    @Column(columnDefinition = "BLOB")
+    @Column(columnDefinition = "LONGBLOB")
     private byte[] picture;
 
     @OneToMany(mappedBy = "artist")
