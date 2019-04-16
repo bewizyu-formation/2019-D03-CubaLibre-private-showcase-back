@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -85,7 +86,7 @@ public class EventService {
         .map(e -> createEventDTO(e))
         .collect(Collectors.toList()));*/
 
-       return (List) events;
+       return new ArrayList<EventDTO>(events);
 
     }
 

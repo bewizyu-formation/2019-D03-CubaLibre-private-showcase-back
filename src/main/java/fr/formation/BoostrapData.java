@@ -134,7 +134,7 @@ public class BoostrapData {
 
 		EventDTO event1 = new EventDTO();
 		event1.setArtistName("Megadeth");
-		event1.setDate(new Date());
+		event1.setDate(LocalDate.now());
 		event1.setMaxConfirmed(50);
 		eventService.createEvent(event1);
 	}
