@@ -60,11 +60,12 @@ public class ArtistController extends AbstractController {
     }
 
     @PostMapping("/update")
-    public void updateArtist(@RequestBody Artist artist){
+    public void updateArtist(@RequestBody ArtistDTO artistDto){
         User user = getAuthenticatedUser();
         Artist oldArtist = user.getArtist();
-        artist.setId(oldArtist.getId());
-        artistService.saveArtist(artist);
+        Artist artistToAdd = artistService.createArtist(artistDto);
+        artistToAdd.setId(oldArtist.getId());
+        artistService.saveArtist(artistToAdd);
     }
 
 }
