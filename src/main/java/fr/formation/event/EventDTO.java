@@ -1,12 +1,13 @@
 package fr.formation.event;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
 public class EventDTO {
 
     private Long id;
-    private Date date;
+    private LocalDate date;
     private String artistName;
     private Set<Long> confirmedIdList;
     private Set<Long> invitatedIdList;
@@ -36,7 +37,7 @@ public class EventDTO {
      *
      * @return value of date
      */
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
@@ -45,7 +46,7 @@ public class EventDTO {
      *
      * @param date the date
      */
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
