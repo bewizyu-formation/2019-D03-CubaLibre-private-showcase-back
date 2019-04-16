@@ -107,6 +107,10 @@ public class ArtistService {
             artistDTO.setPicture(artist.getPicture());
         }
 
+        if(artist.getId() != null) {
+            artistDTO.setId(artist.getId());
+        }
+
         if (artist.getEventList() != null) {
             artistDTO.setEventIdList(
                     artist.getEventList()
@@ -140,8 +144,12 @@ public class ArtistService {
             artist.setAddress(artistDTO.getAddress());
         }
 
-        if (artist.getPicture() != null) {
+        if (artistDTO.getPicture() != null) {
             artist.setPicture(artistDTO.getPicture());
+        }
+
+        if(artistDTO.getId() != null) {
+            artist.setId(artistDTO.getId());
         }
 
         if (artistDTO.getEventIdList() != null) {
