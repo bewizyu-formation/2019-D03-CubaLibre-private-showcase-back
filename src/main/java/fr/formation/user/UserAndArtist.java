@@ -6,6 +6,10 @@ public class UserAndArtist {
     public ArtistDTO artist;
     public UserDTO user;
 
+    public UserAndArtist(){
+
+    }
+
     public UserAndArtist(UserDTO user, ArtistDTO artist){
         this.artist = artist;
         this.user = user;

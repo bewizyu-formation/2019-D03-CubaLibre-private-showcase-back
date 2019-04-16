@@ -13,20 +13,6 @@ public class UserDTO {
     private Set<Long> eventIdInvitatedList;
     private Set<Long> eventIdConfirmedList;
 
-    public UserDTO(){
-
-    }
-
-    public UserDTO(String username, String password, String email, String city, String artistName, Set<Long> eventIdInvitatedList, Set<Long> eventIdConfirmedList) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.city = city;
-        this.artistName = artistName;
-        this.eventIdInvitatedList = eventIdInvitatedList;
-        this.eventIdConfirmedList = eventIdConfirmedList;
-    }
-
     /**
      * Gets id
      *

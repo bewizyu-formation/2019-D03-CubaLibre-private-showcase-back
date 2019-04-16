@@ -40,32 +40,12 @@ public class Artist {
     @Max(10)
     private int rating;
 
-    //@OneToOne(mappedBy = "artist")
-    //private User user;
-
     @Lob
     @Column(columnDefinition = "LONGBLOB")
     private byte[] picture;
 
     @OneToMany(mappedBy = "artist")
     private Set<Event> eventList;
-
-    public Artist(){
-    }
-
-
-    public Artist(@NotNull String artistName, String longDescription, @NotNull String shortDescription,String website, String phone, String address, @NotNull int voteNumber, @Min(0) @Max(10) int rating, byte[] picture) {
-        this.artistName = artistName;
-        this.longDescription = longDescription;
-        this.website = website;
-        this.phone = phone;
-        this.address = address;
-        this.voteNumber = voteNumber;
-        this.rating = rating;
-        this.picture = picture;
-        this.shortDescription = shortDescription;
-    }
-
 
     /**
      * Gets id
