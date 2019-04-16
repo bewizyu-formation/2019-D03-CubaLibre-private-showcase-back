@@ -98,6 +98,7 @@ public class UserService implements UserDetailsService {
 
         UserDTO passwordEncryptedUserDTO = new UserDTO();
 
+        passwordEncryptedUserDTO.setId(userDTO.getId());
         passwordEncryptedUserDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         passwordEncryptedUserDTO.setUsername(userDTO.getUsername());
         passwordEncryptedUserDTO.setEventIdInvitatedList(userDTO.getEventIdInvitatedList());
