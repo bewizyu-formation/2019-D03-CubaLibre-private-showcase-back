@@ -48,7 +48,7 @@ public class ArtistController extends AbstractController {
         artistService.saveArtist(artistDTO);
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public void updateArtist(@RequestBody ArtistDTO artistDto) throws UnsupportedEncodingException{
         UserDTO userDTO = getAuthenticatedUserDTO();
         Artist artistToAdd = artistService.createArtist(artistDto);
