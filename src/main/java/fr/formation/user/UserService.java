@@ -53,9 +53,6 @@ public class UserService implements UserDetailsService {
     private CommuneServiceImpl communeServiceImpl;
 
     @Autowired
-    private DepartementServiceImpl departementServiceImpl;
-
-    @Autowired
     private ArtistService artistService;
 
     @Autowired
@@ -67,11 +64,25 @@ public class UserService implements UserDetailsService {
     /*
     We didn't touch these two methods,they have to to with security
      */
+
+    /**
+     * transform a list of roles (as {@link String}) into a list of {@link GrantedAuthority}
+     *
+     * @param userRoles
+     * @return
+     */
     private static Collection<? extends GrantedAuthority> transformToAuthorities(List<String> userRoles) {
         String roles = StringUtils.collectionToCommaDelimitedString(userRoles);
         return AuthorityUtils.commaSeparatedStringToAuthorityList(roles);
     }
 
+
+    /**
+     * Load a userDetails from an username
+     * @param username
+     * @return
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
@@ -89,12 +100,23 @@ public class UserService implements UserDetailsService {
     Utility methods
      */
 
+    /**
+     * Checks that a password is at least 8 characters long and has at least one uppercase and lowercase letter,
+     * and a number.
+     * @param password
+     * @return
+     */
     public static Boolean isValidPassword(String password) {
         Pattern pattern = Pattern.compile("(?=.{8,}$)(?=.*[a-z]+)(?=.*[A-Z]+)(?=.*[0-9]+)");
         Matcher matcher = pattern.matcher(password);
         return matcher.find();
     }
 
+    /**
+     * Takes a UserDTO (with a password not encrypted) and returns a UserDTO with its password encrypted.
+     * @param userDTO
+     * @return
+     */
     public UserDTO encryptPassword(UserDTO userDTO) {
 
         UserDTO passwordEncryptedUserDTO = new UserDTO();
@@ -110,6 +132,12 @@ public class UserService implements UserDetailsService {
         return passwordEncryptedUserDTO;
     }
 
+    /**
+     * Checks if a city name exists in the gouv.geo api
+     * @param city
+     * @return
+     * @throws UnsupportedEncodingException
+     */
     private boolean cityExists(String city) throws UnsupportedEncodingException {
         return communeServiceImpl.getCommunes(city)
                 .stream()
@@ -118,6 +146,12 @@ public class UserService implements UserDetailsService {
                 .isPresent();
     }
 
+    /**
+     * Check if two encoded passwords match
+     * @param oldPasswordDataBase
+     * @param oldPasswordUser
+     * @return
+     */
     public boolean isSamePassword(String oldPasswordDataBase, String oldPasswordUser) {
         return this.passwordEncoder.matches(oldPasswordUser, oldPasswordDataBase);
     }
@@ -126,10 +160,21 @@ public class UserService implements UserDetailsService {
     Methods that consult/modify the database
      */
 
+    /**
+     * Find User by Username and returns the corresponding UserDTO
+     * @param username
+     * @return
+     */
     public UserDTO findByUsername(String username) {
         return createUserDTO(userRepository.findByUsername(username));
     }
 
+    /**
+     * Finds the county code of a UserDTO by looking up its city with the gouv.geo api.
+     * @param userDTO
+     * @return
+     * @throws UnsupportedEncodingException
+     */
     public String findCodeCounty(UserDTO userDTO) throws UnsupportedEncodingException {
         return (String) communeServiceImpl.getCommunes(userDTO.getCity())
                 .stream()
@@ -139,6 +184,12 @@ public class UserService implements UserDetailsService {
                 .get("codeDepartement");
     }
 
+    /**
+     * Finds the city code of a UserDTO by looking up its city with the gouv.geo api.
+     * @param userDTO
+     * @return
+     * @throws UnsupportedEncodingException
+     */
     public String findCodeCity(UserDTO userDTO) throws UnsupportedEncodingException {
         return (String) communeServiceImpl.getCommunes(userDTO.getCity())
                 .stream()
