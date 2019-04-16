@@ -5,6 +5,7 @@ import fr.formation.artist.ArtistDTO;
 import fr.formation.artist.ArtistRepository;
 import fr.formation.artist.ArtistService;
 import fr.formation.county_accepted.CountyAcceptedService;
+import fr.formation.event.EventRepository;
 import fr.formation.event.EventService;
 import fr.formation.geo.services.impl.CommuneServiceImpl;
 import fr.formation.geo.services.impl.DepartementServiceImpl;
@@ -39,6 +40,8 @@ public class UserService implements UserDetailsService {
 
     private UserRoleRepository userRoleRepository;
 
+    private EventRepository eventRepository;
+
     private PasswordEncoder passwordEncoder;
 
     private CommuneServiceImpl communeServiceImpl;
@@ -46,8 +49,6 @@ public class UserService implements UserDetailsService {
     private DepartementServiceImpl departementServiceImpl;
 
     private ArtistService artistService;
-
-    private EventService eventService;
 
     private CountyAcceptedService countyAcceptedService;
 
@@ -63,22 +64,21 @@ public class UserService implements UserDetailsService {
     public UserService(UserRepository userRepository,
                        ArtistRepository artistRepository,
                        UserRoleRepository userRoleRepository,
+                       EventRepository eventRepository,
                        PasswordEncoder passwordEncoder,
                        CommuneServiceImpl communeServiceImpl,
                        DepartementServiceImpl departementServiceImpl,
                        ArtistService artistService,
-                       EventService eventService,
                        CountyAcceptedService countyAcceptedService) {
         this.userRepository = userRepository;
         this.artistRepository = artistRepository;
         this.userRoleRepository = userRoleRepository;
+        this.eventRepository = eventRepository;
         this.passwordEncoder = passwordEncoder;
         this.communeServiceImpl = communeServiceImpl;
         this.departementServiceImpl = departementServiceImpl;
         this.countyAcceptedService = countyAcceptedService;
         this.artistService = artistService;
-        this.eventService = eventService;
-
     }
 
     /**
@@ -210,9 +210,17 @@ public class UserService implements UserDetailsService {
         return createUserDTO(userRepository.findByArtistArtistName(artistName));
     }
 
+    public List<UserDTO> findByCountyCode(int code) {
+        return userRepository.findByCodeCounty("" + code)
+                .stream()
+                .map(user -> createUserDTO(user))
+                .collect(Collectors.toList());
+    }
+
     public UserDTO createUserDTO(User user) {
         UserDTO userDTO = new UserDTO();
 
+        userDTO.setId(user.getId());
         userDTO.setUsername(user.getEmail());
         userDTO.setPassword(user.getPassword());
         userDTO.setEmail(user.getEmail());
@@ -259,7 +267,7 @@ public class UserService implements UserDetailsService {
             user.setEventInvitatedList(
                     userDTO.getEventIdInvitatedList()
                             .stream()
-                            .map(id -> eventService.findById(id))
+                            .map(id -> eventRepository.findById(id).get())
                             .collect(Collectors.toSet())
             );
         }
@@ -268,7 +276,7 @@ public class UserService implements UserDetailsService {
             user.setEventConfirmedList(
                     userDTO.getEventIdConfirmedList()
                             .stream()
-                            .map(id -> eventService.findById(id))
+                            .map(id -> eventRepository.findById(id).get())
                             .collect(Collectors.toSet())
             );
         }

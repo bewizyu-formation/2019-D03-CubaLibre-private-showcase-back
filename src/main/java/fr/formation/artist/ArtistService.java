@@ -3,6 +3,7 @@ package fr.formation.artist;
 import fr.formation.county_accepted.CountyAccepted;
 import fr.formation.county_accepted.CountyAcceptedRepository;
 import fr.formation.county_accepted.CountyAcceptedService;
+import fr.formation.event.EventRepository;
 import fr.formation.event.EventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,7 @@ public class ArtistService {
 
     private ArtistRepository artistRepository;
 
-    private EventService eventService;
+    private EventRepository eventRepository;
 
     private CountyAcceptedService countyAcceptedService;
 
@@ -37,12 +38,12 @@ public class ArtistService {
      * @param artistRepository the artist repository
      */
     @Autowired
-    public ArtistService(EventService eventService,
+    public ArtistService(EventRepository eventRepository,
                          CountyAcceptedRepository countyAcceptedRepository,
                          ArtistRepository artistRepository,
                          CountyAcceptedService countyAcceptedService) {
 
-        this.eventService = eventService;
+        this.eventRepository = eventRepository;
         this.artistRepository = artistRepository;
         this.countyAcceptedService = countyAcceptedService;
         this.countyAcceptedRepository = countyAcceptedRepository;
@@ -152,7 +153,7 @@ public class ArtistService {
             artist.setEventList(
                     artistDTO.getEventIdList()
                             .stream()
-                            .map(eId -> eventService.findById(eId))
+                            .map(eId -> eventRepository.findById(eId).get())
                             .collect(Collectors.toSet())
             );
         }

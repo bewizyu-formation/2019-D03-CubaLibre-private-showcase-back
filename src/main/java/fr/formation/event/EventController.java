@@ -7,6 +7,7 @@ import fr.formation.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -27,7 +28,7 @@ public class EventController extends AbstractController {
     private ArtistService artistService;
 
     @PostMapping("/new")
-    public void addEvent(@RequestBody EventDTO eventDTO) {
+    public void addEvent(@RequestBody EventDTO eventDTO) throws UnsupportedEncodingException {
         eventService.addNewEvent(eventDTO);
     }
 

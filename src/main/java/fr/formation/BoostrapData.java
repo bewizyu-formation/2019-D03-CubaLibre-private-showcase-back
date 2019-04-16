@@ -59,14 +59,14 @@ public class BoostrapData {
 		admin.setUsername("admin");
 		admin.setPassword("adminPass1");
 		admin.setEmail("admin@mail.com");
-		admin.setCity("Nantes");
+		admin.setCity("Paris");
 
 		UserDTO user = new UserDTO();
 
 		user.setUsername("user");
 		user.setPassword("userPass1");
 		user.setEmail("user@mail.com");
-		user.setCity("Lyon");
+		user.setCity("Paris");
 		user.setArtistName("Artist1");
 
 		ArtistDTO artist69 = new ArtistDTO();
