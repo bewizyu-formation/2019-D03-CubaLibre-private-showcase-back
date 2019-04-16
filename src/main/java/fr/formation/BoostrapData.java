@@ -92,19 +92,17 @@ public class BoostrapData {
 				SecurityConstants.ROLE_USER
 		);
 
+		ArtistDTO artist6944 = new ArtistDTO();
 
-
-
-
-		ArtistDTO artist6944 = new ArtistDTO(
-				"Artist2",
-				"description courte de l'artiste",
-				"description longue très longue de l'artiste",
-				365,
-				9,
-				"Artist.com",
-				"0102030405",
-				"6944 rue du test", "");
+		artist6944.setArtistName("Artist2");
+		artist6944.setShortDescription("description courte de l'artiste");
+		artist6944.setLongDescription("description longue très longue de l'artiste");
+		artist6944.setVoteNumber(365);
+		artist6944.setRating(9);
+		artist6944.setWebsite("Artist.com");
+		artist6944.setAddress("6944 rue du test");
+		artist6944.setPhone("0102030405");
+		artist6944.setPicture("");
 
 		artistService.saveArtist(artist6944);
 		countyAcceptedService.addCountyAccepted(69, artistRepository.findByArtistName("Artist2"));
