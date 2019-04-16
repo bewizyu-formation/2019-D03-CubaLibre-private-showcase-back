@@ -1,7 +1,6 @@
 package fr.formation.user;
 
 
-import fr.formation.artist.Artist;
 import fr.formation.artist.ArtistService;
 import fr.formation.controllers.AbstractController;
 import fr.formation.user.exceptions.InvalidException;
@@ -10,11 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 
-import java.io.File;
 import java.io.UnsupportedEncodingException;
 
 import static fr.formation.security.SecurityConstants.ROLE_USER;
@@ -35,7 +32,11 @@ public class UserController extends AbstractController {
 
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
-
+	private static class Password{
+		public String oldPassword;
+		public String password;
+		public String email;
+	}
 
 	/**
 	 * Signup.
@@ -62,12 +63,13 @@ public class UserController extends AbstractController {
 	 * @param fields[2] --> email
 	 * */
 	@PutMapping("/changePassword")
-	public void changePassword(@RequestBody String []fields) throws InvalidException, UnsupportedEncodingException {
+	public void changePassword(@RequestBody Password password) throws InvalidException, UnsupportedEncodingException {
 		try {
-			User user = getAuthenticatedUser();
-			if(userService.isSamePassword(user.getPassword(), fields[0]) && user.getEmail().equals(fields[2])){
-				user.setPassword(this.userService.passwordEncode(fields[1]));
-				userService.saveUser(user);
+			UserDTO authenticatedUserDTO = getAuthenticatedUserDTO();
+			if(userService.isSamePassword(authenticatedUserDTO.getPassword(),
+					password.oldPassword) && authenticatedUserDTO.getEmail().equals(password.email)){
+				authenticatedUserDTO.setPassword(password.password);
+				userService.changeUserPassword(authenticatedUserDTO);
 			}
 		}catch(Exception e){
 			System.out.println("Error");

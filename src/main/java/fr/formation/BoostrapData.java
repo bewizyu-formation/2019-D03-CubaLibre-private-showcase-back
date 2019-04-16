@@ -1,11 +1,9 @@
 package fr.formation;
 
-import fr.formation.artist.Artist;
 import fr.formation.artist.ArtistDTO;
 import fr.formation.artist.ArtistRepository;
 import fr.formation.county_accepted.CountyAcceptedService;
 import fr.formation.security.SecurityConstants;
-import fr.formation.user.User;
 import fr.formation.user.UserAndArtist;
 import fr.formation.user.UserDTO;
 import fr.formation.user.UserService;
@@ -108,7 +106,7 @@ public class BoostrapData {
 				"0102030405",
 				"6944 rue du test", "");
 
-		artistService.addNewArtist(artist6944);
+		artistService.saveArtist(artist6944);
 		countyAcceptedService.addCountyAccepted(69, artistRepository.findByArtistName("Artist2"));
 		countyAcceptedService.addCountyAccepted(44, artistRepository.findByArtistName("Artist2"));
 
@@ -124,7 +122,7 @@ public class BoostrapData {
 				8,
 				new byte[50]);
 
-		artistService.addNewArtist(artist44);
+		artistService.saveArtist(artist44);
 		countyAcceptedService.addCountyAccepted(44, artist44);*/
 
 

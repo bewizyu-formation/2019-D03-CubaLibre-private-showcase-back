@@ -2,13 +2,13 @@ package fr.formation.artist;
 
 import fr.formation.controllers.AbstractController;
 import fr.formation.user.User;
+import fr.formation.user.UserDTO;
+import fr.formation.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class ArtistController extends AbstractController {
     private ArtistService artistService;
 
     @Autowired
-    private ArtistRepository artistRepository;
+    private UserService userService;
 
     private static final Logger log = LoggerFactory.getLogger(ArtistController.class);
 
@@ -28,13 +28,13 @@ public class ArtistController extends AbstractController {
      * getArtistsByCounty.
      */
     @GetMapping("/")
-    public List<Artist> getArtistsByCounty() {
-        User user = getAuthenticatedUser();
-        return artistService.getArtistByDepartement(Integer.parseInt(user.getCodeCounty()));
+    public List<ArtistDTO> getArtistsByCounty() throws UnsupportedEncodingException {
+        UserDTO userDTO = getAuthenticatedUserDTO();
+        return artistService.getArtistByDepartementAcceptedCode(Integer.parseInt(userService.findCodeCounty(userDTO)));
     }
 
-    @GetMapping("/all/")
-    public List<Artist> getArtistsList() {
+    @GetMapping("/all")
+    public List<ArtistDTO> getArtistsList() {
         return artistService.getArtistsList();
 
     }
@@ -42,6 +42,11 @@ public class ArtistController extends AbstractController {
     @GetMapping("/{artistName}")
     public ArtistDTO findByArtistName(@PathVariable("artistName") String artistName) throws UnsupportedEncodingException {
         return artistService.findByArtistName(artistName);
+    }
+
+    @PutMapping("/")
+    public void saveArtist(@RequestBody ArtistDTO artistDTO) throws UnsupportedEncodingException{
+        artistService.saveArtist(artistDTO);
     }
 
 
