@@ -194,6 +194,7 @@ public class BoostrapData {
 				SecurityConstants.ROLE_USER
 		);
 
+
 		countyAcceptedService.addCountyAccepted(69, artistRepository.findByArtistName("artist4"));
 
 		////////////////////////////////////////////////////////////////////////////
@@ -294,6 +295,7 @@ public class BoostrapData {
 		countyAcceptedService.addCountyAccepted(69, artistRepository.findByArtistName("Metallica"));
 		countyAcceptedService.addCountyAccepted(75, artistRepository.findByArtistName("Metallica"));
 		countyAcceptedService.addCountyAccepted(33, artistRepository.findByArtistName("Metallica"));
+
 
 		////////////////////////////////////////////////////////////////////////////
 
