@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,15 +31,25 @@ public class EventService {
         return eventRepository.findById(id).get();
     }
 
-    public void addNewEvent(EventDTO eventDTO) {
+    public void addNewEvent(EventDTO eventDTO) throws UnsupportedEncodingException {
         //Recuperer l'user authentifié
+
+        EventDTO eventDTOToAdd = eventDTO;
         String organiserUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        eventDTOToAdd.setOrganiserUsername(organiserUsername);
         UserDTO organiser = userService.findByUsername(organiserUsername);
-        //get departement de organiser
-        //get users de ce departement
+        int organiserCodeCounty = Integer.parseInt(userService.findCodeCounty(organiser));
+        List<UserDTO> usersToInvite = userService.findByCountyCode(organiserCodeCounty);
+
+        eventDTOToAdd.setInvitatedUsernameList(
+                usersToInvite
+                        .stream()
+                .map(userDTO -> userDTO.getUsername())
+                .collect(Collectors.toSet())
+        );
         //ajouter tous les users du departements dans invitatedList
 
-        eventRepository.save(createEvent(eventDTO));
+        eventRepository.save(createEvent(eventDTOToAdd));
     }
 
     public List<EventDTO> findByArtistName(String artistName) {

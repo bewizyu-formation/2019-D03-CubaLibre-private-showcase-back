@@ -211,10 +211,11 @@ public class UserService implements UserDetailsService {
         return createUserDTO(userRepository.findByArtistArtistName(artistName));
     }
 
-    public List<UserDTO> findByCountyCode(int code){
-        return userRepository.findByCity(
-
-        )
+    public List<UserDTO> findByCountyCode(int code) {
+        return userRepository.findByCodeCounty("" + code)
+                .stream()
+                .map(user -> createUserDTO(user))
+                .collect(Collectors.toList());
     }
 
     public UserDTO createUserDTO(User user) {

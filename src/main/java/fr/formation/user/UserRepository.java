@@ -24,7 +24,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	public User findByArtistArtistName(String artistName);
 
-	public List<User> findByCity(String city);
+	public List<User> findByCodeCounty(String codeCounty);
 
 
 }
