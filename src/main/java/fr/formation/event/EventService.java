@@ -34,7 +34,8 @@ public class EventService {
         //Recuperer l'user authentifié
         String organiserUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserDTO organiser = userService.findByUsername(organiserUsername);
-
+        //get departement de organiser
+        //get users de ce departement
         //ajouter tous les users du departements dans invitatedList
 
         eventRepository.save(createEvent(eventDTO));

@@ -213,7 +213,7 @@ public class UserService implements UserDetailsService {
 
     public List<UserDTO> findByCountyCode(int code){
         return userRepository.findByCity(
-                
+
         )
     }
 
