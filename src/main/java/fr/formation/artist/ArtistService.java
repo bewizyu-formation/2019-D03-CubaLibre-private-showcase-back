@@ -169,6 +169,5 @@ public class ArtistService {
         return artist;
     }
 
-
     public void saveArtist(Artist artist){artistRepository.save(artist);}
 }

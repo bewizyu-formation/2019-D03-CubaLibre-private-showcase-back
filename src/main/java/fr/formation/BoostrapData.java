@@ -236,7 +236,7 @@ public class BoostrapData {
 		UserDTO SlayerU = new UserDTO();
 
 		SlayerU.setUsername("Slayer");
-		SlayerU.setPassword("Slayer");
+		SlayerU.setPassword("Slayer11");
 		SlayerU.setEmail("Slayer@mail.com");
 		SlayerU.setCity("Arrodets-ez-Angles");
 		SlayerU.setArtistName("Slayer");
@@ -268,7 +268,7 @@ public class BoostrapData {
 		UserDTO MetallicaU = new UserDTO();
 
 		MetallicaU.setUsername("Metallica");
-		MetallicaU.setPassword("Metallica");
+		MetallicaU.setPassword("Metallica1");
 		MetallicaU.setEmail("Metallica@mail.com");
 		MetallicaU.setCity("Arrodets-ez-Angles");
 		MetallicaU.setArtistName("Metallica");
@@ -297,13 +297,7 @@ public class BoostrapData {
 		countyAcceptedService.addCountyAccepted(33, artistRepository.findByArtistName("Metallica"));
 
 
-		////////////////////////////////////////////////////////////////////////////
 
-		EventDTO event1 = new EventDTO();
-		event1.setArtistName("Megadeth");
-		event1.setDate(LocalDate.now());
-		event1.setMaxConfirmed(50);
-		eventService.createEvent(event1);
 	}
 
 }
